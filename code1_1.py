@@ -9,6 +9,11 @@ app = Flask(__name__)
 mongo = pymongo.MongoClient('mongodb+srv://srujandeshpande:mongodb@cluster0-e0fen.azure.mongodb.net/test?retryWrites=true&w=majority', maxPoolSize=50, connect=True)
 db = pymongo.database.Database(mongo, 'covid_v1')
 
+@app.route('/')
+def welcome():
+    return "Welcome! Successfully loaded"
+
+
 @app.route("/add_new_user", methods=['POST'])
 def add_new_user():
     userData = pymongo.collection.Collection(db, 'User_Data')
