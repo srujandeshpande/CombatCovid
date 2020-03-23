@@ -1,2 +1,2 @@
 # combat_covid
-Covid Application
+Covid Application Backend. Runs using Python and MongoDB
