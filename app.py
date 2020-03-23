@@ -7,7 +7,7 @@ from flask import request
 app = Flask(__name__)
 
 #Loads the Database and Collections
-mongo = pymongo.MongoClient('mongodb+srv://test-user-1:test@cluster0-e0fen.azure.mongodb.net/test?retryWrites=true&w=majority', maxPoolSize=50, connect=True)
+mongo = pymongo.MongoClient('mongodb+srv://srujandeshpande:mongodb@cluster0-e0fen.azure.mongodb.net/test?retryWrites=true&w=majority', maxPoolSize=50, connect=True)
 db = pymongo.database.Database(mongo, 'covid_v1')
 User_Data = pymongo.collection.Collection(db, 'User_Data')
 
