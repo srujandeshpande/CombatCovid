@@ -9,7 +9,6 @@ app = Flask(__name__)
 #Loads the Database and Collections
 mongo = pymongo.MongoClient('mongodb+srv://srujandeshpande:mongodb@cluster0-e0fen.azure.mongodb.net/test?retryWrites=true&w=majority', maxPoolSize=50, connect=True)
 db = pymongo.database.Database(mongo, 'covid_v1')
-User_Data = pymongo.collection.Collection(db, 'User_Data')
 
 
 #Purely to test connection
@@ -21,12 +20,22 @@ def welcome():
 #Adds new user from given data
 @app.route("/add_new_user", methods=['POST'])
 def add_new_user():
+    User_Data = pymongo.collection.Collection(db, 'User_Data')
     inputData = request.json
     for i in json.loads(dumps(User_Data.find())):
         if i['phone_number'] == inputData['phone_number']:
             return ({'success':False, 'userobjid':""})
     objid = User_Data.insert_one(inputData).inserted_id
     return ({'success':True, 'userobjid':str(objid)})
+
+
+#Adds new testing data for user
+@app.route("/add_new_test", methods=['POST'])
+def add_new_test():
+    Testing_Data = pymongo.collection.Collection(db, 'Testing_Data')
+    inputData = request.json
+    objid = Testing_Data.insert_one(inputData).inserted_id
+    return ({'success':True, 'testobjid':str(objid)})
 
 
 @app.route('/abc')
