@@ -6,9 +6,9 @@ API Calls to the above website, POST Requests, JSON Objects
 
 ### /add_new_user
 Method: POST  
-Request: All User Data as JSON
+Request: All User Data as JSON  
 Return:
-```
+```JSON
 {
     "success": boolean,
     "userobjid": ""
