@@ -6,22 +6,28 @@ from flask import request
 #from flask_pymongo import PyMongo
 app = Flask(__name__)
 
-mongo = pymongo.MongoClient('mongodb+srv://srujandeshpande:mongodb@cluster0-e0fen.azure.mongodb.net/test?retryWrites=true&w=majority', maxPoolSize=50, connect=True)
+#Loads the Database and Collections
+mongo = pymongo.MongoClient('mongodb+srv://test-user-1:test@cluster0-e0fen.azure.mongodb.net/test?retryWrites=true&w=majority', maxPoolSize=50, connect=True)
 db = pymongo.database.Database(mongo, 'covid_v1')
+User_Data = pymongo.collection.Collection(db, 'User_Data')
 
+
+#Purely to test connection
 @app.route('/')
 def welcome():
     return "Welcome! Successfully loaded"
 
 
+#Adds new user from given data
 @app.route("/add_new_user", methods=['POST'])
 def add_new_user():
-    userData = pymongo.collection.Collection(db, 'User_Data')
-    searchword = request.json
-    objid = userData.insert_one(searchword).inserted_id
-    #searchword = request.form['uname']
-    #searchword = request.args.get('uname')
-    return str(objid)
+    inputData = request.json
+    for i in json.loads(dumps(User_Data.find())):
+        if i['phone_number'] == inputData['phone_number']:
+            return ({'success':False, 'userobjid':""})
+    objid = User_Data.insert_one(inputData).inserted_id
+    return ({'success':True, 'userobjid':str(objid)})
+
 
 @app.route('/abc')
 def hello_world():
