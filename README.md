@@ -11,8 +11,8 @@ Return:
 ```JSON
 {
     "success": boolean,
-    "userobjid": ""
+    "userobjid": object
 }
 ```
 success tells if the user was successfully added or not.  
-userobjid return the object ID if successfully added.
+userobjid return the object ID (as a string) if successfully added.
