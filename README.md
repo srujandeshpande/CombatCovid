@@ -82,10 +82,10 @@ Method: POST
 Request: Temperature Data as JSON  
 ```JSON
 {
-	"user_id": object (string),
-	"date_time": datetime,
-	"temperature": number,
-	"additional_info": string
+    "user_id": object (string),
+    "date_time": datetime,
+    "temperature": number,
+    "additional_info": string
 }
 
 ```
@@ -98,3 +98,61 @@ Return:
 ```
 success tells if the temperature data was added successfully   
 tempobjid gives the object ID (as string) of the record added  
+
+### /add_new_chc
+Method: POST  
+Request: CHC Data as JSON  
+```JSON
+{
+  	"name": string,
+  	"phone_number": number,
+  	"district": string,
+  	"state": string
+}
+
+```
+Return:
+```JSON
+{
+    "success": boolean,
+    "chcobjid": object (string)
+}
+```
+```JSON
+{
+    "success": false,
+    "error": string
+}
+```
+success tells if the CHC was added successfully   
+chcobjid gives the CHC ID (as string) if added  
+
+### /add_new_phc
+Method: POST  
+Request: PHC Data as JSON  
+```JSON
+{
+    "chc_id":string,
+    "chc_phone_number":number,
+  	"name": string,
+  	"phone_number": number,
+  	"district": string,
+  	"state": string
+}
+
+```
+Return:
+```JSON
+{
+    "success": true,
+    "phcobjid": object (string)
+}
+```
+```JSON
+{
+    "success": false,
+    "error": string
+}
+```
+success tells if the PHC was added successfully   
+phcobjid gives the PHC ID (as string) if added  
