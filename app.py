@@ -56,6 +56,18 @@ def add_new_temperature():
     return ({'success':True, 'tempobjid':str(objid)})
 
 
+#Add new CHC
+@app.route("/add_new_chc", methods=['POST'])
+def add_new_chc():
+    CHC_Data = pymongo.collection.Collection(db, 'CHC_Data')
+    inputData = request.json
+    for i in json.loads(dumps(CHC_Data.find())):
+        if i['phone_number'] == inputData['phone_number']:
+            return ({'success':False, 'userobjid':""})
+    objid = CHC_Data.insert_one(inputData).inserted_id
+    return ({'success':True, 'chcobjid':str(objid)})
+
+
 @app.route('/abc')
 def hello_world():
     col = pymongo.collection.Collection(db, 'User_Data')
