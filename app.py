@@ -70,7 +70,7 @@ def add_new_chc():
 
 #Add new PHC
 @app.route("/add_new_phc", methods=['POST'])
-def add_new_chc():
+def add_new_phc():
     PHC_Data = pymongo.collection.Collection(db, 'PHC_Data')
     CHC_Data = pymongo.collection.Collection(db, 'CHC_Data')
     inputData = request.json
