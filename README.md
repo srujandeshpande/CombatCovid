@@ -6,7 +6,7 @@ API Calls to the above website, POST Requests, JSON Objects
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/2ab0b8dff3424f432704)
 
 ### /hardcoded_data
-Method: GET/POST
+Method: GET/POST  
 Request: Empty  
 Return:
 ```JSON
