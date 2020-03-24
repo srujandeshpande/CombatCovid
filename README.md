@@ -104,10 +104,10 @@ Method: POST
 Request: CHC Data as JSON  
 ```JSON
 {
-  	"name": string,
-  	"phone_number": number,
-  	"district": string,
-  	"state": string
+    "name": string,
+    "phone_number": number,
+    "district": string,
+    "state": string
 }
 
 ```
@@ -134,10 +134,10 @@ Request: PHC Data as JSON
 {
     "chc_id":string,
     "chc_phone_number":number,
-  	"name": string,
-  	"phone_number": number,
-  	"district": string,
-  	"state": string
+    "name": string,
+    "phone_number": number,
+    "district": string,
+    "state": string
 }
 
 ```
