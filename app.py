@@ -17,6 +17,13 @@ def welcome():
     return "Welcome! Successfully loaded"
 
 
+#Get hardcoded values
+@app.route('/hardcoded_data')
+def hardcoded_data():
+    Hardcoded_Data = pymongo.collection.Collection(db, 'Hardcoded_Data')
+    hd = json.loads(dumps(Hardcoded_Data.find()))
+    return (hd[0])
+
 #Adds new user from given data
 @app.route("/add_new_user", methods=['POST'])
 def add_new_user():
