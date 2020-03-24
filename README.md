@@ -114,7 +114,7 @@ Request: CHC Data as JSON
 Return:
 ```JSON
 {
-    "success": boolean,
+    "success": true,
     "chcobjid": object (string)
 }
 ```
