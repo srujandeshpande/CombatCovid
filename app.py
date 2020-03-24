@@ -38,6 +38,15 @@ def add_new_test():
     return ({'success':True, 'testobjid':str(objid)})
 
 
+#Adds new close contact for user
+@app.route("/add_close_contact", methods=['POST'])
+def add_close_contact():
+    Close_Contact = pymongo.collection.Collection(db, 'Close_Contact')
+    inputData = request.json
+    objid = Close_Contact.insert_one(inputData).inserted_id
+    return ({'success':True, 'ccobjid':str(objid)})
+
+
 @app.route('/abc')
 def hello_world():
     col = pymongo.collection.Collection(db, 'User_Data')

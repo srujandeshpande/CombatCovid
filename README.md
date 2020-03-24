@@ -28,7 +28,7 @@ Return:
 ```JSON
 {
     "success": boolean,
-    "userobjid": object
+    "userobjid": object (string)
 }
 ```
 success tells if the user was successfully added or not  
@@ -39,18 +39,40 @@ Method: POST
 Request: Test Data as JSON  
 ```JSON
 {
-	"user_id": string (object),
-	"testing_date_time": datetime,
-	"test_result": boolean,
-	"other_data": string
+    "user_id": object (string),
+    "testing_date_time": datetime,
+    "test_result": boolean,
+    "other_data": string
 }
 ```
 Return:
 ```JSON
 {
     "success": boolean,
-    "testobjid": object
+    "testobjid": object (string)
 }
 ```
 success tells if the test data was added successfully   
-testobjid gives the object ID (as string) of the test if successfully added
+testobjid gives the object ID (as string) of the test if successfully added  
+
+### /add_close_contact
+Method: POST  
+Request: Contact Data as JSON  
+```JSON
+{
+    "user_id": object (string),
+    "contact_name": string,
+    "contact_phone": number,
+    "contact_user_id": string,
+    "contact_other_info": string
+}
+```
+Return:
+```JSON
+{
+    "success": boolean,
+    "ccobjid": object (string)
+}
+```
+success tells if the close contact data was added successfully   
+ccobjid gives the object ID (as string) of the record added  
