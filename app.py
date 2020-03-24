@@ -63,9 +63,26 @@ def add_new_chc():
     inputData = request.json
     for i in json.loads(dumps(CHC_Data.find())):
         if i['phone_number'] == inputData['phone_number']:
-            return ({'success':False, 'userobjid':""})
+            return ({'success':False, 'error':"Duplicate Phone Number"})
     objid = CHC_Data.insert_one(inputData).inserted_id
     return ({'success':True, 'chcobjid':str(objid)})
+
+
+#Add new PHC
+@app.route("/add_new_phc", methods=['POST'])
+def add_new_chc():
+    PHC_Data = pymongo.collection.Collection(db, 'PHC_Data')
+    CHC_Data = pymongo.collection.Collection(db, 'CHC_Data')
+    inputData = request.json
+    for i in json.loads(dumps(PHC_Data.find())):
+        if i['phone_number'] == inputData['phone_number']:
+            return ({'success':False, 'error':"Duplicate Phone Number"})
+    for j in json.loads(dumps(CHC_Data.find())):
+        if j['phone_number'] == inputData['chc_phone_number']:
+            inputData['chc_id'] = str(j['_id'])
+            objid = PHC_Data.insert_one(inputData).inserted_id
+            return ({'success':True, 'phcobjid':str(objid)})
+    return ({'success':False, 'error':"CHC Not Found"})
 
 
 @app.route('/abc')
