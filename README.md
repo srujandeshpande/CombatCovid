@@ -76,3 +76,25 @@ Return:
 ```
 success tells if the close contact data was added successfully   
 ccobjid gives the object ID (as string) of the record added  
+
+### /add_new_temperature
+Method: POST  
+Request: Temperature Data as JSON  
+```JSON
+{
+	"user_id": object (string),
+	"date_time": datetime,
+	"temperature": number,
+	"additional_info": string
+}
+
+```
+Return:
+```JSON
+{
+    "success": boolean,
+    "tempobjid": object (string)
+}
+```
+success tells if the temperature data was added successfully   
+tempobjid gives the object ID (as string) of the record added  

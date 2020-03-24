@@ -47,6 +47,15 @@ def add_close_contact():
     return ({'success':True, 'ccobjid':str(objid)})
 
 
+#Adds new temperature for user
+@app.route("/add_new_temperature", methods=['POST'])
+def add_new_temperature():
+    Temperature_Data = pymongo.collection.Collection(db, 'Temperature_Data')
+    inputData = request.json
+    objid = Temperature_Data.insert_one(inputData).inserted_id
+    return ({'success':True, 'tempobjid':str(objid)})
+
+
 @app.route('/abc')
 def hello_world():
     col = pymongo.collection.Collection(db, 'User_Data')
