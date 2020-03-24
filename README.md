@@ -4,6 +4,22 @@ Covid Application Backend. Runs using Python and MongoDB
 Head to https://combat-covid-v1.herokuapp.com/ (temporary) until Azure is set up.  
 API Calls to the above website, POST Requests, JSON Objects
 
+### /hardcoded_data
+Method: GET/POST
+Request: Empty  
+Return:
+```JSON
+{
+    "_id": {
+        "$oid": "5e79fe0d1c9d440000ab3594"
+    },
+    "gps_frequency": "30 Minutes",
+    "picture_frequency": "6 Hours",
+    "temperature_frequency": "2 Hours"
+}
+```
+returns all the required frequency data
+
 ### /add_new_user
 Method: POST  
 Request: All User Data as JSON  
