@@ -6,7 +6,7 @@ from flask_cors import CORS
 #from flask_pymongo import PyMongo
 app = Flask(__name__)
 CORS(app)
-app.secret_key = 'northsoutheastwest'
+app.secret_key = b'\xd2(*K\xa0\xa8\x13]g\x1e9\x88\x10\xb0\xe0\xcc'
 
 #Loads the Database and Collections
 mongo = pymongo.MongoClient('mongodb+srv://srujandeshpande:mongodb@cluster0-e0fen.azure.mongodb.net/test?retryWrites=true&w=majority', maxPoolSize=50, connect=True)
@@ -36,12 +36,12 @@ def ema_login():
         if i['phone_number'] == inputData['phone_number'] and i['password'] == inputData['password']:
             if(i['ema_role'] == ""):
                 flash("Invalid input")
-                return render_template("ema_login.html")
+                return redirect(url_for('ema_loginscreen'))
             else:
                 session['ema_role'] = i['ema_role']
                 return render_template(session['ema_role']+"_dashboard.html")
     flash("Invalid input")
-    return render_template("ema_login.html")
+    return redirect(url_for('ema_loginscreen'))
 
 #Get hardcoded values
 @app.route('/api/hardcoded_data')
