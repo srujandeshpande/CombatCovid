@@ -17,22 +17,47 @@ def welcome():
 
 
 #Get hardcoded values
-@app.route('/hardcoded_data')
+@app.route('/api/hardcoded_data')
 def hardcoded_data():
     Hardcoded_Data = pymongo.collection.Collection(db, 'Hardcoded_Data')
     hd = json.loads(dumps(Hardcoded_Data.find()))
     return (hd[0])
 
-#Adds new user from given data
-@app.route("/add_new_user", methods=['POST'])
-def add_new_user():
+
+#Checks login for QMA
+@app.route("/api/qma_login", methods=['POST'])
+def qma_login():
+    User_Data = pymongo.collection.Collection(db, 'User_Data')
+    inputData = request.json
+    for i in json.loads(dumps(User_Data.find())):
+        if i['phone_number'] == inputData['phone_number'] and i['password'] == inputData['password']:
+            return ({'success':True})
+    return ({'success':True})
+
+
+#MO adds new user for QMA
+@app.route("/api/add_new_user_qma", methods=['POST'])
+def add_new_user_qma():
     User_Data = pymongo.collection.Collection(db, 'User_Data')
     inputData = request.json
     for i in json.loads(dumps(User_Data.find())):
         if i['phone_number'] == inputData['phone_number']:
-            return ({'success':False, 'userobjid':""})
+            return ({'success':False, 'error':"Duplcicate Phone Number"})
+    pswd = "abcd1234" #temporary for now
+    inputData['password'] = pswd
     objid = User_Data.insert_one(inputData).inserted_id
-    return ({'success':True, 'userobjid':str(objid)})
+    return ({'success':True, 'userobjid':str(objid), 'password':pswd})
+
+
+#QMA user adds data
+@app.route("/api/add_new_user_data_qma", methods=['POST'])
+def add_new_user_data():
+    User_Data = pymongo.collection.Collection(db, 'User_Data')
+    inputData = request.json
+    myquery = { "phone_number": inputData['phone_number']}
+    User_Data.update_one(myquery,{"$set": inputData})
+    return ({'success':True})
+    #return ({'success':False, 'error':"No phone number found"})
 
 
 #Adds new testing data for user
