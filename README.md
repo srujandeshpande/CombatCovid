@@ -5,7 +5,7 @@ Head to https://combat-covid-v1.herokuapp.com/ (temporary) until Azure is set up
 API Calls to the above website, POST Requests, JSON Objects  
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/2ab0b8dff3424f432704)
 
-### /hardcoded_data
+### /api/hardcoded_data
 Method: GET/POST  
 Request: Empty  
 Return:
@@ -21,18 +21,57 @@ Return:
 ```
 returns all the required frequency data
 
-### /add_new_user
+
+### /api/qma_login
 Method: POST  
-Request: All User Data as JSON  
+Request: phone_number and password
+```JSON
+{
+    "phone_number": number,
+    "password": string
+}
+```
+Return:
+```JSON
+{
+    "success": boolean
+}
+```
+success tells if the user was successfully logged in or not
+
+
+### /api/add_new_user_qma
+Method: POST  
+Request: Takes name, phone number, date,
 ```JSON
 {
     "first_name": string,
     "last_name": string,
-    "dob": date,
     "currently_under_quarantine": boolean,
     "date_time_quarantined": datetime,
-    "date_time_unquarantined": datetime,
     "phone_number": number,
+}
+```
+Return:
+```JSON
+{
+    "success": boolean,
+    "userobjid": object (string),
+    "password": string
+}
+```
+success tells if the user was successfully added or not  
+userobjid return the object ID (as a string) if successfully added
+password is password for user
+
+
+### /api/add_new_user_data_qma
+Method: POST  
+Request: Rest of the User Data as JSON  
+```JSON
+{
+    "phone_number": number,
+    "dob": date,
     "email_address": string,
     "home_coordinates": string,
     "address": string,
@@ -44,8 +83,7 @@ Request: All User Data as JSON
 Return:
 ```JSON
 {
-    "success": boolean,
-    "userobjid": object (string)
+    "success": boolean
 }
 ```
 success tells if the user was successfully added or not  
