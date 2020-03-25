@@ -2,9 +2,10 @@ import pymongo
 from bson.json_util import dumps
 import json
 from flask import Flask, request, render_template
+from flask_cors import CORS
 #from flask_pymongo import PyMongo
 app = Flask(__name__)
-cors = CORS(app)
+CORS(app)
 
 #Loads the Database and Collections
 mongo = pymongo.MongoClient('mongodb+srv://srujandeshpande:mongodb@cluster0-e0fen.azure.mongodb.net/test?retryWrites=true&w=majority', maxPoolSize=50, connect=True)
