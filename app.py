@@ -1,8 +1,7 @@
 import pymongo
 from bson.json_util import dumps
 import json
-from flask import Flask
-from flask import request
+from flask import Flask, request, render_template
 #from flask_pymongo import PyMongo
 app = Flask(__name__)
 
@@ -14,7 +13,7 @@ db = pymongo.database.Database(mongo, 'covid_v1')
 #Purely to test connection
 @app.route('/')
 def welcome():
-    return "Welcome! Successfully loaded"
+    return render_template("test1.html")
 
 
 #Get hardcoded values
