@@ -1,10 +1,19 @@
 # combat_covid
-Covid Application Backend. Runs using Python and MongoDB. Might use Django
+The Combat Covid Application - https://combat-covid.azurewebsites.net/   
+Runs on Python, MongoDB, HTML, CSS, JavsScript and hard work!  
+## Meet the team:
+Avinash - https://github.com/avinash-vk  
+Sanskriti - https://github.com/sanskritip  
+Venkat R - https://github.com/Venkatavaradan-R  
+Srujan - https://github.com/srujandeshpande  
+  
+  
 ## How to talk to the backend:
-Head to https://combat-covid-v1.herokuapp.com/ (temporary) until Azure is set up.  
-API Calls to the above website, POST Requests, JSON Objects  
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/2ab0b8dff3424f432704)
+  
 
+  
+
+The API Calls are listed as follows  [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/2ab0b8dff3424f432704)
 ### /api/hardcoded_data
 Method: GET/POST  
 Request: Empty  
