@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Home extends StatelessWidget {
   //const Login({Key key}) : super(key: key);
@@ -43,6 +44,14 @@ class Home extends StatelessWidget {
                 title:Text('Notifications'),
                 onTap: () {
                       Navigator.pushNamed(context, '/notifications');
+                },
+            ), 
+            ListTile(leading: Icon(Icons.notifications),
+                title:Text('Log out'),
+                onTap: () async {
+                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                      prefs.remove('PhoneNumber');
+                      Navigator.pushNamedAndRemoveUntil(context, '/', (Route<dynamic> route)=> false);
                 },
             ),
           ]

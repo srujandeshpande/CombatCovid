@@ -14,7 +14,7 @@ class _LoginState extends State<Login> {
   String phoneNumber = "";
   String password = "";
   String text = "Logged out";
-  bool isLoading = false;
+  bool isLoading = true;
   final pnoController = TextEditingController();
   final passController = TextEditingController();
 
@@ -51,7 +51,7 @@ class _LoginState extends State<Login> {
                hintText: 'Password',
           ),
         ),
-       SizedBox(height:40),
+       
         RaisedButton(onPressed:()
         {
             setState(() {
@@ -66,11 +66,10 @@ class _LoginState extends State<Login> {
             'LOGIN',
             style: TextStyle(
               letterSpacing: 2.0,
-              color: Colors.grey[800],
+              color: Colors.grey,
             ),
           )
         ),
-        SizedBox(height:40),
         Container(
           child: isLoading == true ? Text('Loading..') : Text('Nope')
         ),
@@ -104,13 +103,9 @@ class _LoginState extends State<Login> {
         if (code <= 300)
         {
           _text = "SUCCESS, logged in";
-          setState(() {
-            isLoading = false;
-          });
           SharedPreferences prefs = await SharedPreferences.getInstance();
           prefs.setInt('PhoneNumber', pno);
-          sleep(Duration(seconds: 1));
-          Navigator.popAndPushNamed(context, '/home');
+          sleep(Duration(seconds: 2));
         }
         else if(code <=499)
           _text = "Authentication error, try again!";
