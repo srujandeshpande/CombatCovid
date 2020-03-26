@@ -157,6 +157,7 @@ def add_close_contact():
 def add_new_temperature():
     Temperature_Data = pymongo.collection.Collection(db, 'Temperature_Data')
     inputData = request.json
+    inputData['temperature'] = int(inputData['temperature'])
     objid = Temperature_Data.insert_one(inputData).inserted_id
     return ({'success':True, 'tempobjid':str(objid)})
 
