@@ -25,10 +25,17 @@
   </nav>
   {% with role = session['ema_role'] %}
    {% if (role == 'admin') %}
-    {{"Hello admin"}}<br>
-    {{"Hello chc"}}<br>
-    {{"Hello phc"}}<br>
-    {{"Hello mo"}}<br>
+    <button id="add_new_admin" onclick="new_admin()">Add Admin</button>
+    <button id="add_new_chc">Add CHC</button>
+    <button id="add_new_phc">Add PHC</button>
+    <button id="add_new_mo">Add MO</button>
+    <div id="form_add_ema_user" style="visibility:hidden">
+      <form action="/ema_new_user_data" method="POST">
+        <input type="text" name="ema_role" value="" readonly/>
+        <input type="text" name="first_name" value="" placeholder="First Name"/>
+        <input type="text" name="last_name" value="" placeholder="Last Name"/>
+      </form>
+    </div>
    {% endif %}
    {% if (role == 'chc') %}
     {{"Hello chc"}}<br>
@@ -43,6 +50,13 @@
     {{"Hello mo"}}<br>
    {% endif %}
   {% endwith %}
-  <div>
-    <h3> Add new
-    <form>
+
+<script>
+  function new_admin() {
+    console.log("hiiiii")
+    form_div = document.getElementById('form_add_ema_user')
+    form_div.style.visibility='visible'
+  }
+</script>
+</body>
+</html>
