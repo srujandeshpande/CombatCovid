@@ -152,6 +152,15 @@ def add_close_contact():
     return ({'success':True, 'ccobjid':str(objid)})
 
 
+#Adds new distress call for user
+@app.route("/api/add_new_distress_call", methods=['POST'])
+def add_new_distress_call():
+    Distress_Data = pymongo.collection.Collection(db, 'Distress_Data')
+    inputData = request.json
+    Distress_Data.insert_one(inputData).inserted_id
+    return ({'success':True})
+
+
 #Adds new temperature for user
 @app.route("/api/add_new_temperature", methods=['POST'])
 def add_new_temperature():
