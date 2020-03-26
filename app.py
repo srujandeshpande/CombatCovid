@@ -1,21 +1,93 @@
 import pymongo
 from bson.json_util import dumps
 import json
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, session, redirect, url_for, flash
 from flask_cors import CORS
 #from flask_pymongo import PyMongo
 app = Flask(__name__)
 CORS(app)
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
+app.secret_key = b'\xd2(*K\xa0\xa8\x13]g\x1e9\x88\x10\xb0\xe0\xcc'
 
 #Loads the Database and Collections
 mongo = pymongo.MongoClient('mongodb+srv://srujandeshpande:mongodb@cluster0-e0fen.azure.mongodb.net/test?retryWrites=true&w=majority', maxPoolSize=50, connect=True)
 db = pymongo.database.Database(mongo, 'covid_v1')
 
 
-#Purely to test connection
+#EMA login page
 @app.route('/')
-def welcome():
-    return render_template("test1.html")
+def ema_loginscreen():
+    return render_template("ema_login.html")
+
+
+#EMA logout
+@app.route('/ema_logout')
+def ema_logout():
+    session.pop('phone_number', None)
+    session.pop('ema_role', None)
+    flash("Successfully logged out")
+    return redirect(url_for('ema_loginscreen'))
+
+
+#EMA after clicking login
+@app.route('/ema_login', methods=['POST'])
+def ema_login():
+    inputData = request.form
+    Everyone_Data = pymongo.collection.Collection(db, 'Everyone_Data')
+    for i in json.loads(dumps(Everyone_Data.find())):
+        if i['phone_number'] == inputData['phone_number'] and i['password'] == inputData['password']:
+            if(i['ema_role'] == ""):
+                flash("Invalid input")
+                return redirect(url_for('ema_loginscreen'))
+            else:
+                session['phone_number'] = inputData['phone_number']
+                session['ema_role'] = i['ema_role']
+                return redirect(url_for('ema_dashboard'))
+    flash("Please enter valid credentials")
+    return redirect(url_for('ema_loginscreen'))
+
+
+#EMA show respective dashboard
+@app.route('/ema_dashboard')
+def ema_dashboard():
+    try:
+        if session['ema_role']:
+            return render_template(session['ema_role']+"_dashboard.html")
+        else:
+            flash("Please login")
+            return redirect(url_for('ema_loginscreen'))
+    except:
+        flash("Please login")
+        return redirect(url_for('ema_loginscreen'))
+
+
+#EMA add new user
+@app.route('/ema_add_new_user_page')
+def ema_add_new_user_page():
+    try:
+        if session['ema_role']:
+            return render_template('add_new_user.html')
+        else:
+            flash("Please login")
+            return redirect(url_for('ema_loginscreen'))
+    except:
+        flash("Please login")
+        return redirect(url_for('ema_loginscreen'))
+
+
+#EMA add new user data
+@app.route('/ema_new_user_data', methods=['POST'])
+def ema_new_user_data():
+    inputData = request.form.to_dict()
+    Everyone_Data = pymongo.collection.Collection(db, 'Everyone_Data')
+    for i in json.loads(dumps(Everyone_Data.find())):
+        if i['phone_number'] == inputData['phone_number']:
+            flash("EMA User already registered")
+            return redirect(url_for('ema_add_new_user_page'))
+    flash("Successfully Added")
+    Everyone_Data.insert_one(inputData)
+    return redirect(url_for('ema_add_new_user_page'))
+
 
 
 #Get hardcoded values

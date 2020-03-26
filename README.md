@@ -6,14 +6,52 @@ Avinash - https://github.com/avinash-vk
 Sanskriti - https://github.com/sanskritip  
 Venkat R - https://github.com/Venkatavaradan-R  
 Srujan - https://github.com/srujandeshpande  
-  
-  
-## How to talk to the backend:
-  
 
-  
+
+## How to talk to the backend:
+
+
+
 
 The API Calls are listed as follows  [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/2ab0b8dff3424f432704)
+
+### /
+Method: GET/POST  
+Request: Empty  
+Return: EMA Login Page  
+
+### /ema_logout  
+Method: GET/POST  
+Request: Empty  
+Return: EMA Login Page  
+Also removes the current user from Session  
+
+### /ema_login
+Method: POST  
+Request: Form data from EMA Login HTML Page  
+```
+{
+    "phone_number": number,
+    "password": password
+}
+```
+Return: Shows the corresponding dashboard according to user level  
+
+### /ema_dashboard
+Method: GET/POST  
+Request: Empty  
+Return: Dashboard if logged in, else login page  
+
+### /ema_add_new_user_page
+Method: GET/POST  
+Request: Empty  
+Return: Add new user page  
+
+### /ema_new_user_data
+Method: POST  
+Request: Message  
+Return: Add new user page  
+
 ### /api/hardcoded_data
 Method: GET/POST  
 Request: Empty  
