@@ -6,6 +6,7 @@ from flask_cors import CORS
 #from flask_pymongo import PyMongo
 app = Flask(__name__)
 CORS(app)
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 app.secret_key = b'\xd2(*K\xa0\xa8\x13]g\x1e9\x88\x10\xb0\xe0\xcc'
 
 #Loads the Database and Collections
