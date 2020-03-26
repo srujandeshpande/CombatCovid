@@ -51,12 +51,7 @@
    {% endif %}
   {% endwith %}
 
-<script>
-  function new_admin() {
-    console.log("hiiiii")
-    form_div = document.getElementById('form_add_ema_user')
-    form_div.style.visibility='visible'
-  }
-</script>
+
+<script src="{{url_for('static', filename='js/add_new_user1.js')}}"></script>
 </body>
 </html>
