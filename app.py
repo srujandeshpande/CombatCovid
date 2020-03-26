@@ -78,14 +78,14 @@ def ema_add_new_user_page():
 #EMA add new user data
 @app.route('/ema_new_user_data', methods=['POST'])
 def ema_new_user_data():
-    inputData = request.form
+    inputData = request.form.to_dict()
     Everyone_Data = pymongo.collection.Collection(db, 'Everyone_Data')
     for i in json.loads(dumps(Everyone_Data.find())):
         if i['phone_number'] == inputData['phone_number']:
             flash("EMA User already registered")
             return redirect(url_for('ema_add_new_user_page'))
     flash("Successfully Added")
-    objid = Everyone_Data.insert_one(inputData).inserted_id
+    Everyone_Data.insert_one(inputData)
     return redirect(url_for('ema_add_new_user_page'))
 
 
