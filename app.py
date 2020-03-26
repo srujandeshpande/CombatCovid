@@ -106,8 +106,8 @@ def qma_login():
     for i in json.loads(dumps(User_Data.find())):
         if i['phone_number'] == inputData['phone_number'] and i['password'] == inputData['password']:
             return ({'success':True})
-    return ({'success':True})
-
+    #return ({'success':False})
+    return flask.Response(status=300)
 
 #MO adds new user for QMA
 @app.route("/api/add_new_user_qma", methods=['POST'])
