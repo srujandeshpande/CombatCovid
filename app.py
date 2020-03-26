@@ -107,7 +107,7 @@ def qma_login():
         if i['phone_number'] == inputData['phone_number'] and i['password'] == inputData['password']:
             return ({'success':True})
     #return ({'success':False})
-    return Response(status=300)
+    return Response(status=401)
 
 #MO adds new user for QMA
 @app.route("/api/add_new_user_qma", methods=['POST'])
@@ -144,7 +144,7 @@ def add_new_test():
 
 
 #Adds new close contact for user
-@app.route("/add_close_contact", methods=['POST'])
+@app.route("/api/add_close_contact", methods=['POST'])
 def add_close_contact():
     Close_Contact = pymongo.collection.Collection(db, 'Close_Contact')
     inputData = request.json
@@ -153,7 +153,7 @@ def add_close_contact():
 
 
 #Adds new temperature for user
-@app.route("/add_new_temperature", methods=['POST'])
+@app.route("/api/add_new_temperature", methods=['POST'])
 def add_new_temperature():
     Temperature_Data = pymongo.collection.Collection(db, 'Temperature_Data')
     inputData = request.json

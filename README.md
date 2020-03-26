@@ -157,7 +157,7 @@ Return:
 success tells if the test data was added successfully   
 testobjid gives the object ID (as string) of the test if successfully added  
 
-### /add_close_contact
+### /api/add_close_contact
 Method: POST  
 Request: Contact Data as JSON  
 ```JSON
@@ -179,7 +179,7 @@ Return:
 success tells if the close contact data was added successfully   
 ccobjid gives the object ID (as string) of the record added  
 
-### /add_new_temperature
+### /api/add_new_temperature
 Method: POST  
 Request: Temperature Data as JSON  
 ```JSON
