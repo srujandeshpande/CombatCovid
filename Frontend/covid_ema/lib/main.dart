@@ -7,13 +7,20 @@ import 'package:covid_ema/ema/test_results.dart';
 import 'package:covid_ema/ema/create_qc.dart';
 import 'package:covid_ema/ema/distress_calls.dart';
 import 'package:covid_ema/ema/calender.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+Future<void> main() async{ 
 
-void main() => runApp(
+  WidgetsFlutterBinding.ensureInitialized();
+
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  var pno = prefs.getString('PhoneNumber');
+  print(pno);
+  runApp(
   MaterialApp(
-    initialRoute: '/',
+    initialRoute: pno == null ? '/' : '/mohome',
     routes : {
       '/': (context) => Login(),
-      '/home': (context) => Home(),
+      '/mohome': (context) => MOHome(),
       '/dashboard' : (context) => Dashboard(),
       '/distress_calls' : (context) => DistressCalls(),
       '/quarantine_checklist' : (context) => QuarantineChecklist(),
@@ -23,3 +30,4 @@ void main() => runApp(
     }
   )
 );
+}

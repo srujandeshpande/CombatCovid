@@ -69,6 +69,27 @@ class MyCustomForm extends StatefulWidget {
       // Create a global key that uniquely identifies the Form widget  
       // and allows validation of the form.  
       final _formKey = GlobalKey<FormState>();  
+      /*
+      int _selectedPHC = 0;
+  
+  List<DropdownMenuItem<int>> phcList = [];
+
+  void loadGenderList() {
+    phcList = [];
+    phcList.add(new DropdownMenuItem(
+      child: new Text('3434343434'),
+      value: 0,
+    ));
+    phcList.add(new DropdownMenuItem(
+      child: new Text('1212121212'),
+      value: 1,
+    ));
+    phcList.add(new DropdownMenuItem(
+      child: new Text('1234567890'),
+      value: 2,
+    ));
+  }
+  */
       @override  
       Widget build(BuildContext context) {  
         // Build a Form widget using the _formKey created above.  
@@ -169,14 +190,63 @@ class MyCustomForm extends StatefulWidget {
                   ) 
                 ),  
                ),  
+               TextFormField( 
+                decoration: const InputDecoration(  
+                icon: const Icon(Icons.calendar_today,color:Colors.blueAccent),  
+                focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.blueAccent)
+                  ),
+                hintText: 'Enter PHC PhoneNo',  
+                labelText: 'PHC PhNo', 
+                labelStyle: TextStyle(
+                    letterSpacing: 2.0,
+                    color:Colors.cyanAccent,
+                  ) 
+                ),  
+               ),  
+               TextFormField( 
+                decoration: const InputDecoration(  
+                icon: const Icon(Icons.calendar_today,color:Colors.blueAccent),  
+                focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.blueAccent)
+                  ),
+               hintText: 'Enter CHC PhoneNo',  
+                labelText: 'CHC PNo', 
+                labelStyle: TextStyle(
+                    letterSpacing: 2.0,
+                    color:Colors.cyanAccent,
+                  ) 
+                ),  
+               ),  
+               /*
+               new Row(
+                 children:<Widget>[
+                      ListView(
+                            children: getFormWidget())]), */
                SizedBox(height: 40,),
               
               ],
               )
               ) 
-            ],  
-          ),  
-        );  
+             ], ));  
       
       }  
-    }  
+      /*
+      List<Widget> getFormWidget() {
+    List<Widget> formWidget = new List();
+
+  formWidget.add(new DropdownButton(
+      hint: new Text('Select PHC PhoneNo'),
+      items: phcList,
+      value: _selectedPHC,
+      onChanged: (value) {
+        setState(() {
+          _selectedPHC = value;
+        });
+      },
+      isExpanded: true,
+    ));
+    
+    return formWidget;
+  } */
+}
