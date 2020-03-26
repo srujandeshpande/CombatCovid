@@ -1,7 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'dart:io';
 
-class TempLogin extends StatelessWidget {
+import 'package:shared_preferences/shared_preferences.dart';
+
+class TempLogin extends StatefulWidget {
   //const Login({Key key}) : super(key: key);
+  @override
+  _TempLoginState createState() => _TempLoginState();
+}
+
+class _TempLoginState extends State<TempLogin> {
+
+  String text = "NONE";
+  var _text = "NONE";
+  bool isLoading;
+  final temp = TextEditingController();
+  String url = "https://combat-covid-v1.herokuapp.com/api/add_new_temperature";
+  Map<String,String> headers = {"Content-type" : "application/json"};
+  DateTime date;
+  String _temp;
+  final tempController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +54,7 @@ class TempLogin extends StatelessWidget {
         Padding(
         padding: EdgeInsets.fromLTRB(30, 40, 30, 30),
         child:TextFormField(
-          
+          controller: tempController,
           enabled:true,
           keyboardType: TextInputType.numberWithOptions(),
           decoration: InputDecoration(
@@ -58,7 +78,12 @@ class TempLogin extends StatelessWidget {
            shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(40),
            side:BorderSide(color:Colors.amber)),
            color: Colors.amber,
-          onPressed: (){},
+          onPressed: (){
+            setState(() {
+              _temp = tempController.text;
+            });
+            logTemperature();
+          },
           child : Text(
             'SUBMIT',
             style: TextStyle(
@@ -66,9 +91,46 @@ class TempLogin extends StatelessWidget {
             ) 
         
           ),
+        ),
+        SizedBox(height: 40,),
+        Text(
+          text,
         )
         ],
       )
     );
+  }
+  logTemperature() async
+  {
+    try{
+      DateTime now = DateTime.now();
+      var n = now.toString();
+      String pno = (await SharedPreferences.getInstance()).getString('PhoneNumber');
+      Map js = {"phone_number":pno,"temperature":_temp,"Date-time": n};
+      var body = json.encode(js);
+        var response = await http.post(url,headers:headers,body: body);
+        int code = response.statusCode;
+        print(code);
+        print(response.body);
+        if (code < 300)
+        {
+          _text = "SUCCESS, logged in";
+          setState(() {
+            isLoading = false;
+          });
+          sleep(Duration(seconds: 1));
+        }
+        else if(code <=499)
+          _text = response.toString();
+      }
+      catch(Exception)
+      {
+          _text = Exception.toString();
+      }
+      setState(() 
+      {
+        isLoading = false;
+        text = _text;
+      });
   }
 }
