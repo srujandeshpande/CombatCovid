@@ -14,7 +14,7 @@ class _LoginState extends State<Login> {
   String phoneNumber = "";
   String password = "";
   String text = "Logged out";
-  bool isLoading = false;
+  bool isLoading = true;
   final pnoController = TextEditingController();
   final passController = TextEditingController();
 
@@ -51,7 +51,7 @@ class _LoginState extends State<Login> {
                hintText: 'Password',
           ),
         ),
-       SizedBox(height:40),
+       
         RaisedButton(onPressed:()
         {
             setState(() {
@@ -66,11 +66,10 @@ class _LoginState extends State<Login> {
             'LOGIN',
             style: TextStyle(
               letterSpacing: 2.0,
-              color: Colors.grey[800],
+              color: Colors.grey,
             ),
           )
         ),
-        SizedBox(height:40),
         Container(
           child: isLoading == true ? Text('Loading..') : Text('Nope')
         ),
@@ -94,31 +93,28 @@ class _LoginState extends State<Login> {
       assert(pno is int);
       String url = "https://combat-covid-v1.herokuapp.com/api/qma_login";
       Map<String,String> headers = {"Content-type" : "application/json"};
-      Map js = {"phone_number":phoneNumber,"password":password };
+      Map js = {"phone_number":pno,"password":password };
       var body = json.encode(js);
       try{
         var response = await http.post(url,headers:headers,body: body);
         int code = response.statusCode;
         print(code);
         print(response.body);
-        if (code < 300)
+        if (code <= 300)
         {
           _text = "SUCCESS, logged in";
-          setState(() {
-            isLoading = false;
-          });
           SharedPreferences prefs = await SharedPreferences.getInstance();
-          prefs.setString('PhoneNumber', phoneNumber);
-          sleep(Duration(seconds: 1));
-          var x = prefs.getString("USER_FACE");
-          Navigator.pushNamedAndRemoveUntil(context,x==null? '/register-face':'/home', (Route<dynamic> route)=> false);
+          prefs.setInt('PhoneNumber', pno);
+          sleep(Duration(seconds: 2));
         }
         else if(code <=499)
-          _text = response.toString();
+          _text = "Authentication error, try again!";
+        else
+          _text = "server error";
       }
       catch(Exception)
       {
-          _text = Exception.toString();
+          _text = "No internet";
       }
       setState(() {
         isLoading = false;
