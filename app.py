@@ -98,6 +98,18 @@ def hardcoded_data():
     return (hd[0])
 
 
+#Checks login for EMA
+@app.route("/api/ema_login", methods=['POST'])
+def ema_app_login():
+    Everyone_Data = pymongo.collection.Collection(db, 'Everyone_Data')
+    inputData = request.json
+    for i in json.loads(dumps(Everyone_Data.find())):
+        if i['phone_number'] == inputData['phone_number'] and i['password'] == inputData['password']:
+            return ({'success':True, 'ema_role':i['ema_role']})
+    #return ({'success':False})
+    return Response(status=401)
+
+
 #Checks login for QMA
 @app.route("/api/qma_login", methods=['POST'])
 def qma_login():

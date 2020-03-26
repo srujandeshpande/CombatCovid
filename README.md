@@ -69,6 +69,25 @@ Return:
 returns all the required frequency data
 
 
+### /api/ema_app_login
+Method: POST  
+Request: phone_number and password
+```JSON
+{
+    "phone_number": number,
+    "password": string
+}
+```
+Return:
+```JSON
+{
+    "success": boolean,
+    "ema_role": string
+}
+```
+success tells if the ema user logged in or not
+
+
 ### /api/qma_login
 Method: POST  
 Request: phone_number and password
