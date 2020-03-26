@@ -1,7 +1,7 @@
 import pymongo
 from bson.json_util import dumps
 import json
-from flask import Flask, request, render_template, session, redirect, url_for, flash
+from flask import Flask, request, render_template, session, redirect, url_for, flash, Response
 from flask_cors import CORS
 #from flask_pymongo import PyMongo
 app = Flask(__name__)
@@ -107,7 +107,7 @@ def qma_login():
         if i['phone_number'] == inputData['phone_number'] and i['password'] == inputData['password']:
             return ({'success':True})
     #return ({'success':False})
-    return flask.Response(status=300)
+    return Response(status=300)
 
 #MO adds new user for QMA
 @app.route("/api/add_new_user_qma", methods=['POST'])
