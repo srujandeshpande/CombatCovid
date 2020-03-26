@@ -54,15 +54,39 @@ def ema_dashboard():
         if session['ema_role']:
             return render_template(session['ema_role']+"_dashboard.html")
         else:
-            return redirect(url_for('ema_logout'))
+            flash("Please login")
+            return redirect(url_for('ema_loginscreen'))
     except:
-        return redirect(url_for('ema_logout'))
+        flash("Please login")
+        return redirect(url_for('ema_loginscreen'))
 
 
 #EMA add new user
 @app.route('/ema_add_new_user_page')
 def ema_add_new_user_page():
-    return render_template('add_new_user.html')
+    try:
+        if session['ema_role']:
+            return render_template('add_new_user.html')
+        else:
+            flash("Please login")
+            return redirect(url_for('ema_loginscreen'))
+    except:
+        flash("Please login")
+        return redirect(url_for('ema_loginscreen'))
+
+
+#EMA add new user data
+@app.route('/ema_new_user_data', methods=['POST'])
+def ema_new_user_data():
+    inputData = request.form.to_dict()
+    Everyone_Data = pymongo.collection.Collection(db, 'Everyone_Data')
+    for i in json.loads(dumps(Everyone_Data.find())):
+        if i['phone_number'] == inputData['phone_number']:
+            flash("EMA User already registered")
+            return redirect(url_for('ema_add_new_user_page'))
+    flash("Successfully Added")
+    Everyone_Data.insert_one(inputData)
+    return redirect(url_for('ema_add_new_user_page'))
 
 
 

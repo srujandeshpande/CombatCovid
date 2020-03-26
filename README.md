@@ -37,6 +37,21 @@ Request: Form data from EMA Login HTML Page
 ```
 Return: Shows the corresponding dashboard according to user level  
 
+### /ema_dashboard
+Method: GET/POST  
+Request: Empty  
+Return: Dashboard if logged in, else login page  
+
+### /ema_add_new_user_page
+Method: GET/POST  
+Request: Empty  
+Return: Add new user page  
+
+### /ema_new_user_data
+Method: POST  
+Request: Message  
+Return: Add new user page  
+
 ### /api/hardcoded_data
 Method: GET/POST  
 Request: Empty  
