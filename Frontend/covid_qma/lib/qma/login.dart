@@ -94,32 +94,31 @@ class _LoginState extends State<Login> {
       assert(pno is int);
       String url = "https://combat-covid-v1.herokuapp.com/api/qma_login";
       Map<String,String> headers = {"Content-type" : "application/json"};
-      Map js = {"phone_number":pno,"password":password };
+      Map js = {"phone_number":phoneNumber,"password":password };
       var body = json.encode(js);
       try{
         var response = await http.post(url,headers:headers,body: body);
         int code = response.statusCode;
         print(code);
         print(response.body);
-        if (code <= 300)
+        if (code < 300)
         {
           _text = "SUCCESS, logged in";
           setState(() {
             isLoading = false;
           });
           SharedPreferences prefs = await SharedPreferences.getInstance();
-          prefs.setInt('PhoneNumber', pno);
+          prefs.setString('PhoneNumber', phoneNumber);
           sleep(Duration(seconds: 1));
-          Navigator.popAndPushNamed(context, '/home');
+          var x = prefs.getString("USER_FACE");
+          Navigator.pushNamedAndRemoveUntil(context,x==null? '/register-face':'/home', (Route<dynamic> route)=> false);
         }
         else if(code <=499)
-          _text = "Authentication error, try again!";
-        else
-          _text = "server error";
+          _text = response.toString();
       }
       catch(Exception)
       {
-          _text = "No internet";
+          _text = Exception.toString();
       }
       setState(() {
         isLoading = false;
