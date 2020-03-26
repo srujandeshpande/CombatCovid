@@ -31,9 +31,14 @@
     <button id="add_new_mo">Add MO</button>
     <div id="form_add_ema_user" style="visibility:hidden">
       <form action="/ema_new_user_data" method="POST">
-        <input type="text" name="ema_role" value="" readonly/>
+        <input id="new_ema_role" type="text" name="ema_role" value=""/>
         <input type="text" name="first_name" value="" placeholder="First Name"/>
         <input type="text" name="last_name" value="" placeholder="Last Name"/>
+        <input id="new_ema_chc" type="text" name="chc_phone_number" value="" placeholder="CHC Phone Number"/>
+        <input id="new_ema_phc" type="text" name="phc_phone_number" value="" placeholder="PHC Phone Number"/>
+        <input type="text" name="district" value="" placeholder="District"/>
+        <input type="text" name="state" value="" placeholder="State"/>
+        <input type="submit"/>
       </form>
     </div>
    {% endif %}
@@ -52,6 +57,6 @@
   {% endwith %}
 
 
-<script src="{{url_for('static', filename='js/add_new_user1.js')}}"></script>
+  <script src="{{url_for('static', filename='js/add_new_user1.js')}}"></script>
 </body>
 </html>
