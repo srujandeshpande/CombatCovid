@@ -23,6 +23,14 @@
       </div>
     </div>
   </nav>
+  {% with messages = get_flashed_messages() %}
+   {% if messages %}
+      {% for message in messages %}
+         {{ message }}
+      {% endfor %}
+   {% endif %}
+  {% endwith %}
+
   {% with role = session['ema_role'] %}
    {% if (role == 'admin') %}
     <button id="add_new_admin" onclick="new_admin()">Add Admin</button>
@@ -56,6 +64,8 @@
       <input id="new_ema_phc" type="text" name="phc_phone_number" value="" placeholder="PHC Phone Number" display="inline"/>
       <input type="text" name="district" value="" placeholder="District"/>
       <input type="text" name="state" value="" placeholder="State"/>
+      <input type="password" name="password" value="" placeholder="Password"/>
+      <input type="password" name="confirm_password" value="" placeholder="Confirm Password"/>
       <input type="submit"/>
       <input type="reset"/>
     </form>
