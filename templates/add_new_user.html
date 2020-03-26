@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>EMA</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand font-weight-bold" href="#" id="dashboard_header">EMA {{session['ema_role']}} Dashboard </a>
+      </div>
+      <div class="collapse navbar-collapse " id="myNavbar">
+        <ul class="nav navbar-nav navbar-right">
+          <li class=""><a href="/ema_dashboard">Dashboard</a></li>
+          <li class="active"><a href="/ema_add_new_user_page">Add New User</a></li>
+          <li><a href="/ema_logout">Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  {% with messages = get_flashed_messages() %}
+   {% if messages %}
+      {% for message in messages %}
+         {{ message }}
+      {% endfor %}
+   {% endif %}
+  {% endwith %}
+
+  {% with role = session['ema_role'] %}
+   {% if (role == 'admin') %}
+    <button id="add_new_admin" onclick="new_admin()">Add Admin</button>
+    <button id="add_new_chc" onclick="new_chc()">Add CHC</button>
+    <button id="add_new_phc" onclick="new_phc()">Add PHC</button>
+    <button id="add_new_mo" onclick="new_mo()">Add MO</button>
+   {% endif %}
+   {% if (role == 'chc') %}
+    <button id="add_new_chc" onclick="new_chc()">Add CHC</button>
+    <button id="add_new_phc" onclick="new_phc()">Add PHC</button>
+    <button id="add_new_mo" onclick="new_mo()">Add MO</button>
+    {% endif %}
+   {% if (role == 'phc') %}
+   <button id="add_new_phc" onclick="new_phc()">Add PHC</button>
+   <button id="add_new_mo" onclick="new_mo()">Add MO</button>
+   {% endif %}
+   {% if (role == 'mo') %}
+   <button id="add_new_mo" onclick="new_mo()">Add MO</button>
+  {% endif %}
+  {% if (role == '') %}
+   <h3>Please Login</h3>
+  {% endif %}
+  {% endwith %}
+  <div id="form_add_ema_user" style="visibility:hidden">
+    <form action="/ema_new_user_data" method="POST">
+      <input id="new_ema_role" type="text" name="ema_role" value="" readonly/>
+      <input type="text" name="first_name" value="" placeholder="First Name"/>
+      <input type="text" name="last_name" value="" placeholder="Last Name"/>
+      <input type="text" name="phone_number" value="" placeholder="Phone Number"/>
+      <input id="new_ema_chc" type="text" name="chc_phone_number" value="" placeholder="CHC Phone Number" display="inline"/>
+      <input id="new_ema_phc" type="text" name="phc_phone_number" value="" placeholder="PHC Phone Number" display="inline"/>
+      <input type="text" name="district" value="" placeholder="District"/>
+      <input type="text" name="state" value="" placeholder="State"/>
+      <input type="password" name="password" value="" placeholder="Password"/>
+      <input type="password" name="confirm_password" value="" placeholder="Confirm Password"/>
+      <input type="submit"/>
+      <input type="reset"/>
+    </form>
+  </div>
+
+  <script src="{{url_for('static', filename='js/add_new_user1.js')}}"></script>
+</body>
+</html>

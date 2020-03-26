@@ -1,11 +1,58 @@
 # combat_covid
-Covid Application Backend. Runs using Python and MongoDB. Might use Django
-## How to talk to the backend:
-Head to https://combat-covid-v1.herokuapp.com/ (temporary) until Azure is set up.  
-API Calls to the above website, POST Requests, JSON Objects  
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/2ab0b8dff3424f432704)
+The Combat Covid Application - https://combat-covid.azurewebsites.net/   
+Runs on Python, MongoDB, HTML, CSS, JavsScript and hard work!  
+## Meet the team:
+Avinash - https://github.com/avinash-vk  
+Sanskriti - https://github.com/sanskritip  
+Venkat R - https://github.com/Venkatavaradan-R  
+Srujan - https://github.com/srujandeshpande  
 
-### /hardcoded_data
+
+## How to talk to the backend:
+
+
+
+
+The API Calls are listed as follows  [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/2ab0b8dff3424f432704)
+
+### /
+Method: GET/POST  
+Request: Empty  
+Return: EMA Login Page  
+
+### /ema_logout  
+Method: GET/POST  
+Request: Empty  
+Return: EMA Login Page  
+Also removes the current user from Session  
+
+### /ema_login
+Method: POST  
+Request: Form data from EMA Login HTML Page  
+```
+{
+    "phone_number": number,
+    "password": password
+}
+```
+Return: Shows the corresponding dashboard according to user level  
+
+### /ema_dashboard
+Method: GET/POST  
+Request: Empty  
+Return: Dashboard if logged in, else login page  
+
+### /ema_add_new_user_page
+Method: GET/POST  
+Request: Empty  
+Return: Add new user page  
+
+### /ema_new_user_data
+Method: POST  
+Request: Message  
+Return: Add new user page  
+
+### /api/hardcoded_data
 Method: GET/POST  
 Request: Empty  
 Return:
@@ -21,18 +68,57 @@ Return:
 ```
 returns all the required frequency data
 
-### /add_new_user
+
+### /api/qma_login
 Method: POST  
-Request: All User Data as JSON  
+Request: phone_number and password
+```JSON
+{
+    "phone_number": number,
+    "password": string
+}
+```
+Return:
+```JSON
+{
+    "success": boolean
+}
+```
+success tells if the user was successfully logged in or not
+
+
+### /api/add_new_user_qma
+Method: POST  
+Request: Takes name, phone number, date,
 ```JSON
 {
     "first_name": string,
     "last_name": string,
-    "dob": date,
     "currently_under_quarantine": boolean,
     "date_time_quarantined": datetime,
-    "date_time_unquarantined": datetime,
     "phone_number": number,
+}
+```
+Return:
+```JSON
+{
+    "success": boolean,
+    "userobjid": object (string),
+    "password": string
+}
+```
+success tells if the user was successfully added or not  
+userobjid return the object ID (as a string) if successfully added
+password is password for user
+
+
+### /api/add_new_user_data_qma
+Method: POST  
+Request: Rest of the User Data as JSON  
+```JSON
+{
+    "phone_number": number,
+    "dob": date,
     "email_address": string,
     "home_coordinates": string,
     "address": string,
@@ -44,8 +130,7 @@ Request: All User Data as JSON
 Return:
 ```JSON
 {
-    "success": boolean,
-    "userobjid": object (string)
+    "success": boolean
 }
 ```
 success tells if the user was successfully added or not  
@@ -72,7 +157,7 @@ Return:
 success tells if the test data was added successfully   
 testobjid gives the object ID (as string) of the test if successfully added  
 
-### /add_close_contact
+### /api/add_close_contact
 Method: POST  
 Request: Contact Data as JSON  
 ```JSON
@@ -94,7 +179,7 @@ Return:
 success tells if the close contact data was added successfully   
 ccobjid gives the object ID (as string) of the record added  
 
-### /add_new_temperature
+### /api/add_new_temperature
 Method: POST  
 Request: Temperature Data as JSON  
 ```JSON
