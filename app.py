@@ -43,9 +43,9 @@ def image(filename):
 #EMA after clicking login
 @app.route('/api/qma_face', methods=['POST'])
 def qma_face():
-    inputData = request.json
-    Face_Data = pymongo.collection.Collection(db, 'Face_Data')
-    User_Data = pymongo.collection.Collection(db, 'User_Data')
+	inputData = request.json
+	Face_Data = pymongo.collection.Collection(db, 'Face_Data')
+	User_Data = pymongo.collection.Collection(db, 'User_Data')
 	flag = 0
 	for i in json.loads(dumps(User_Data.find())):
 		if i['phone_number'] == inputData['phone_number']:
@@ -57,11 +57,11 @@ def qma_face():
 				return ({'success':False,'error':'Base face not set'})
 	if !flag:
 		return ({'success':False,'error':'Phone number not found'})
-    #with open('IMG_3724.JPG','rb') as r:
+	#with open('IMG_3724.JPG','rb') as r:
 	#inputdata = r.read()
 	try:
-	    headers = {'Content-Type': 'application/octet-stream', 'Ocp-Apim-Subscription-Key': '4b823f3294a047fbac047b2dd7ed445e'}
-	    face_api_url = 'https://combat-covid-face.cognitiveservices.azure.com/face/v1.0/detect'
+		headers = {'Content-Type': 'application/octet-stream', 'Ocp-Apim-Subscription-Key': '4b823f3294a047fbac047b2dd7ed445e'}
+		face_api_url = 'https://combat-covid-face.cognitiveservices.azure.com/face/v1.0/detect'
 		data1 = inputData['upload_face']
 		face_response = requests.post(face_api_url , headers=headers, data=data1)
 		compare_face = face_response.json()['faceId']
@@ -69,8 +69,8 @@ def qma_face():
 	except:
 		return ({'success':False,'error':'Upload face error or not found'})
 	try:
-	    headers = {'Content-Type': 'application/json', 'Ocp-Apim-Subscription-Key': '4b823f3294a047fbac047b2dd7ed445e'}
-	    face_api_url = 'https://combat-covid-face.cognitiveservices.azure.com/face/v1.0/verify'
+		headers = {'Content-Type': 'application/json', 'Ocp-Apim-Subscription-Key': '4b823f3294a047fbac047b2dd7ed445e'}
+		face_api_url = 'https://combat-covid-face.cognitiveservices.azure.com/face/v1.0/verify'
 		data2 = {'faceId1':base_face,'faceId2':compare_face}
 		face_response = requests.post(face_api_url , headers=headers, data=data2)
 		comparision = face_response.json()
