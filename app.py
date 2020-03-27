@@ -155,7 +155,7 @@ def add_new_user_data():
 
 
 #Adds new checklist for user
-@app.route("/api/add_new_test", methods=['POST'])
+@app.route("/api/add_new_checklist", methods=['POST'])
 def add_new_test():
     Checklist_Data = pymongo.collection.Collection(db, 'Checklist_Data')
     inputData = request.json
