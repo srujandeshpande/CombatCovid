@@ -57,30 +57,49 @@ def qma_face():
 				return ({'success':False,'error':'Base face not set'})
 	if not flag:
 		return ({'success':False,'error':'Phone number not found'})
-	tempfile = open("testing_api/tempfile_"+inputData['phone_number']+".jpg", 'wb')
+	date = inputData['Date-time']
+	fdate = date[:10]+'-'+date[11:13]+'-'+date[14:16]+'-'+date[17:19]
+	tempfile = open("testing_api/tempfile_"+inputData['phone_number']+"_"+fdate+".jpg", 'wb')
 	tempfile.write(base_face)
 	tempfile.close()
 	try:
 		headers = {'Content-Type': 'application/json', 'Ocp-Apim-Subscription-Key': '4b823f3294a047fbac047b2dd7ed445e'}
 		face_api_url = 'https://combat-covid-face.cognitiveservices.azure.com/face/v1.0/detect'
-		data1 = {'url':"http://combat-covid.azurewebsites.net/cognitive_face/testing_api/tempfile_"+inputData['phone_number']+".jpg"}
-		face_response = requests.post(face_api_url , headers=headers, data=data1)
-		compare_face = face_response.json()['faceId']
-		inputData['upload_face'] = compare_face
+		data1 = {'url':"http://combat-covid.azurewebsites.net/cognitive_face/testing_api/tempfile_"+inputData['phone_number']++"_"+fdate+".jpg"}
+		data2 = json.dumps(data1)
+		face_response = requests.post(face_api_url , headers=headers, data=data2)
 	except:
 		return ({'success':False,'error':'Upload face error or not found'})
 	try:
+		r = face_response.json()
+		inputData['upload_face_response'] = r2
+	except:
+		pass
+	try:
+		compare_face = r[0]['faceId']
+		inputData['upload_face'] = compare_face
+	except:
+		pass
+	try:
 		headers = {'Content-Type': 'application/json', 'Ocp-Apim-Subscription-Key': '4b823f3294a047fbac047b2dd7ed445e'}
 		face_api_url = 'https://combat-covid-face.cognitiveservices.azure.com/face/v1.0/verify'
-		data2 = {'faceId1':base_face,'faceId2':compare_face}
-		face_response = requests.post(face_api_url , headers=headers, data=data2)
-		comparision = face_response.json()
-		inputData['isIdentical'] = comparision['isIdentical']
-		inputData['confidence'] = comparision['confidence']
+		data3 = {'faceId1':base_face,'faceId2':compare_face}
+		data4 = json.dumps(data3)
+		face_response = requests.post(face_api_url , headers=headers, data=data4)
+		r2 = face_response.json()
+	except:
+		return ({'success':False,'error':'Azure failure'})
+	try:
+		inputData['compareing_face_response'] = r2
+	except:
+		pass
+	try:
+		inputData['isIdentical'] = r2['isIdentical']
+		inputData['confidence'] = r2['confidence']
 		Face_Data.insert_one(inputData)
-		return comparision
 	except:
 		return ({'success':False,'error':'Comparision error'})
+	return r2
 
 
 """
@@ -294,7 +313,9 @@ def add_new_user_data():
 	try:
 		pic = inputData['base_face']
 		picdata = base64.b64decode(pic)
-		tempfile = open("testing_api/tempfile_"+inputData['phone_number']+".jpg", 'wb')
+		date = inputData['Date-time']
+		fdate = date[:10]+'-'+date[11:13]+'-'+date[14:16]+'-'+date[17:19]
+		tempfile = open("testing_api/tempfile_"+inputData['phone_number']+"_"+fdate+".jpg", 'wb')
 		tempfile.write(picdata)
 		tempfile.close()
 	except:
@@ -302,7 +323,7 @@ def add_new_user_data():
 	try:
 		headers = {'Content-Type': 'application/json', 'Ocp-Apim-Subscription-Key': '4b823f3294a047fbac047b2dd7ed445e'}
 		face_api_url = 'https://combat-covid-face.cognitiveservices.azure.com/face/v1.0/detect'
-		data1 = {'url':"http://combat-covid.azurewebsites.net/cognitive_face/testing_api/tempfile_"+inputData['phone_number']+".jpg"}
+		data1 = {"url":"http://combat-covid.azurewebsites.net/cognitive_face/testing_api/tempfile_"+inputData['phone_number']+"_"+fdate+".jpg"}
 		data2 = json.dumps(data1)
 		"""
 		headers = {'Content-Type': 'application/octet-stream', 'Ocp-Apim-Subscription-Key': '4b823f3294a047fbac047b2dd7ed445e'}
@@ -313,15 +334,22 @@ def add_new_user_data():
 	except:
 		return ({'success':False,'error':'Azure failed'})
 	try:
-		return (str(face_response.json()))
-		#face_id = (face_response.json())[0]['faceId']
-		#inputData['base_face'] = face_id
+		#return (str(face_response.json()))
+		r = face_response.json()
+		inputData['full_response'] = r
 	except:
 		return ({'success':False,'error':'Parsing error failed'})
-	#myquery = { "phone_number": inputData['phone_number']}
-	#User_Data.update_one(myquery,{"$set": inputData})
-	return ({'success':True})
-	#return ({'success':False, 'error':"No phone number found"})
+	try:
+		face_id = r[0]['faceId']
+		inputData['base_face'] = face_id
+	except:
+		pass
+	try:
+		myquery = { "phone_number": inputData['phone_number']}
+		User_Data.update_one(myquery,{"$set": inputData})
+		return ({'success':True})
+	except:
+		return ({'success':False, 'error':"error again in last step"})
 
 
 #Adds new checklist for user
