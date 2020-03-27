@@ -234,12 +234,13 @@ def add_new_user_data():
 	except:
 		return ({'success':False,'error':'Azure failed'})
 	try:
-		face_id = face_response.json()[0]['faceId']
-		inputData['base_face'] = face_id
+		return (str(face_response))
+		#face_id = (face_response.json())[0]['faceId']
+		#inputData['base_face'] = face_id
 	except:
 		return ({'success':False,'error':'Parsing error failed'})
-	myquery = { "phone_number": inputData['phone_number']}
-	User_Data.update_one(myquery,{"$set": inputData})
+	#myquery = { "phone_number": inputData['phone_number']}
+	#User_Data.update_one(myquery,{"$set": inputData})
 	return ({'success':True})
 	#return ({'success':False, 'error':"No phone number found"})
 
