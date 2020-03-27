@@ -106,6 +106,25 @@ Return:
 success tells if the user was successfully logged in or not
 
 
+### /api/cma_add_new_user
+Method: POST  
+Request: Takes name, phone number, date,
+```JSON
+{
+    data
+}
+```
+Return:
+```JSON
+{
+    "success": boolean,
+    "userobjid": object (string)
+}
+```
+success tells if the user was successfully added or not  
+userobjid return the object ID (as a string) if successfully added
+
+
 ### /api/add_new_user_qma
 Method: POST  
 Request: Takes name, phone number, date,
