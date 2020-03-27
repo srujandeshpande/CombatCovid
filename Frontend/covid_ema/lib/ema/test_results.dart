@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import "package:http/http.dart" as http;
+import "dart:convert";
 class TestResults extends StatelessWidget {
   //const Login({Key key}) : super(key: key);
   @override
@@ -36,21 +38,7 @@ class TestResults extends StatelessWidget {
       SizedBox(height: 20,),
       MyCustomForm(),
       SizedBox(height: 40,),
-      RaisedButton(
-           shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(40),
-           side:BorderSide(color:Colors.indigoAccent)),
-           color: Colors.indigo,
-          onPressed: (){},
-          child : Text(
-            'CONFIRM',
-            style: TextStyle(
-              fontSize: 18,
-              letterSpacing: 2.0,
-            ) 
-        
-          ),
-        ),
-        SizedBox(height: 200,),
+     
         ],)
       ),
         )
@@ -68,7 +56,11 @@ class MyCustomForm extends StatefulWidget {
     class MyCustomFormState extends State<MyCustomForm> {  
       // Create a global key that uniquely identifies the Form widget  
       // and allows validation of the form.  
-      final _formKey = GlobalKey<FormState>();  
+       String output = "Waiting for submission";
+      final _formKey = GlobalKey<FormState>(); 
+      bool testresult; 
+      final pnoController = TextEditingController();
+      final detailController = TextEditingController();
       @override  
       Widget build(BuildContext context) {  
         // Build a Form widget using the _formKey created above.  
@@ -94,6 +86,8 @@ class MyCustomForm extends StatefulWidget {
               child:Column( 
               children: <Widget>[
               TextFormField(   
+                style :TextStyle(color:Colors.white),
+                controller: pnoController,
                 decoration:InputDecoration( 
                   focusColor: Colors.blueAccent,
                   focusedBorder: UnderlineInputBorder(
@@ -108,28 +102,98 @@ class MyCustomForm extends StatefulWidget {
                   )
                 ),  
               ),  
-              TextFormField( 
-                decoration: const InputDecoration(  
-                icon: const Icon(Icons.calendar_today,color:Colors.blueAccent),  
-                focusedBorder: UnderlineInputBorder(
+              TextFormField(   
+                style :TextStyle(color:Colors.white),
+                controller: detailController,
+                decoration:InputDecoration( 
+                  focusColor: Colors.blueAccent,
+                  focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: Colors.blueAccent)
                   ),
-                hintText: 'Enter citizens\'s test result as POSITIVE or NEGATIVE',  
-                labelText: 'Test Result', 
-                labelStyle: TextStyle(
+                  icon: const Icon(Icons.phone,color:Colors.blueAccent),  
+                  hintText: 'Enter other details about conducted test',  
+                  labelText: 'Other Test Details',  
+                  labelStyle: TextStyle(
                     letterSpacing: 2.0,
                     color:Colors.cyanAccent,
-                  ) 
+                  )
                 ),  
-               ),  
+              ),  
+              SwitchListTile(
+              title: const Text('Mark switch if tested positive',
+              style: TextStyle(
+                 color: Colors.white,
+               )
+              ),
+              value: false,
+              onChanged: (bool val) =>
+                  setState(() => testresult = val)
+                ),
                SizedBox(height: 40,),
-              
+             Container( 
+                  child:RaisedButton(
+                  shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(40),
+                  side:BorderSide(color:Colors.cyanAccent)),
+                  color: Colors.indigo,
+                  onPressed: (){
+
+                      setState(() {
+                        output = "Loading";
+                      });
+                      logForm();
+                  },
+                  child : Text(
+                    'SUBMIT',
+                    style: TextStyle(
+                      color: Colors.white,
+                      letterSpacing: 2.0,
+                    ) 
+                
+                  ),
+                ),
+                
+        ), 
+            Text(
+                  output,
+                  style:TextStyle(color:Colors.white,)
+                ),
               ],
               )
               ) 
-            ],  
-          ),  
-        );  
+             ], ));  
       
       }  
-    }  
+       logForm() async
+  {
+    
+  String qcPno = pnoController.text;
+  String qtestdetail = detailController.text;
+  String now = DateTime.now().toString();
+  bool testQC = testresult;
+  String url = "https://combat-covid.azurewebsites.net/api/add_new_test";
+  Map<String,String> headers = {"Content-type" : "application/json"};
+  Map js = {"phone_number":qcPno,"date_time":now,"test_result":testQC,"other_data":qtestdetail,}; //ADD OTHER INFO
+  var body = json.encode(js);
+
+  try{
+        var response = await http.post(url,headers:headers,body: body);
+        setState(() {
+          output = "loaded";
+        });
+        int code = response.statusCode;
+        print(code);
+        print(response.body);
+        if (code<300)
+          setState(() {
+            output = "SUCCESS";
+          });
+        else
+          setState(() {
+            output = "FAILED";
+          });
+  }
+  catch(Exception){
+      output  = "NO INTERNET";
+  }
+  }
+}

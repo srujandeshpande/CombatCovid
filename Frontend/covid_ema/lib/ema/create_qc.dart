@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import "package:http/http.dart" as http;
+import "dart:convert";
 
 class QuarantineCitizen extends StatelessWidget {
   //const Login({Key key}) : super(key: key);
+      
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.black12,
       appBar: AppBar(
         backgroundColor: Colors.blueAccent,
         title: Text(
@@ -36,21 +39,6 @@ class QuarantineCitizen extends StatelessWidget {
       SizedBox(height: 20,),
       MyCustomForm(),
       SizedBox(height: 40,),
-      RaisedButton(
-           shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(40),
-           side:BorderSide(color:Colors.indigoAccent)),
-           color: Colors.indigo,
-          onPressed: (){},
-          child : Text(
-            'CONFIRM',
-            style: TextStyle(
-              fontSize: 18,
-              letterSpacing: 2.0,
-            ) 
-        
-          ),
-        ),
-        SizedBox(height: 200,),
         ],)
       ),
         )
@@ -68,28 +56,15 @@ class MyCustomForm extends StatefulWidget {
     class MyCustomFormState extends State<MyCustomForm> {  
       // Create a global key that uniquely identifies the Form widget  
       // and allows validation of the form.  
-      final _formKey = GlobalKey<FormState>();  
-      /*
-      int _selectedPHC = 0;
-  
-  List<DropdownMenuItem<int>> phcList = [];
-
-  void loadGenderList() {
-    phcList = [];
-    phcList.add(new DropdownMenuItem(
-      child: new Text('3434343434'),
-      value: 0,
-    ));
-    phcList.add(new DropdownMenuItem(
-      child: new Text('1212121212'),
-      value: 1,
-    ));
-    phcList.add(new DropdownMenuItem(
-      child: new Text('1234567890'),
-      value: 2,
-    ));
-  }
-  */
+      String output = "Waiting for submission";
+      final _formKey = GlobalKey<FormState>(); 
+      final pnoController = TextEditingController();
+      final fnameController = TextEditingController();
+      final lnameController = TextEditingController();
+      final dobController = TextEditingController();
+      final emailController = TextEditingController();
+      final phcController = TextEditingController();
+      final chcController = TextEditingController(); 
       @override  
       Widget build(BuildContext context) {  
         // Build a Form widget using the _formKey created above.  
@@ -115,8 +90,11 @@ class MyCustomForm extends StatefulWidget {
               child:Column( 
               children: <Widget>[
               TextFormField(
+                style :TextStyle(color:Colors.white),
+                controller: fnameController,
                 decoration:  InputDecoration(  
                   fillColor: Colors.blueAccent,
+                  focusColor : Colors.white,
                   icon:  Icon(Icons.person,color:Colors.blueAccent), 
                   focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: Colors.blueAccent)
@@ -131,11 +109,14 @@ class MyCustomForm extends StatefulWidget {
                 ),  
               ),  
               TextFormField(
+                style :TextStyle(color:Colors.white),
+                controller: lnameController,
                 decoration:  InputDecoration(  
                   fillColor: Colors.blueAccent,
                   icon:  Icon(Icons.person,color:Colors.blueAccent), 
                   focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.blueAccent)
+                  borderSide: BorderSide(color: Colors.blueAccent),
+                  
                   ), 
                   hintText: 'Enter citizen\'s last name',  
                   labelText: 'Last Name', 
@@ -147,7 +128,8 @@ class MyCustomForm extends StatefulWidget {
                 ),  
               ),  
               TextFormField(  
-                
+                style :TextStyle(color:Colors.white),
+                controller: pnoController,
                 decoration:InputDecoration( 
                   focusColor: Colors.blueAccent,
                   focusedBorder: UnderlineInputBorder(
@@ -163,6 +145,8 @@ class MyCustomForm extends StatefulWidget {
                 ),  
               ),  
               TextFormField( 
+                style :TextStyle(color:Colors.white),
+                controller: dobController,
                 decoration: const InputDecoration(  
                 icon: const Icon(Icons.calendar_today,color:Colors.blueAccent),  
                 focusedBorder: UnderlineInputBorder(
@@ -177,6 +161,8 @@ class MyCustomForm extends StatefulWidget {
                 ),  
                ),  
                TextFormField( 
+                 style :TextStyle(color:Colors.white),
+                 controller: emailController,
                 decoration: const InputDecoration(  
                 icon: const Icon(Icons.calendar_today,color:Colors.blueAccent),  
                 focusedBorder: UnderlineInputBorder(
@@ -191,6 +177,8 @@ class MyCustomForm extends StatefulWidget {
                 ),  
                ),  
                TextFormField( 
+                 style :TextStyle(color:Colors.white),
+                 controller: phcController,
                 decoration: const InputDecoration(  
                 icon: const Icon(Icons.calendar_today,color:Colors.blueAccent),  
                 focusedBorder: UnderlineInputBorder(
@@ -205,6 +193,8 @@ class MyCustomForm extends StatefulWidget {
                 ),  
                ),  
                TextFormField( 
+                 style :TextStyle(color:Colors.white),
+                 controller: chcController,
                 decoration: const InputDecoration(  
                 icon: const Icon(Icons.calendar_today,color:Colors.blueAccent),  
                 focusedBorder: UnderlineInputBorder(
@@ -224,29 +214,75 @@ class MyCustomForm extends StatefulWidget {
                       ListView(
                             children: getFormWidget())]), */
                SizedBox(height: 40,),
-              
+              Container( 
+                  child:RaisedButton(
+                  shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(40),
+                  side:BorderSide(color:Colors.cyanAccent)),
+                  color: Colors.indigo,
+                  onPressed: (){
+
+                      setState(() {
+                        output = "Loading";
+                      });
+                      logForm();
+                  },
+                  child : Text(
+                    'SUBMIT',
+                    style: TextStyle(
+                      color: Colors.white,
+                      letterSpacing: 2.0,
+                    ) 
+                
+                  ),
+                ),
+                
+        ), 
+            Text(
+                  output,
+                  style:TextStyle(color:Colors.white,)
+                ),
               ],
               )
               ) 
              ], ));  
       
       }  
-      /*
-      List<Widget> getFormWidget() {
-    List<Widget> formWidget = new List();
-
-  formWidget.add(new DropdownButton(
-      hint: new Text('Select PHC PhoneNo'),
-      items: phcList,
-      value: _selectedPHC,
-      onChanged: (value) {
-        setState(() {
-          _selectedPHC = value;
-        });
-      },
-      isExpanded: true,
-    ));
+       logForm() async
+  {
     
-    return formWidget;
-  } */
+  String qcPno = pnoController.text;
+  String qcfname = fnameController.text;
+  String qclname = lnameController.text;
+  String qcDOB = dobController.text;
+   String qcemail = emailController.text;
+   String phcPno = phcController.text;
+   String chcPno = chcController.text;
+  String now = DateTime.now().toString();
+  bool underQ = true;
+  String url = "https://combat-covid.azurewebsites.net/api/add_new_user_qma";
+  Map<String,String> headers = {"Content-type" : "application/json"};
+  Map js = {"phone_number":qcPno,"date_time_quarantined":now,"first_name":qcfname,"last_name":qclname,"dob":qcDOB,"currently_under_quarantine":underQ,"email":qcemail,"phc_phone_number":phcPno,"chc_phone_number":chcPno}; //ADD OTHER INFO
+  var body = json.encode(js);
+
+  try{
+        var response = await http.post(url,headers:headers,body: body);
+        setState(() {
+          output = "loaded";
+        });
+        int code = response.statusCode;
+        print(code);
+        print(response.body);
+        if (code<300)
+          setState(() {
+            output = response.body;
+          });
+        else
+          setState(() {
+            output = "FAILED";
+          });
+  }
+  catch(Exception){
+      output  = "NO INTERNET";
+  }
+  }
 }
