@@ -251,7 +251,7 @@ def cma_add_new_user():
 
 #Checks login for CMA
 @app.route("/api/cma_login", methods=['POST'])
-def qma_login():
+def cma_login():
     CMA_User_Data = pymongo.collection.Collection(db, 'User_Data')
     inputData = request.json
     for i in json.loads(dumps(CMA_User_Data.find())):
