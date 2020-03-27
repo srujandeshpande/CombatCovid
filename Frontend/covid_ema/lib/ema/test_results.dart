@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import "package:http/http.dart" as http;
 import "dart:convert";
 class TestResults extends StatelessWidget {
@@ -165,14 +165,14 @@ class MyCustomForm extends StatefulWidget {
       }  
        logForm() async
   {
-    
+    String pno = (await SharedPreferences.getInstance()).getString('PhoneNumber'); 
   String qcPno = pnoController.text;
   String qtestdetail = detailController.text;
   String now = DateTime.now().toString();
   bool testQC = testresult;
   String url = "https://combat-covid.azurewebsites.net/api/add_new_test";
   Map<String,String> headers = {"Content-type" : "application/json"};
-  Map js = {"phone_number":qcPno,"date_time":now,"test_result":testQC,"other_data":qtestdetail,}; //ADD OTHER INFO
+  Map js = {"phone_number":qcPno,"date_time":now,"test_result":testQC,"other_data":qtestdetail,"mo_phone_number":pno}; //ADD OTHER INFO
   var body = json.encode(js);
 
   try{

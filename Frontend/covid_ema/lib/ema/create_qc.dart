@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import "package:http/http.dart" as http;
 import "dart:convert";
-
+import 'package:shared_preferences/shared_preferences.dart';
 class QuarantineCitizen extends StatelessWidget {
   //const Login({Key key}) : super(key: key);
       
@@ -249,7 +249,7 @@ class MyCustomForm extends StatefulWidget {
       }  
        logForm() async
   {
-    
+    String pno = (await SharedPreferences.getInstance()).getString('PhoneNumber'); 
   String qcPno = pnoController.text;
   String qcfname = fnameController.text;
   String qclname = lnameController.text;
@@ -261,7 +261,7 @@ class MyCustomForm extends StatefulWidget {
   bool underQ = true;
   String url = "https://combat-covid.azurewebsites.net/api/add_new_user_qma";
   Map<String,String> headers = {"Content-type" : "application/json"};
-  Map js = {"phone_number":qcPno,"date_time_quarantined":now,"first_name":qcfname,"last_name":qclname,"dob":qcDOB,"currently_under_quarantine":underQ,"email":qcemail,"phc_phone_number":phcPno,"chc_phone_number":chcPno}; //ADD OTHER INFO
+  Map js = {"phone_number":qcPno,"date_time_quarantined":now,"first_name":qcfname,"last_name":qclname,"dob":qcDOB,"currently_under_quarantine":underQ,"email":qcemail,"phc_phone_number":phcPno,"chc_phone_number":chcPno,"mo_phone_number":pno}; //ADD OTHER INFO
   var body = json.encode(js);
 
   try{
