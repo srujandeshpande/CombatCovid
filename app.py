@@ -303,11 +303,12 @@ def add_new_user_data():
 		headers = {'Content-Type': 'application/json', 'Ocp-Apim-Subscription-Key': '4b823f3294a047fbac047b2dd7ed445e'}
 		face_api_url = 'https://combat-covid-face.cognitiveservices.azure.com/face/v1.0/detect'
 		data1 = {'url':"http://combat-covid.azurewebsites.net/cognitive_face/testing_api/tempfile_"+inputData['phone_number']+".jpg"}
+		data2 = json.dumps(data1)
 		"""
 		headers = {'Content-Type': 'application/octet-stream', 'Ocp-Apim-Subscription-Key': '4b823f3294a047fbac047b2dd7ed445e'}
 		face_api_url = 'https://combat-covid-face.cognitiveservices.azure.com/face/v1.0/detect'
 		"""
-		face_response = requests.post(face_api_url , headers=headers, data=data1)
+		face_response = requests.post(face_api_url , headers=headers, data=data2)
 
 	except:
 		return ({'success':False,'error':'Azure failed'})
