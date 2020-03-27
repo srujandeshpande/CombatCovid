@@ -234,7 +234,7 @@ def add_new_user_data():
 	except:
 		return ({'success':False,'error':'Azure failed'})
 	try:
-		face_id = face_response.json()['faceId']
+		face_id = face_response.json()[0]['faceId']
 		inputData['base_face'] = face_id
 	except:
 		return ({'success':False,'error':'Parsing error failed'})
