@@ -3,7 +3,7 @@ from bson.json_util import dumps
 import json
 from flask import Flask, request, render_template, session, redirect, url_for, flash, Response, abort, render_template_string, send_from_directory
 from flask_cors import CORS
-#from PIL import Image
+from PIL import Image
 from io import StringIO
 import base64
 import requests
