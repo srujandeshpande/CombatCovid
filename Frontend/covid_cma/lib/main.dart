@@ -7,12 +7,21 @@ import 'package:covid_cma/cma/raise-requests.dart';
 import 'package:covid_cma/cma/check-risk-score.dart';
 import 'package:covid_cma/cma/notifications.dart';
 import 'package:covid_cma/cma/heat-map.dart';
+import 'package:covid_cma/cma/register.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+Future<void> main() async{ 
 
-void main() => runApp(
+  WidgetsFlutterBinding.ensureInitialized();
+
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  var pno = prefs.getString('PhoneNumber');
+  print(pno);
+  runApp(
   MaterialApp(
-    initialRoute: '/',
-    routes : {
+    initialRoute: pno == null ? '/' : '/home',
+    routes: {
       '/': (context) => Login(),
+      '/register':(context)=>Register(),
       '/home': (context) => Home(),
       '/dashboard' : (context) => Dashboard(),
       '/notifications' : (context) => Notifications(),
@@ -24,3 +33,4 @@ void main() => runApp(
   )
 );
 
+}

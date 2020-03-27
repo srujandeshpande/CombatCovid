@@ -9,7 +9,7 @@ class Home extends StatelessWidget {
       appBar:  AppBar(
       backgroundColor: Colors.greenAccent,
         title: Text(
-          'home',
+          'HOME',
            style:TextStyle(
              fontSize:30,
              letterSpacing: 2.0,
