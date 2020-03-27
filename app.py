@@ -47,7 +47,8 @@ def qma_face():
         Face_Data = pymongo.collection.Collection(db, 'Face_Data')
         imgdata = base64.b64decode(imgstring)
         date = inputData['Date-time']
-        fdate = date[:10]+date[11:13]+date[14:16]+date[17:19]
+        #fdate = date[:10]+date[11:13]+date[14:16]+date[17:19]
+        fdate = 'test'
         filename = inputData['phone_number']+'/'+fdate+'.jpg'
         with open('images/'+filename,'wb') as f:
             f.write(imgdata)
