@@ -55,7 +55,7 @@ def qma_face():
 				break
 			else:
 				return ({'success':False,'error':'Base face not set'})
-	if !flag:
+	if not flag:
 		return ({'success':False,'error':'Phone number not found'})
 	#with open('IMG_3724.JPG','rb') as r:
 	#inputdata = r.read()
