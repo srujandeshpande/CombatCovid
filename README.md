@@ -69,6 +69,25 @@ Return:
 returns all the required frequency data
 
 
+### /api/ema_app_login
+Method: POST  
+Request: phone_number and password
+```JSON
+{
+    "phone_number": number,
+    "password": string
+}
+```
+Return:
+```JSON
+{
+    "success": boolean,
+    "ema_role": string
+}
+```
+success tells if the ema user logged in or not
+
+
 ### /api/qma_login
 Method: POST  
 Request: phone_number and password
@@ -136,13 +155,13 @@ Return:
 success tells if the user was successfully added or not  
 userobjid return the object ID (as a string) if successfully added
 
-### /add_new_test
+### /api/add_new_test
 Method: POST  
 Request: Test Data as JSON  
 ```JSON
 {
-    "user_id": object (string),
-    "testing_date_time": datetime,
+    "phone_number": string,
+    "date_time": datetime,
     "test_result": boolean,
     "other_data": string
 }
@@ -157,7 +176,7 @@ Return:
 success tells if the test data was added successfully   
 testobjid gives the object ID (as string) of the test if successfully added  
 
-### /add_close_contact
+### /api/add_close_contact
 Method: POST  
 Request: Contact Data as JSON  
 ```JSON
@@ -179,7 +198,7 @@ Return:
 success tells if the close contact data was added successfully   
 ccobjid gives the object ID (as string) of the record added  
 
-### /add_new_temperature
+### /api/add_new_temperature
 Method: POST  
 Request: Temperature Data as JSON  
 ```JSON

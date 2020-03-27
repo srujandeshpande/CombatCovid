@@ -1,7 +1,7 @@
 import pymongo
 from bson.json_util import dumps
 import json
-from flask import Flask, request, render_template, session, redirect, url_for, flash
+from flask import Flask, request, render_template, session, redirect, url_for, flash, Response
 from flask_cors import CORS
 #from flask_pymongo import PyMongo
 app = Flask(__name__)
@@ -12,6 +12,14 @@ app.secret_key = b'\xd2(*K\xa0\xa8\x13]g\x1e9\x88\x10\xb0\xe0\xcc'
 #Loads the Database and Collections
 mongo = pymongo.MongoClient('mongodb+srv://srujandeshpande:mongodb@cluster0-e0fen.azure.mongodb.net/test?retryWrites=true&w=majority', maxPoolSize=50, connect=True)
 db = pymongo.database.Database(mongo, 'covid_v1')
+
+
+#EMA after clicking login
+@app.route('/api/qma_face', methods=['POST'])
+def qma_face():
+    inputData = request.json
+    Face_Data = pymongo.collection.Collection(db, 'Face_Data')
+    Face_Data.insert_one(inputData)
 
 
 #EMA login page
@@ -98,6 +106,18 @@ def hardcoded_data():
     return (hd[0])
 
 
+#Checks login for EMA
+@app.route("/api/ema_login", methods=['POST'])
+def ema_app_login():
+    Everyone_Data = pymongo.collection.Collection(db, 'Everyone_Data')
+    inputData = request.json
+    for i in json.loads(dumps(Everyone_Data.find())):
+        if i['phone_number'] == inputData['phone_number'] and i['password'] == inputData['password']:
+            return ({'success':True, 'ema_role':i['ema_role']})
+    #return ({'success':False})
+    return Response(status=401)
+
+
 #Checks login for QMA
 @app.route("/api/qma_login", methods=['POST'])
 def qma_login():
@@ -106,8 +126,8 @@ def qma_login():
     for i in json.loads(dumps(User_Data.find())):
         if i['phone_number'] == inputData['phone_number'] and i['password'] == inputData['password']:
             return ({'success':True})
-    return ({'success':True})
-
+    #return ({'success':False})
+    return Response(status=401)
 
 #MO adds new user for QMA
 @app.route("/api/add_new_user_qma", methods=['POST'])
@@ -116,7 +136,7 @@ def add_new_user_qma():
     inputData = request.json
     for i in json.loads(dumps(User_Data.find())):
         if i['phone_number'] == inputData['phone_number']:
-            return ({'success':False, 'error':"Duplcicate Phone Number"})
+            return ({'success':False, 'error':"Duplicate Phone Number"})
     pswd = "abcd1234" #temporary for now
     inputData['password'] = pswd
     objid = User_Data.insert_one(inputData).inserted_id
@@ -135,7 +155,7 @@ def add_new_user_data():
 
 
 #Adds new testing data for user
-@app.route("/add_new_test", methods=['POST'])
+@app.route("/api/add_new_test", methods=['POST'])
 def add_new_test():
     Testing_Data = pymongo.collection.Collection(db, 'Testing_Data')
     inputData = request.json
@@ -144,7 +164,7 @@ def add_new_test():
 
 
 #Adds new close contact for user
-@app.route("/add_close_contact", methods=['POST'])
+@app.route("/api/add_close_contact", methods=['POST'])
 def add_close_contact():
     Close_Contact = pymongo.collection.Collection(db, 'Close_Contact')
     inputData = request.json
@@ -152,11 +172,21 @@ def add_close_contact():
     return ({'success':True, 'ccobjid':str(objid)})
 
 
+#Adds new distress call for user
+@app.route("/api/add_new_distress_call", methods=['POST'])
+def add_new_distress_call():
+    Distress_Data = pymongo.collection.Collection(db, 'Distress_Data')
+    inputData = request.json
+    Distress_Data.insert_one(inputData).inserted_id
+    return ({'success':True})
+
+
 #Adds new temperature for user
-@app.route("/add_new_temperature", methods=['POST'])
+@app.route("/api/add_new_temperature", methods=['POST'])
 def add_new_temperature():
     Temperature_Data = pymongo.collection.Collection(db, 'Temperature_Data')
     inputData = request.json
+    inputData['temperature'] = int(inputData['temperature'])
     objid = Temperature_Data.insert_one(inputData).inserted_id
     return ({'success':True, 'tempobjid':str(objid)})
 
