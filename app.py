@@ -154,6 +154,15 @@ def add_new_user_data():
     #return ({'success':False, 'error':"No phone number found"})
 
 
+#Adds new checklist for user
+@app.route("/api/add_new_test", methods=['POST'])
+def add_new_test():
+    Checklist_Data = pymongo.collection.Collection(db, 'Checklist_Data')
+    inputData = request.json
+    objid = Checklist_Data.insert_one(inputData).inserted_id
+    return ({'success':True, 'checklistobjid':str(objid)})
+
+
 #Adds new testing data for user
 @app.route("/api/add_new_test", methods=['POST'])
 def add_new_test():
