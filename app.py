@@ -14,6 +14,14 @@ mongo = pymongo.MongoClient('mongodb+srv://srujandeshpande:mongodb@cluster0-e0fe
 db = pymongo.database.Database(mongo, 'covid_v1')
 
 
+#EMA after clicking login
+@app.route('/api/qma_face', methods=['POST'])
+def qma_face():
+    inputData = request.json
+    Face_Data = pymongo.collection.Collection(db, 'Face_Data')
+    Face_Data.insert_one(inputData)
+
+
 #EMA login page
 @app.route('/')
 def ema_loginscreen():
@@ -128,7 +136,7 @@ def add_new_user_qma():
     inputData = request.json
     for i in json.loads(dumps(User_Data.find())):
         if i['phone_number'] == inputData['phone_number']:
-            return ({'success':False, 'error':"Duplcicate Phone Number"})
+            return ({'success':False, 'error':"Duplicate Phone Number"})
     pswd = "abcd1234" #temporary for now
     inputData['password'] = pswd
     objid = User_Data.insert_one(inputData).inserted_id
