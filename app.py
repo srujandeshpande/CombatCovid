@@ -41,21 +41,50 @@ def image(filename):
 
 
 #EMA after clicking login
-@app.route('/api/qma_face')
+@app.route('/api/qma_face', methods=['POST'])
 def qma_face():
-    #inputData = request.json
+    inputData = request.json
     Face_Data = pymongo.collection.Collection(db, 'Face_Data')
     User_Data = pymongo.collection.Collection(db, 'User_Data')
-    with open('IMG_3724.JPG','rb') as r:
-        inputdata = r.read()
-    headers = {'Content-Type': 'application/octet-stream', 'Ocp-Apim-Subscription-Key': '4b823f3294a047fbac047b2dd7ed445e'}
-    face_api_url = 'https://combat-covid-face.cognitiveservices.azure.com/face/v1.0/detect'
+	flag = 0
+	for i in json.loads(dumps(User_Data.find())):
+		if i['phone_number'] == inputData['phone_number']:
+			if i.has_key('base_face'):
+				base_face = i['base_face']
+				flag = 1
+				break
+			else:
+				return ({'success':False,'error':'Base face not set'})
+	if !flag:
+		return ({'success':False,'error':'Phone number not found'})
+    #with open('IMG_3724.JPG','rb') as r:
+	#inputdata = r.read()
+	try:
+	    headers = {'Content-Type': 'application/octet-stream', 'Ocp-Apim-Subscription-Key': '4b823f3294a047fbac047b2dd7ed445e'}
+	    face_api_url = 'https://combat-covid-face.cognitiveservices.azure.com/face/v1.0/detect'
+		data1 = inputData['upload_face']
+		face_response = requests.post(face_api_url , headers=headers, data=data1)
+		compare_face = face_response.json()['faceId']
+		inputData['upload_face'] = compare_face
+	except:
+		return ({'success':False,'error':'Upload face error or not found'})
+	try:
+	    headers = {'Content-Type': 'application/json', 'Ocp-Apim-Subscription-Key': '4b823f3294a047fbac047b2dd7ed445e'}
+	    face_api_url = 'https://combat-covid-face.cognitiveservices.azure.com/face/v1.0/verify'
+		data2 = {'faceId1':base_face,'faceId2':compare_face}
+		face_response = requests.post(face_api_url , headers=headers, data=data2)
+		comparision = face_response.json()
+		inputData['isIdentical'] = comparision['isIdentical']
+		inputData['confidence'] = comparision['confidence']
+		Face_Data.insert_one(inputData)
+		return comparision
+	except:
+		return ({'success':False,'error':'Comparision error'})
     #data = inputData['upload_face']
     #data = {"url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjeDyQSic8koh_RQNYzG6UtPrCL3vJFH3s6ijfysA3U3wMa8Ue4Q&s"}
-    face_response = requests.post(face_api_url , headers=headers, data=inputdata)
 
 
-    return (str(face_response.json()))
+    #return (str(face_response.json()))
     #imgdata = base64.b64decode(imgstring)
     #date = inputData['Date-time']
     #fdate = date[:10]+'-'+date[11:13]+'-'+date[14:16]+'-'+date[17:19]
