@@ -19,7 +19,7 @@ db = pymongo.database.Database(mongo, 'covid_v1')
 
 
 #Create link for image
-@app.route('/cognitive/face_image/<path:filename>')
+@app.route('cognitive_face/<path:filename>')
 def image(filename):
 	try:
 		w = int(request.args['w'])
@@ -40,6 +40,50 @@ def image(filename):
 	return send_from_directory('.', filename)
 
 
+#EMA after clicking login
+@app.route('/api/qma_face', methods=['POST'])
+def qma_face():
+	inputData = request.json
+	Face_Data = pymongo.collection.Collection(db, 'Face_Data')
+	User_Data = pymongo.collection.Collection(db, 'User_Data')
+	flag = 0
+	for i in json.loads(dumps(User_Data.find())):
+		if i['phone_number'] == inputData['phone_number']:
+			if i.has_key('base_face'):
+				base_face = i['base_face']
+				flag = 1
+				break
+			else:
+				return ({'success':False,'error':'Base face not set'})
+	if not flag:
+		return ({'success':False,'error':'Phone number not found'})
+	tempfile = open("testing_api/tempfile_"+inputData['phone_number']+".jpg", wb)
+	tempfile.write(base_face)
+	tempfile.close()
+	try:
+		headers = {'Content-Type': 'application/json', 'Ocp-Apim-Subscription-Key': '4b823f3294a047fbac047b2dd7ed445e'}
+		face_api_url = 'https://combat-covid-face.cognitiveservices.azure.com/face/v1.0/detect'
+		data1 = {'url':"http://combat-covid.azurewebsites.net/cognitive_face/testing_api/tempfile_"+inputData['phone_number']+".jpg"}
+		face_response = requests.post(face_api_url , headers=headers, data=data1)
+		compare_face = face_response.json()['faceId']
+		inputData['upload_face'] = compare_face
+	except:
+		return ({'success':False,'error':'Upload face error or not found'})
+	try:
+		headers = {'Content-Type': 'application/json', 'Ocp-Apim-Subscription-Key': '4b823f3294a047fbac047b2dd7ed445e'}
+		face_api_url = 'https://combat-covid-face.cognitiveservices.azure.com/face/v1.0/verify'
+		data2 = {'faceId1':base_face,'faceId2':compare_face}
+		face_response = requests.post(face_api_url , headers=headers, data=data2)
+		comparision = face_response.json()
+		inputData['isIdentical'] = comparision['isIdentical']
+		inputData['confidence'] = comparision['confidence']
+		Face_Data.insert_one(inputData)
+		return comparision
+	except:
+		return ({'success':False,'error':'Comparision error'})
+
+
+"""
 #EMA after clicking login
 @app.route('/api/qma_face', methods=['POST'])
 def qma_face():
@@ -95,7 +139,7 @@ def qma_face():
     #f.write(imgdata)
     #Face_Data.insert_one({'phone_number':inputData['phone_number'],'Date-time':inputData['Date-time'],'upload_face':filename})
     #return Response(status=200)
-
+"""
 
 #EMA login page
 @app.route('/')
@@ -225,16 +269,25 @@ def add_new_user_data():
 	inputData = request.json
 	try:
 		pic = inputData['base_face']
+		tempfile = open("testing_api/tempfile_"+inputData['phone_number']+".jpg", wb)
+		tempfile.write(pic)
+		tempfile.close()
 	except:
 		return ({'success':False, 'error':'No face base_face'})
 	try:
+		headers = {'Content-Type': 'application/json', 'Ocp-Apim-Subscription-Key': '4b823f3294a047fbac047b2dd7ed445e'}
+		face_api_url = 'https://combat-covid-face.cognitiveservices.azure.com/face/v1.0/detect'
+		data1 = {'url':"http://combat-covid.azurewebsites.net/cognitive_face/testing_api/tempfile_"+inputData['phone_number']+".jpg"}
+		"""
 		headers = {'Content-Type': 'application/octet-stream', 'Ocp-Apim-Subscription-Key': '4b823f3294a047fbac047b2dd7ed445e'}
 		face_api_url = 'https://combat-covid-face.cognitiveservices.azure.com/face/v1.0/detect'
-		face_response = requests.post(face_api_url , headers=headers, data=pic)
+		"""
+		face_response = requests.post(face_api_url , headers=headers, data=data1)
+
 	except:
 		return ({'success':False,'error':'Azure failed'})
 	try:
-		return (str(face_response))
+		return (str(face_response.json()))
 		#face_id = (face_response.json())[0]['faceId']
 		#inputData['base_face'] = face_id
 	except:
