@@ -225,13 +225,19 @@ def add_new_user_data():
 	inputData = request.json
 	try:
 		pic = inputData['base_face']
+	except:
+		return ({'success':False, 'error':'No face base_face'})
+	try:
 		headers = {'Content-Type': 'application/octet-stream', 'Ocp-Apim-Subscription-Key': '4b823f3294a047fbac047b2dd7ed445e'}
 		face_api_url = 'https://combat-covid-face.cognitiveservices.azure.com/face/v1.0/detect'
 		face_response = requests.post(face_api_url , headers=headers, data=pic)
+	except:
+		return ({'success':False,'error':'Azure failed'})
+	try:
 		face_id = face_response.json()['faceId']
 		inputData['base_face'] = face_id
 	except:
-		return Response(status=300)
+		return ({'success':False,'error':'Parsing error failed'})
 	myquery = { "phone_number": inputData['phone_number']}
 	User_Data.update_one(myquery,{"$set": inputData})
 	return ({'success':True})
