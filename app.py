@@ -281,8 +281,9 @@ def add_new_user_data():
 	inputData = request.json
 	try:
 		pic = inputData['base_face']
+		picdata = base64.b64decode(pic)
 		tempfile = open("testing_api/tempfile_"+inputData['phone_number']+".jpg", 'wb')
-		tempfile.write(pic)
+		tempfile.write(picdata)
 		tempfile.close()
 	except:
 		return ({'success':False, 'error':'No face base_face'})
