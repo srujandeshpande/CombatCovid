@@ -6,6 +6,7 @@ from flask_cors import CORS
 from PIL import Image
 from io import StringIO
 import base64
+import requests
 #from flask_pymongo import PyMongo
 app = Flask(__name__)
 CORS(app)
@@ -42,21 +43,58 @@ def image(filename):
 #EMA after clicking login
 @app.route('/api/qma_face', methods=['POST'])
 def qma_face():
-    try:
-        inputData = request.json
-        Face_Data = pymongo.collection.Collection(db, 'Face_Data')
-        imgdata = base64.b64decode(imgstring)
-        date = inputData['Date-time']
-        #fdate = date[:10]+date[11:13]+date[14:16]+date[17:19]
-        #fdate = 'test'
-        #filename = inputData['phone_number']+'/'+fdate+'.jpg'
-        filename = 'test1.jpg'
-        with open('images/'+filename,'wb') as f:
-            f.write(imgdata)
-        #Face_Data.insert_one({'phone_number':inputData['phone_number'],'Date-time':inputData['Date-time'],'upload_face':filename})
-        return Response(status=200)
-    except:
-        return Response(status=300)
+    inputData = request.json
+    Face_Data = pymongo.collection.Collection(db, 'Face_Data')
+    User_Data = pymongo.collection.Collection(db, 'User_Data')
+	flag = 0
+	for i in json.loads(dumps(User_Data.find())):
+		if i['phone_number'] == inputData['phone_number']:
+			if i.has_key('base_face'):
+				base_face = i['base_face']
+				flag = 1
+				break
+			else:
+				return ({'success':False,'error':'Base face not set'})
+	if !flag:
+		return ({'success':False,'error':'Phone number not found'})
+    #with open('IMG_3724.JPG','rb') as r:
+	#inputdata = r.read()
+	try:
+	    headers = {'Content-Type': 'application/octet-stream', 'Ocp-Apim-Subscription-Key': '4b823f3294a047fbac047b2dd7ed445e'}
+	    face_api_url = 'https://combat-covid-face.cognitiveservices.azure.com/face/v1.0/detect'
+		data1 = inputData['upload_face']
+		face_response = requests.post(face_api_url , headers=headers, data=data1)
+		compare_face = face_response.json()['faceId']
+		inputData['upload_face'] = compare_face
+	except:
+		return ({'success':False,'error':'Upload face error or not found'})
+	try:
+	    headers = {'Content-Type': 'application/json', 'Ocp-Apim-Subscription-Key': '4b823f3294a047fbac047b2dd7ed445e'}
+	    face_api_url = 'https://combat-covid-face.cognitiveservices.azure.com/face/v1.0/verify'
+		data2 = {'faceId1':base_face,'faceId2':compare_face}
+		face_response = requests.post(face_api_url , headers=headers, data=data2)
+		comparision = face_response.json()
+		inputData['isIdentical'] = comparision['isIdentical']
+		inputData['confidence'] = comparision['confidence']
+		Face_Data.insert_one(inputData)
+		return comparision
+	except:
+		return ({'success':False,'error':'Comparision error'})
+    #data = inputData['upload_face']
+    #data = {"url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjeDyQSic8koh_RQNYzG6UtPrCL3vJFH3s6ijfysA3U3wMa8Ue4Q&s"}
+
+
+    #return (str(face_response.json()))
+    #imgdata = base64.b64decode(imgstring)
+    #date = inputData['Date-time']
+    #fdate = date[:10]+'-'+date[11:13]+'-'+date[14:16]+'-'+date[17:19]
+    #fdate = 'test'
+    #filename = inputData['phone_number']+'/'+fdate+'.jpg'
+    #filename = 'test1.jpg'
+    #with open('images/'+filename,'wb') as f:
+    #f.write(imgdata)
+    #Face_Data.insert_one({'phone_number':inputData['phone_number'],'Date-time':inputData['Date-time'],'upload_face':filename})
+    #return Response(status=200)
 
 
 #EMA login page
@@ -183,12 +221,21 @@ def add_new_user_qma():
 #QMA user adds data
 @app.route("/api/add_new_user_data_qma", methods=['POST'])
 def add_new_user_data():
-    User_Data = pymongo.collection.Collection(db, 'User_Data')
-    inputData = request.json
-    myquery = { "phone_number": inputData['phone_number']}
-    User_Data.update_one(myquery,{"$set": inputData})
-    return ({'success':True})
-    #return ({'success':False, 'error':"No phone number found"})
+	User_Data = pymongo.collection.Collection(db, 'User_Data')
+	inputData = request.json
+	try:
+		pic = inputData['base_face']
+		headers = {'Content-Type': 'application/octet-stream', 'Ocp-Apim-Subscription-Key': '4b823f3294a047fbac047b2dd7ed445e'}
+		face_api_url = 'https://combat-covid-face.cognitiveservices.azure.com/face/v1.0/detect'
+		face_response = requests.post(face_api_url , headers=headers, data=pic)
+		face_id = face_response.json()['faceId']
+		inputData['base_face'] = face_id
+	except:
+		return Response(status=300)
+	myquery = { "phone_number": inputData['phone_number']}
+	User_Data.update_one(myquery,{"$set": inputData})
+	return ({'success':True})
+	#return ({'success':False, 'error':"No phone number found"})
 
 
 #Adds new checklist for user
