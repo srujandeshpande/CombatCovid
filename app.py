@@ -48,8 +48,9 @@ def qma_face():
         imgdata = base64.b64decode(imgstring)
         date = inputData['Date-time']
         #fdate = date[:10]+date[11:13]+date[14:16]+date[17:19]
-        fdate = 'test'
-        filename = inputData['phone_number']+'/'+fdate+'.jpg'
+        #fdate = 'test'
+        #filename = inputData['phone_number']+'/'+fdate+'.jpg'
+        filename = 'test1.jpg'
         with open('images/'+filename,'wb') as f:
             f.write(imgdata)
         #Face_Data.insert_one({'phone_number':inputData['phone_number'],'Date-time':inputData['Date-time'],'upload_face':filename})
