@@ -19,7 +19,7 @@ db = pymongo.database.Database(mongo, 'covid_v1')
 
 
 #Create link for image
-@app.route('cognitive_face/<path:filename>')
+@app.route('/cognitive_face/<path:filename>')
 def image(filename):
 	try:
 		w = int(request.args['w'])
