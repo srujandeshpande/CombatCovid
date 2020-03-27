@@ -271,7 +271,7 @@ def cma_add_new_user():
 #Checks login for CMA
 @app.route("/api/cma_login", methods=['POST'])
 def cma_login():
-    CMA_User_Data = pymongo.collection.Collection(db, 'User_Data')
+    CMA_User_Data = pymongo.collection.Collection(db, 'CMA_User_Data')
     inputData = request.json
     for i in json.loads(dumps(CMA_User_Data.find())):
         if i['phone_number'] == inputData['phone_number'] and i['password'] == inputData['password']:
