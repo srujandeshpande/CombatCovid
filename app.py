@@ -1,8 +1,11 @@
 import pymongo
 from bson.json_util import dumps
 import json
-from flask import Flask, request, render_template, session, redirect, url_for, flash, Response
+from flask import Flask, request, render_template, session, redirect, url_for, flash, Response, abort, render_template_string, send_from_directory
 from flask_cors import CORS
+from PIL import Image
+from io import StringIO
+import base64
 #from flask_pymongo import PyMongo
 app = Flask(__name__)
 CORS(app)
@@ -14,12 +17,46 @@ mongo = pymongo.MongoClient('mongodb+srv://srujandeshpande:mongodb@cluster0-e0fe
 db = pymongo.database.Database(mongo, 'covid_v1')
 
 
+#Create link for image
+@app.route('/cognitive/face_image/<path:filename>')
+def image(filename):
+	try:
+		w = int(request.args['w'])
+		h = int(request.args['h'])
+	except (KeyError, ValueError):
+		return send_from_directory('.', filename)
+
+	try:
+		im = Image.open(filename)
+		im.thumbnail((w, h), Image.ANTIALIAS)
+		io = StringIO.StringIO()
+		im.save(io, format='JPEG')
+		return Response(io.getvalue(), mimetype='image/jpeg')
+
+	except IOError:
+		abort(404)
+
+	return send_from_directory('.', filename)
+
+
 #EMA after clicking login
 @app.route('/api/qma_face', methods=['POST'])
 def qma_face():
-    inputData = request.json
-    Face_Data = pymongo.collection.Collection(db, 'Face_Data')
-    Face_Data.insert_one(inputData)
+    try:
+        inputData = request.json
+        Face_Data = pymongo.collection.Collection(db, 'Face_Data')
+        imgdata = base64.b64decode(imgstring)
+        date = inputData['Date-time']
+        #fdate = date[:10]+date[11:13]+date[14:16]+date[17:19]
+        #fdate = 'test'
+        #filename = inputData['phone_number']+'/'+fdate+'.jpg'
+        filename = 'test1.jpg'
+        with open('images/'+filename,'wb') as f:
+            f.write(imgdata)
+        #Face_Data.insert_one({'phone_number':inputData['phone_number'],'Date-time':inputData['Date-time'],'upload_face':filename})
+        return Response(status=200)
+    except:
+        return Response(status=300)
 
 
 #EMA login page
@@ -231,6 +268,6 @@ def add_new_phc():
 
 @app.route('/abc')
 def hello_world():
-    col = pymongo.collection.Collection(db, 'User_Data')
+    col = pymongo.collection.Collection(db, 'Face_Data')
     col_results = json.loads(dumps(col.find()))
     return(str(col_results))
