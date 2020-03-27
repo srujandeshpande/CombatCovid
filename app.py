@@ -249,6 +249,18 @@ def cma_add_new_user():
     return ({'success':True, 'CMAuserobjid':str(objid)})
 
 
+#Checks login for CMA
+@app.route("/api/cma_login", methods=['POST'])
+def qma_login():
+    CMA_User_Data = pymongo.collection.Collection(db, 'User_Data')
+    inputData = request.json
+    for i in json.loads(dumps(CMA_User_Data.find())):
+        if i['phone_number'] == inputData['phone_number'] and i['password'] == inputData['password']:
+            return ({'success':True})
+    #return ({'success':False})
+    return Response(status=401)
+
+
 #Checks login for QMA
 @app.route("/api/qma_login", methods=['POST'])
 def qma_login():
