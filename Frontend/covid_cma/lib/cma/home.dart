@@ -65,7 +65,7 @@ class Home extends StatelessWidget {
               ),
             ),
             Divider(
-              height: 90,
+              height: 86,
               color: Colors.grey,
             ),
             Text(
@@ -86,7 +86,7 @@ class Home extends StatelessWidget {
             ), 
 
             Divider(
-              height: 90,
+              height: 85,
               color: Colors.grey,
             ),
 
@@ -108,7 +108,7 @@ class Home extends StatelessWidget {
             ), 
 
             Divider(
-              height: 90,
+              height: 85,
               color: Colors.grey,
             ),
 
