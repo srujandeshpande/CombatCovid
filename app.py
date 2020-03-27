@@ -276,8 +276,8 @@ def cma_add_location():
     inputData = request.json
     for i in json.loads(dumps(CMA_User_Data.find())):
         if i['phone_number'] == inputData['phone_number']:
-			CMA_Location_Data.insert_one(inputdata)
-            return ({'success':True})
+			CMA_Location_Data.insert_one(inputData)
+            		return ({'success':True})
     #return ({'success':False})
     return Response(status=401)
 
