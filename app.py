@@ -155,7 +155,7 @@ def add_new_user_data():
 
 
 #Adds new testing data for user
-@app.route("/add_new_test", methods=['POST'])
+@app.route("/api/add_new_test", methods=['POST'])
 def add_new_test():
     Testing_Data = pymongo.collection.Collection(db, 'Testing_Data')
     inputData = request.json

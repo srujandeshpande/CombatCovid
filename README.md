@@ -155,13 +155,13 @@ Return:
 success tells if the user was successfully added or not  
 userobjid return the object ID (as a string) if successfully added
 
-### /add_new_test
+### /api/add_new_test
 Method: POST  
 Request: Test Data as JSON  
 ```JSON
 {
-    "user_id": object (string),
-    "testing_date_time": datetime,
+    "phone_number": string,
+    "date_time": datetime,
     "test_result": boolean,
     "other_data": string
 }
