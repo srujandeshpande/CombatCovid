@@ -6,6 +6,7 @@ from flask_cors import CORS
 from PIL import Image
 from io import StringIO
 import base64
+import requests
 #from flask_pymongo import PyMongo
 app = Flask(__name__)
 CORS(app)
@@ -40,23 +41,31 @@ def image(filename):
 
 
 #EMA after clicking login
-@app.route('/api/qma_face', methods=['POST'])
+@app.route('/api/qma_face')
 def qma_face():
-    try:
-        inputData = request.json
-        Face_Data = pymongo.collection.Collection(db, 'Face_Data')
-        imgdata = base64.b64decode(imgstring)
-        date = inputData['Date-time']
-        #fdate = date[:10]+date[11:13]+date[14:16]+date[17:19]
-        #fdate = 'test'
-        #filename = inputData['phone_number']+'/'+fdate+'.jpg'
-        filename = 'test1.jpg'
-        with open('images/'+filename,'wb') as f:
-            f.write(imgdata)
-        #Face_Data.insert_one({'phone_number':inputData['phone_number'],'Date-time':inputData['Date-time'],'upload_face':filename})
-        return Response(status=200)
-    except:
-        return Response(status=300)
+    #inputData = request.json
+    #Face_Data = pymongo.collection.Collection(db, 'Face_Data')
+    #User_Data = pymongo.collection.Collection(db, 'User_Data')
+    with open('IMG_0944.JPG','rb') as r:
+        inputdata = r.read()
+    headers = {'Content-Type': 'application/octet-stream', 'Ocp-Apim-Subscription-Key': '4b823f3294a047fbac047b2dd7ed445e'}
+    face_api_url = 'https://combat-covid-face.cognitiveservices.azure.com/face/v1.0/detect'
+    #data = inputData['upload_face']
+    #data = {"url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjeDyQSic8koh_RQNYzG6UtPrCL3vJFH3s6ijfysA3U3wMa8Ue4Q&s"}
+    face_response = requests.post(face_api_url , headers=headers, data=inputdata)
+
+
+    return (str(face_response.json()))
+    #imgdata = base64.b64decode(imgstring)
+    #date = inputData['Date-time']
+    #fdate = date[:10]+'-'+date[11:13]+'-'+date[14:16]+'-'+date[17:19]
+    #fdate = 'test'
+    #filename = inputData['phone_number']+'/'+fdate+'.jpg'
+    #filename = 'test1.jpg'
+    #with open('images/'+filename,'wb') as f:
+    #f.write(imgdata)
+    #Face_Data.insert_one({'phone_number':inputData['phone_number'],'Date-time':inputData['Date-time'],'upload_face':filename})
+    #return Response(status=200)
 
 
 #EMA login page
