@@ -155,6 +155,24 @@ Return:
 success tells if the user was successfully added or not  
 userobjid return the object ID (as a string) if successfully added
 
+### /api/add_new_checklist
+Method: POST  
+Request: Test Data as JSON  
+```JSON
+{
+    data taken from checklist
+}
+```
+Return:
+```JSON
+{
+    "success": boolean,
+    "checklistobjid": object (string)
+}
+```
+success tells if the test data was added successfully   
+checklistobjid gives the object ID (as string) of the checklist added  
+
 ### /api/add_new_test
 Method: POST  
 Request: Test Data as JSON  
