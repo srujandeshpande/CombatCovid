@@ -57,7 +57,7 @@ def qma_face():
 				return ({'success':False,'error':'Base face not set'})
 	if not flag:
 		return ({'success':False,'error':'Phone number not found'})
-	tempfile = open("testing_api/tempfile_"+inputData['phone_number']+".jpg", wb)
+	tempfile = open("testing_api/tempfile_"+inputData['phone_number']+".jpg", 'wb')
 	tempfile.write(base_face)
 	tempfile.close()
 	try:
@@ -281,7 +281,7 @@ def add_new_user_data():
 	inputData = request.json
 	try:
 		pic = inputData['base_face']
-		tempfile = open("testing_api/tempfile_"+inputData['phone_number']+".jpg", wb)
+		tempfile = open("testing_api/tempfile_"+inputData['phone_number']+".jpg", 'wb')
 		tempfile.write(pic)
 		tempfile.close()
 	except:
