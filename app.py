@@ -44,9 +44,9 @@ def image(filename):
 @app.route('/api/qma_face')
 def qma_face():
     #inputData = request.json
-    #Face_Data = pymongo.collection.Collection(db, 'Face_Data')
-    #User_Data = pymongo.collection.Collection(db, 'User_Data')
-    with open('IMG_0944.JPG','rb') as r:
+    Face_Data = pymongo.collection.Collection(db, 'Face_Data')
+    User_Data = pymongo.collection.Collection(db, 'User_Data')
+    with open('IMG_3724.JPG','rb') as r:
         inputdata = r.read()
     headers = {'Content-Type': 'application/octet-stream', 'Ocp-Apim-Subscription-Key': '4b823f3294a047fbac047b2dd7ed445e'}
     face_api_url = 'https://combat-covid-face.cognitiveservices.azure.com/face/v1.0/detect'
@@ -192,12 +192,21 @@ def add_new_user_qma():
 #QMA user adds data
 @app.route("/api/add_new_user_data_qma", methods=['POST'])
 def add_new_user_data():
-    User_Data = pymongo.collection.Collection(db, 'User_Data')
-    inputData = request.json
-    myquery = { "phone_number": inputData['phone_number']}
-    User_Data.update_one(myquery,{"$set": inputData})
-    return ({'success':True})
-    #return ({'success':False, 'error':"No phone number found"})
+	User_Data = pymongo.collection.Collection(db, 'User_Data')
+	inputData = request.json
+	try:
+		pic = inputData['base_face']
+		headers = {'Content-Type': 'application/octet-stream', 'Ocp-Apim-Subscription-Key': '4b823f3294a047fbac047b2dd7ed445e'}
+		face_api_url = 'https://combat-covid-face.cognitiveservices.azure.com/face/v1.0/detect'
+		face_response = requests.post(face_api_url , headers=headers, data=pic)
+		face_id = face_response.json()['faceId']
+		inputData['base_face'] = face_id
+	except:
+		return Response(status=300)
+	myquery = { "phone_number": inputData['phone_number']}
+	User_Data.update_one(myquery,{"$set": inputData})
+	return ({'success':True})
+	#return ({'success':False, 'error':"No phone number found"})
 
 
 #Adds new testing data for user
