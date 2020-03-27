@@ -8,3 +8,4 @@ Werkzeug==0.15.6
 pymongo==3.9.0
 dnspython==1.16.0
 Flask-Cors==3.0.8
+Pillow==6.0.0
