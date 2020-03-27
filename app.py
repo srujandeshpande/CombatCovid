@@ -237,6 +237,18 @@ def ema_app_login():
     return Response(status=401)
 
 
+#MO adds new user for CMA
+@app.route("/api/cma_add_new_user", methods=['POST'])
+def cma_add_new_user():
+    CMA_User_Data = pymongo.collection.Collection(db, 'CMA_User_Data')
+    inputData = request.json
+    for i in json.loads(dumps(CMA_User_Data.find())):
+        if i['phone_number'] == inputData['phone_number']:
+            return ({'success':False, 'error':"Duplicate Phone Number"})
+    objid = CMA_User_Data.insert_one(inputData).inserted_id
+    return ({'success':True, 'CMAuserobjid':str(objid)})
+
+
 #Checks login for QMA
 @app.route("/api/qma_login", methods=['POST'])
 def qma_login():
