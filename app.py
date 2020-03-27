@@ -3,7 +3,7 @@ from bson.json_util import dumps
 import json
 from flask import Flask, request, render_template, session, redirect, url_for, flash, Response, abort, render_template_string, send_from_directory
 from flask_cors import CORS
-from PIL import Image
+#from PIL import Image
 from io import StringIO
 import base64
 import requests
@@ -240,7 +240,7 @@ def add_new_user_data():
 
 #Adds new checklist for user
 @app.route("/api/add_new_checklist", methods=['POST'])
-def add_new_test():
+def add_new_checklist():
     Checklist_Data = pymongo.collection.Collection(db, 'Checklist_Data')
     inputData = request.json
     objid = Checklist_Data.insert_one(inputData).inserted_id
