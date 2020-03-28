@@ -15,6 +15,16 @@ Srujan - https://github.com/srujandeshpande
 
 The API Calls are listed as follows  [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/2ab0b8dff3424f432704)
 
+### /cognitive_face/<path:filename>   
+Method: GET/POST  
+Request: Empty  
+Return: Displays the image at url  
+
+### /api/qma_face   
+Method: POST  
+Request: Image, phone number  
+Return: Authenticates image  
+
 ### /
 Method: GET/POST  
 Request: Empty  
@@ -66,12 +76,32 @@ Return:
     "temperature_frequency": "2 Hours"
 }
 ```
-returns all the required frequency data
+returns all the required frequency data  
 
 
-### /api/qma_login
+### /api/ema_app_login
 Method: POST  
 Request: phone_number and password
+```JSON
+{
+    "phone_number": number,
+    "password": string
+}
+```
+Return:
+```JSON
+{
+    "success": boolean,
+    "ema_role": string
+}
+```
+success tells if the ema user logged in or not  
+
+### /api/cma_add_location
+
+### /api/cma_login
+Method: POST  
+Request: phone_number and password  
 ```JSON
 {
     "phone_number": number,
@@ -84,7 +114,42 @@ Return:
     "success": boolean
 }
 ```
-success tells if the user was successfully logged in or not
+success tells if the user was successfully logged in or not  
+
+### /api/qma_login
+Method: POST  
+Request: phone_number and password  
+```JSON
+{
+    "phone_number": number,
+    "password": string
+}
+```
+Return:
+```JSON
+{
+    "success": boolean
+}
+```
+success tells if the user was successfully logged in or not  
+
+### /api/cma_add_new_user
+Method: POST  
+Request: Takes name, phone number, date,
+```JSON
+{
+    data
+}
+```
+Return:
+```JSON
+{
+    "success": boolean,
+    "userobjid": object (string)
+}
+```
+success tells if the user was successfully added or not  
+userobjid return the object ID (as a string) if successfully added
 
 
 ### /api/add_new_user_qma
@@ -136,13 +201,31 @@ Return:
 success tells if the user was successfully added or not  
 userobjid return the object ID (as a string) if successfully added
 
-### /add_new_test
+### /api/add_new_checklist
 Method: POST  
 Request: Test Data as JSON  
 ```JSON
 {
-    "user_id": object (string),
-    "testing_date_time": datetime,
+    data taken from checklist
+}
+```
+Return:
+```JSON
+{
+    "success": boolean,
+    "checklistobjid": object (string)
+}
+```
+success tells if the test data was added successfully   
+checklistobjid gives the object ID (as string) of the checklist added  
+
+### /api/add_new_test
+Method: POST  
+Request: Test Data as JSON  
+```JSON
+{
+    "phone_number": string,
+    "date_time": datetime,
     "test_result": boolean,
     "other_data": string
 }
@@ -157,7 +240,7 @@ Return:
 success tells if the test data was added successfully   
 testobjid gives the object ID (as string) of the test if successfully added  
 
-### /add_close_contact
+### /api/add_close_contact
 Method: POST  
 Request: Contact Data as JSON  
 ```JSON
@@ -179,7 +262,9 @@ Return:
 success tells if the close contact data was added successfully   
 ccobjid gives the object ID (as string) of the record added  
 
-### /add_new_temperature
+### /api/add_new_distress_call
+
+### /api/add_new_temperature
 Method: POST  
 Request: Temperature Data as JSON  
 ```JSON

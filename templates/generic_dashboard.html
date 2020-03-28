@@ -12,16 +12,24 @@
 </head>
 <navbar>
     <div class="basic-grid">
-    Navbar
+    {{session['ema_role']}} {{session['phone_number']}}
 
     </div>
 </navbar>
 <body>
     <div class="basic-grid">
-        <div class = 'card card-tall-2'>REQUESTS</div>
+        <div class = 'card card-tall-2'>
+          <ul id="users_under">
+          </ul>
+          {{json.loads(dumps(User_Data.find({'mo_phone_number':session['phone_number']})))}}
 
 
-        
+
+
+        </div>
+
+
+
         <div class = 'card card-tall-2 flex'>
 
 
