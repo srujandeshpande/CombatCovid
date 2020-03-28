@@ -9,11 +9,12 @@ $(function(){
   dataType: 'json',
   async: true,
   success: function(msg) {
-        for(var k in msg) {
-          keys.push(k);
-          $("#userDataList").append("<li><a id='induser' onclick=showMore("+k+')>'+" "+k+" "+msg[k].first_name+" "+msg[k].last_name+" "+'</a></li>');
-          $("#userDataListHeader").html("User Data")
+    var count = msg['count']
+    var r = "record"
+    for (var i=0;i<count;i++){
+          $("#userDataList").append('<tr><td>'+(i+1)+'</td><td>'+msg[r+i]['phone_number']+'</td><td>'+msg[r+i]['date_time_quarantined']+'</td><td>'+msg[r+i]['first_name']+'</td><td>'+msg[r+i]['last_name']+'</td><td>'+msg[r+i]['dob']+'</td><td>'+msg[r+i]['currently_under_quarantine']+'</td><td>'+msg[r+i]['email']+'</td><td>'+msg[r+i]['mo_phone_number']+'</td></tr>');
         }
+        $("#userDataListHeader").html("User Data")
         $('#induser').click(function() {
           //var phno = $(this).data("phno")
           alert("phno");
