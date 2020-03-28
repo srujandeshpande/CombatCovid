@@ -26,89 +26,15 @@ def image(filename):
 		h = int(request.args['h'])
 	except (KeyError, ValueError):
 		return send_from_directory('.', filename)
-
 	try:
 		im = Image.open(filename)
 		im.thumbnail((w, h), Image.ANTIALIAS)
 		io = StringIO.StringIO()
 		im.save(io, format='JPEG')
 		return Response(io.getvalue(), mimetype='image/jpeg')
-
 	except IOError:
 		abort(404)
-
 	return send_from_directory('.', filename)
-
-
-#EMA after clicking login
-@app.route('/api/qma_face', methods=['POST'])
-def qma_face():
-	inputData = request.json
-	Face_Data = pymongo.collection.Collection(db, 'Face_Data')
-	User_Data = pymongo.collection.Collection(db, 'User_Data')
-	flag = 0
-	for i in json.loads(dumps(User_Data.find())):
-		if i['phone_number'] == inputData['phone_number']:
-			if i.has_key('base_face'):
-				base_face = i['base_face']
-				flag = 1
-				break
-			else:
-				return ({'success':False,'error':'Base face not set'})
-	if not flag:
-		return ({'success':False,'error':'Phone number not found'})
-	date = inputData['Date-time']
-	fdate = date[:10]+'-'+date[11:13]+'-'+date[14:16]+'-'+date[17:19]
-	tempfile = open("testing_api/tempfile_"+inputData['phone_number']+"_"+fdate+".jpg", 'wb')
-	tempfile.write(base_face)
-	tempfile.close()
-	try:
-		headers = {'Content-Type': 'application/json', 'Ocp-Apim-Subscription-Key': '4b823f3294a047fbac047b2dd7ed445e'}
-		face_api_url = 'https://combat-covid-face.cognitiveservices.azure.com/face/v1.0/detect'
-		data1 = {'url':"http://combat-covid.azurewebsites.net/cognitive_face/testing_api/tempfile_"+inputData['phone_number']++"_"+fdate+".jpg"}
-		data2 = json.dumps(data1)
-	except:
-		return ({'success':False,'error':'Upload face error or not found'})
-	try:
-		for i in range(5):
-			test1 = requests.get("http://combat-covid.azurewebsites.net/cognitive_face/testing_api/tempfile_"+inputData['phone_number']+"_"+fdate+".jpg")
-			if(test1.status_code == 404):
-				pass
-			else:
-				break
-		face_response = requests.post(face_api_url , headers=headers, data=data2)
-	except:
-		return ({'success':False,'error':'Link thing failed'})
-	try:
-		r = face_response.json()
-		inputData['upload_face_response'] = r2
-	except:
-		pass
-	try:
-		compare_face = r[0]['faceId']
-		inputData['upload_face'] = compare_face
-	except:
-		pass
-	try:
-		headers = {'Content-Type': 'application/json', 'Ocp-Apim-Subscription-Key': '4b823f3294a047fbac047b2dd7ed445e'}
-		face_api_url = 'https://combat-covid-face.cognitiveservices.azure.com/face/v1.0/verify'
-		data3 = {'faceId1':base_face,'faceId2':compare_face}
-		data4 = json.dumps(data3)
-		face_response = requests.post(face_api_url , headers=headers, data=data4)
-		r2 = face_response.json()
-	except:
-		return ({'success':False,'error':'Azure failure'})
-	try:
-		inputData['compareing_face_response'] = r2
-	except:
-		pass
-	try:
-		inputData['isIdentical'] = r2['isIdentical']
-		inputData['confidence'] = r2['confidence']
-		Face_Data.insert_one(inputData)
-	except:
-		return ({'success':False,'error':'Comparision error'})
-	return r2
 
 
 #EMA login page
@@ -257,8 +183,12 @@ def ema_app_admin_user_data():
 	User_Data = pymongo.collection.Collection(db, 'User_Data')
 	data = json.loads(dumps(User_Data.find()))
 	data1 = {}
-	for i in data:
-		data1[i['phone_number']] = i
+	y = 0
+	data1['count'] = 0
+	for x in data:
+		data1["record"+str(y)] = x
+		y+=1
+	data1['count'] = y
 	return data1
 
 
