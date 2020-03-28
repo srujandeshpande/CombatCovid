@@ -12,7 +12,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 <navbar>
-    <div class="basic-grid" id="headerboard" data-phno="{{session['phone_number']}}">
+    <div class="basic-grid" id="headerboard">
     {{session['ema_role']}} {{session['phone_number']}}
     <ul class="">
       <li class="active"><a href="#">Dashboard</a></li>
@@ -24,7 +24,8 @@
 <body>
     <div class="basic-grid">
         <div class = 'card card-tall-2'>
-          QMA Users:
+          <br>
+          <div id="userDataListHeader">Loading User Data...</div>
           <div id="dataaa">
              <ul id="userDataList">
              </ul>

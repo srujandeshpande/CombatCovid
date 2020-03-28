@@ -202,12 +202,22 @@ def ema_new_user_data():
 
 
 #EMA return MO
+@app.route('/api/ema_get_session_phno')
+def ema_get_session_phno():
+	return str(session['phone_number'])
+
+
+#EMA return MO
 @app.route('/api/ema_mo_user_data', methods=['POST'])
 def ema_app_mo_user_data():
 	inputData = request.json
+	if inputData['mo_phone_number'] == "websiteuser":
+		inputData['mo_phone_number'] = session['phone_number']
 	User_Data = pymongo.collection.Collection(db, 'User_Data')
 	data = json.loads(dumps(User_Data.find({'mo_phone_number':str(inputData['mo_phone_number'])})))
 	data1 = {}
+	print(type(inputData['mo_phone_number']))
+	print(inputData['mo_phone_number'])
 	for i in data:
 		data1[i['phone_number']] = i
 	return data1
