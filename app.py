@@ -206,7 +206,7 @@ def ema_new_user_data():
 def ema_get_session_phno():
 	return str(session['phone_number'])
 
-
+#!HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
 #EMA return MO
 @app.route('/api/ema_mo_user_data', methods=['POST'])
 def ema_app_mo_user_data():
@@ -479,8 +479,37 @@ def add_new_phc():
     return ({'success':False, 'error':"CHC Not Found"})
 
 
+
 @app.route('/abc')
 def hello_world():
     col = pymongo.collection.Collection(db, 'Face_Data')
     col_results = json.loads(dumps(col.find()))
     return(str(col_results))
+
+
+
+# ALERTS -  temp(distress) and boundary 
+
+#returns people running a fever - DISTRESS
+@app.route('/alert_temp')
+def alert_distress_temp():
+    col = pymongo.collection.Collection(db, 'Temperature_Data')
+    data = json.loads(dumps(col.find()))
+    inputData = request.json        # not sure what the use is
+
+    data1 = {}
+    for x in data:
+        if x['temperature']>38:
+            data1[x['phone_number']] = x
+    return data1
+
+# #people out of area
+# @app.route('/alert_area_breach')
+# def alert_area_breach():
+#     inputData = request.json
+#     # waiting on avs on what data hes sending
+    
+
+
+
+
