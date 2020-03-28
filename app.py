@@ -186,6 +186,18 @@ def ema_new_user_data():
     return redirect(url_for('ema_add_new_user_page'))
 
 
+#EMA return MO
+@app.route('/ema_mo_user_data', methods=['POST'])
+def ema_mo_user_data():
+	inputData = request.json
+	User_Data = pymongo.collection.Collection(db, 'User_Data')
+	data = json.loads(dumps(User_Data.find({'mo_phone_number':inputData['mo_phone_number']})))
+	data1 = {}
+	for i in data:
+		data1[i['phone_number']] = i
+	return data1
+
+
 #Get hardcoded values
 @app.route('/api/hardcoded_data')
 def hardcoded_data():
@@ -274,6 +286,13 @@ def add_new_user_qma():
 def add_new_user_data():
 	User_Data = pymongo.collection.Collection(db, 'User_Data')
 	inputData = request.json
+	flagv = 0
+	for i in json.loads(dumps(User_Data.find())):
+		if i['phone_number'] == inputData['phone_number']:
+			flagv = 1
+			break
+	if not flagv:
+		return ({'success':False, 'error':"Invalid User"})
 	try:
 		pic = inputData['base_face']
 		picdata = base64.b64decode(pic)
