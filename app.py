@@ -158,6 +158,21 @@ def ema_dashboard():
         return redirect(url_for('ema_loginscreen'))
 
 
+#EMA show generic dashboard
+@app.route('/generic_dashboard')
+def generic_dashboard():
+	try:
+		if session['ema_role']:
+			mo_user_data = ema_mo_user_data(session['phone_number'])
+			return render_template("generic_dashboard.html")
+		else:
+			flash("Please login")
+			return redirect(url_for('ema_loginscreen'))
+	except:
+		flash("Please login")
+		return redirect(url_for('ema_loginscreen'))
+
+
 #EMA add new user
 @app.route('/ema_add_new_user_page')
 def ema_add_new_user_page():
@@ -187,11 +202,20 @@ def ema_new_user_data():
 
 
 #EMA return MO
-@app.route('/ema_mo_user_data', methods=['POST'])
-def ema_mo_user_data():
+@app.route('/api/ema_mo_user_data', methods=['POST'])
+def ema_app_mo_user_data():
 	inputData = request.json
 	User_Data = pymongo.collection.Collection(db, 'User_Data')
 	data = json.loads(dumps(User_Data.find({'mo_phone_number':inputData['mo_phone_number']})))
+	data1 = {}
+	for i in data:
+		data1[i['phone_number']] = i
+	return data1
+
+
+def ema_mo_user_data(phone_number):
+	User_Data = pymongo.collection.Collection(db, 'User_Data')
+	data = json.loads(dumps(User_Data.find({'mo_phone_number':phone_number})))
 	data1 = {}
 	for i in data:
 		data1[i['phone_number']] = i
@@ -294,15 +318,22 @@ def qma_login():
 #MO adds new user for QMA
 @app.route("/api/add_new_user_qma", methods=['POST'])
 def add_new_user_qma():
-    User_Data = pymongo.collection.Collection(db, 'User_Data')
-    inputData = request.json
-    for i in json.loads(dumps(User_Data.find())):
-        if i['phone_number'] == inputData['phone_number']:
-            return ({'success':False, 'error':"Duplicate Phone Number"})
-    pswd = "abcd1234" #temporary for now
-    inputData['password'] = pswd
-    objid = User_Data.insert_one(inputData).inserted_id
-    return ({'success':True, 'userobjid':str(objid), 'password':pswd})
+	User_Data = pymongo.collection.Collection(db, 'User_Data')
+	Everyone_Data = pymongo.collection.Collection(db, 'Everyone_Data')
+	inputData = request.json
+	try:
+		for i in json.loads(dumps(Everyone_Data.find())):
+			if i['mo_phone_number'] == inputData['phone_number']:
+				return ({'success':False, 'error':"Duplicate Phone Number"})
+		for i in json.loads(dumps(User_Data.find())):
+			if i['phone_number'] == inputData['phone_number']:
+				return ({'success':False, 'error':"Duplicate Phone Number"})
+	except:
+		pass
+	pswd = "abcd1234" #temporary for now
+	inputData['password'] = pswd
+	objid = User_Data.insert_one(inputData).inserted_id
+	return ({'success':True, 'userobjid':str(objid), 'password':pswd})
 
 
 #QMA user adds data
