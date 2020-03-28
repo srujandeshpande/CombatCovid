@@ -1,6 +1,6 @@
 $(function(){
   var arr = { 'admin_phone_number': "websiteuser" };
-  var keys = [];
+
   $.ajax({
   url: '/api/ema_admin_user_data',
   type: 'POST',
@@ -21,6 +21,7 @@ $(function(){
         });
     }
   });
+
   $.ajax({
   url: '/api/ema_admin_temp_data',
   type: 'POST',
@@ -43,6 +44,7 @@ $(function(){
         */
     }
   });
+
   $.ajax({
   url: '/api/ema_admin_cc_data',
   type: 'POST',
@@ -60,6 +62,22 @@ $(function(){
     }
   });
 
+  $.ajax({
+  url: '/api/ema_admin_distress_data',
+  type: 'POST',
+  data: JSON.stringify(arr),
+  contentType: 'application/json; charset=utf-8',
+  dataType: 'json',
+  async: true,
+  success: function(msg) {
+    var count = msg['count']
+    var r = "record"
+    for (var i=0;i<count;i++){
+      $("#userDistressList").append('<tr><td>'+(i+1)+'</td><td>'+msg[r+i]['phone_number']+'</td><td>'+msg[r+i]['Date-time']+'</td><td>'+msg[r+i]['active']+'</td></tr>');
+    }
+    $("#userDistressListHeader").html("Distress Data")
+    }
+  });
 
 
 });
