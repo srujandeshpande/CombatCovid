@@ -277,7 +277,25 @@ def ema_admin_temp_data():
 		#if x['temperature']>38:
 		data1["record"+str(y)] = x
 		y+=1
-	data1['count'] = y-1
+	data1['count'] = y
+	return data1
+
+
+#returns cc of all people
+@app.route('/api/ema_admin_cc_data', methods=['POST'])
+def ema_admin_cc_data():
+	inputData = request.json
+	if inputData['admin_phone_number'] == "websiteuser":
+		inputData['admin_phone_number'] = session['phone_number']
+	Close_Contact = pymongo.collection.Collection(db, 'Close_Contact')
+	data = json.loads(dumps(Close_Contact.find()))
+	data1 = {}
+	y = 0
+	data1['count'] = 0
+	for x in data:
+		data1["record"+str(y)] = x
+		y+=1
+	data1['count'] = y
 	return data1
 
 
