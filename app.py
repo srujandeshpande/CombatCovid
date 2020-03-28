@@ -416,6 +416,7 @@ def add_new_user_qma():
 #QMA user adds data
 @app.route("/api/add_new_user_data_qma", methods=['POST'])
 def add_new_user_data():
+	User_Base_Data = pymongo.collection.Collection(db, 'User_Base_Data')
 	User_Data = pymongo.collection.Collection(db, 'User_Data')
 	inputData = request.json
 	flagv = 0
@@ -426,46 +427,20 @@ def add_new_user_data():
 	if not flagv:
 		return ({'success':False, 'error':"Invalid User"})
 	try:
-		pic = inputData['base_face']
-		picdata = base64.b64decode(pic)
-		date = inputData['Date-time']
-		fdate = date[:10]+'-'+date[11:13]+'-'+date[14:16]+'-'+date[17:19]
-		tempfile = open("testing_api/tempfile_"+inputData['phone_number']+"_"+fdate+".jpg", 'wb')
-		tempfile.write(picdata)
-		tempfile.close()
+		User_Base_Data.insert_one(inputData)
+		return ({'success':True})
 	except:
-		return ({'success':False, 'error':'No face base_face'})
+		return ({'success':False, 'error':"error again in last step"})
+
+
+#QMA User State data
+#location,phno,lat,long,inside,locationavailable,datetime
+@app.route("/api/user_state_qma", methods=['POST'])
+def user_state_qma():
+	User_State_Data = pymongo.collection.Collection(db, 'User_State_Data')
+	inputData = request.json
 	try:
-		headers = {'Content-Type': 'application/json', 'Ocp-Apim-Subscription-Key': '4b823f3294a047fbac047b2dd7ed445e'}
-		face_api_url = 'https://combat-covid-face.cognitiveservices.azure.com/face/v1.0/detect'
-		data1 = {"url":"http://combat-covid.azurewebsites.net/cognitive_face/testing_api/tempfile_"+inputData['phone_number']+"_"+fdate+".jpg"}
-		data2 = json.dumps(data1)
-	except:
-		return ({'success':False,'error':'Azure failed'})
-	try:
-		for i in range(5):
-			test1 = requests.get("http://combat-covid.azurewebsites.net/cognitive_face/testing_api/tempfile_"+inputData['phone_number']+"_"+fdate+".jpg")
-			if(test1.status_code == 404):
-				pass
-			else:
-				break
-		face_response = requests.post(face_api_url , headers=headers, data=data2)
-	except:
-		return ({'success':False,'error':'Link thing failed'})
-	try:
-		#return (str(face_response.json()))
-		r = face_response.json()
-		inputData['full_response'] = r
-	except:
-		return ({'success':False,'error':'Parsing error failed'})
-	try:
-		face_id = r[0]['faceId']
-		inputData['base_face'] = face_id
-	except:
-		pass
-	try:
-		myquery = { "phone_number": inputData['phone_number']}
-		User_Data.update_one(myquery,{"$set": inputData})
+		User_Base_Data.insert_one(inputData)
 		return ({'success':True})
 	except:
 		return ({'success':False, 'error':"error again in last step"})
