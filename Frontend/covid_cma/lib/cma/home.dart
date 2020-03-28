@@ -1,4 +1,36 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
+import 'package:webview_flutter/webview_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+class MyWebView extends StatelessWidget {
+  final String title;
+  final String selectedUrl;
+
+  final Completer<WebViewController> _controller =
+      Completer<WebViewController>();
+      
+  MyWebView({
+    @required this.title,
+    @required this.selectedUrl,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: Text(title),
+        ),
+        body:
+         WebView(
+          initialUrl: selectedUrl,
+          javascriptMode: JavascriptMode.unrestricted,
+          onWebViewCreated: (WebViewController webViewController) {
+            _controller.complete(webViewController);
+          },
+        ));
+  }
+}
 
 class Home extends StatelessWidget {
   //const Login({Key key}) : super(key: key);
@@ -40,15 +72,23 @@ class Home extends StatelessWidget {
                 },
             ),
             ListTile(leading: Icon(Icons.notifications),
-                title:Text('Notifications'),
+                title:Text('Updates'),
                 onTap: () {
-                      Navigator.pushNamed(context, '/notifications');
+                      Navigator.pushNamed(context, '/heat-map');
                 },
             ),
              ListTile(leading: Icon(Icons.notifications),
                 title:Text('Raise Requests'),
                 onTap: () {
                       Navigator.pushNamed(context, '/raise-requests');
+                },
+            ),
+             ListTile(leading: Icon(Icons.notifications),
+                title:Text('Log out'),
+                onTap: () async {
+                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                      prefs.remove('PhoneNumber');
+                      Navigator.pushNamedAndRemoveUntil(context, '/', (Route<dynamic> route)=> false);
                 },
             ),
           ]
@@ -99,7 +139,11 @@ class Home extends StatelessWidget {
             ),
             SizedBox(height: 10),
             RaisedButton(onPressed: (){
-              Navigator.pushNamed(context, '/heat-map');
+             Navigator.of(context).push(MaterialPageRoute(
+        builder: (BuildContext context) => MyWebView(
+              title: "Heat Map",
+              selectedUrl: "https://local-test-server.herokuapp.com/",
+            )));
             },
               color: Colors.greenAccent,
               child : Text(
@@ -140,3 +184,5 @@ class Home extends StatelessWidget {
     );
   }
 }
+
+ 

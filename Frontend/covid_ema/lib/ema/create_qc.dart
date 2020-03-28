@@ -63,8 +63,9 @@ class MyCustomForm extends StatefulWidget {
       final lnameController = TextEditingController();
       final dobController = TextEditingController();
       final emailController = TextEditingController();
+      /*
       final phcController = TextEditingController();
-      final chcController = TextEditingController(); 
+      final chcController = TextEditingController();  */
       @override  
       Widget build(BuildContext context) {  
         // Build a Form widget using the _formKey created above.  
@@ -176,38 +177,6 @@ class MyCustomForm extends StatefulWidget {
                   ) 
                 ),  
                ),  
-               TextFormField( 
-                 style :TextStyle(color:Colors.white),
-                 controller: phcController,
-                decoration: const InputDecoration(  
-                icon: const Icon(Icons.calendar_today,color:Colors.blueAccent),  
-                focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.blueAccent)
-                  ),
-                hintText: 'Enter PHC PhoneNo',  
-                labelText: 'PHC PhNo', 
-                labelStyle: TextStyle(
-                    letterSpacing: 2.0,
-                    color:Colors.cyanAccent,
-                  ) 
-                ),  
-               ),  
-               TextFormField( 
-                 style :TextStyle(color:Colors.white),
-                 controller: chcController,
-                decoration: const InputDecoration(  
-                icon: const Icon(Icons.calendar_today,color:Colors.blueAccent),  
-                focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.blueAccent)
-                  ),
-               hintText: 'Enter CHC PhoneNo',  
-                labelText: 'CHC PNo', 
-                labelStyle: TextStyle(
-                    letterSpacing: 2.0,
-                    color:Colors.cyanAccent,
-                  ) 
-                ),  
-               ),  
                /*
                new Row(
                  children:<Widget>[
@@ -255,13 +224,15 @@ class MyCustomForm extends StatefulWidget {
   String qclname = lnameController.text;
   String qcDOB = dobController.text;
    String qcemail = emailController.text;
+   /*
    String phcPno = phcController.text;
    String chcPno = chcController.text;
+   */
   String now = DateTime.now().toString();
   bool underQ = true;
   String url = "https://combat-covid.azurewebsites.net/api/add_new_user_qma";
   Map<String,String> headers = {"Content-type" : "application/json"};
-  Map js = {"phone_number":qcPno,"date_time_quarantined":now,"first_name":qcfname,"last_name":qclname,"dob":qcDOB,"currently_under_quarantine":underQ,"email":qcemail,"phc_phone_number":phcPno,"chc_phone_number":chcPno,"mo_phone_number":pno}; //ADD OTHER INFO
+  Map js = {"phone_number":qcPno,"date_time_quarantined":now,"first_name":qcfname,"last_name":qclname,"dob":qcDOB,"currently_under_quarantine":underQ,"email":qcemail,"mo_phone_number":pno}; //ADD OTHER INFO
   var body = json.encode(js);
 
   try{
