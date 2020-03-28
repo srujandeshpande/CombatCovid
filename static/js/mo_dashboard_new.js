@@ -11,13 +11,17 @@ $(function(){
   success: function(msg) {
         for(var k in msg) {
           keys.push(k);
-          $("#userDataList").append("<li><a id='induser' data-phno="+k+'>'+" "+k+" "+msg[k].first_name+" "+msg[k].last_name+" "+'</a></li>');
+          $("#userDataList").append("<li><a id='induser' onclick=showMore("+k+')>'+" "+k+" "+msg[k].first_name+" "+msg[k].last_name+" "+'</a></li>');
           $("#userDataListHeader").html("User Data")
         }
+        $('#induser').click(function() {
+          //var phno = $(this).data("phno")
+          alert("phno");
+        });
     }
-});
-  $("a").click(function() {
-    var phno = $(this).data("phno")
-    alert(phno)
   });
+
 });
+function showMore(e){
+  alert('Mo')
+}
