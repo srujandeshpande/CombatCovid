@@ -207,6 +207,33 @@ def ema_get_session_phno():
 	return str(session['phone_number'])
 
 
+# ALERTS -  temp(distress) and boundary
+
+#returns temp of all people
+@app.route('/api/ema_mo_temp_data', methods=['POST'])
+def ema_mo_temp_data():
+	inputData = request.json
+	if inputData['mo_phone_number'] == "websiteuser":
+		inputData['mo_phone_number'] = session['phone_number']
+	Temp_Data = pymongo.collection.Collection(db, 'Temperature_Data')
+	User_Data = pymongo.collection.Collection(db, 'User_Data')
+	userdata = json.loads(dumps(User_Data.find({'mo_phone_number':str(inputData['mo_phone_number'])})))
+	# does not work
+	for i in userdata:
+		temps = json.loads(dumps(Temp_Data.find()))
+	data1 = {}
+	for x in data:
+		#if x['temperature']>38:
+		data1[x['phone_number']] = x
+	return data1
+
+# #people out of area
+# @app.route('/alert_area_breach')
+# def alert_area_breach():
+#     inputData = request.json
+#     # waiting on avs on what data hes sending
+
+
 #EMA return MO
 @app.route('/api/ema_mo_user_data', methods=['POST'])
 def ema_app_mo_user_data():
@@ -216,19 +243,59 @@ def ema_app_mo_user_data():
 	User_Data = pymongo.collection.Collection(db, 'User_Data')
 	data = json.loads(dumps(User_Data.find({'mo_phone_number':str(inputData['mo_phone_number'])})))
 	data1 = {}
-	print(type(inputData['mo_phone_number']))
-	print(inputData['mo_phone_number'])
 	for i in data:
 		data1[i['phone_number']] = i
 	return data1
 
 
-def ema_mo_user_data(phone_number):
+#EMA return Admin
+@app.route('/api/ema_admin_user_data', methods=['POST'])
+def ema_app_admin_user_data():
+	inputData = request.json
+	if inputData['admin_phone_number'] == "websiteuser":
+		inputData['admin_phone_number'] = session['phone_number']
 	User_Data = pymongo.collection.Collection(db, 'User_Data')
-	data = json.loads(dumps(User_Data.find({'mo_phone_number':phone_number})))
+	data = json.loads(dumps(User_Data.find()))
 	data1 = {}
 	for i in data:
 		data1[i['phone_number']] = i
+	return data1
+
+
+#returns temp of all people
+@app.route('/api/ema_admin_temp_data', methods=['POST'])
+def ema_admin_temp_data():
+	inputData = request.json
+	if inputData['admin_phone_number'] == "websiteuser":
+		inputData['admin_phone_number'] = session['phone_number']
+	Temperature_Data = pymongo.collection.Collection(db, 'Temperature_Data')
+	data = json.loads(dumps(Temperature_Data.find()))
+	data1 = {}
+	y = 0
+	data1['count'] = 0
+	for x in data:
+		#if x['temperature']>38:
+		data1["record"+str(y)] = x
+		y+=1
+	data1['count'] = y
+	return data1
+
+
+#returns cc of all people
+@app.route('/api/ema_admin_cc_data', methods=['POST'])
+def ema_admin_cc_data():
+	inputData = request.json
+	if inputData['admin_phone_number'] == "websiteuser":
+		inputData['admin_phone_number'] = session['phone_number']
+	Close_Contact = pymongo.collection.Collection(db, 'Close_Contact')
+	data = json.loads(dumps(Close_Contact.find()))
+	data1 = {}
+	y = 0
+	data1['count'] = 0
+	for x in data:
+		data1["record"+str(y)] = x
+		y+=1
+	data1['count'] = y
 	return data1
 
 
@@ -477,6 +544,7 @@ def add_new_phc():
             objid = PHC_Data.insert_one(inputData).inserted_id
             return ({'success':True, 'phcobjid':str(objid)})
     return ({'success':False, 'error':"CHC Not Found"})
+
 
 
 @app.route('/abc')

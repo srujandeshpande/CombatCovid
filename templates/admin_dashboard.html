@@ -1,31 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generic combat covid dashboard</title>
+<style>
+    @import url('../static/css/base.css');
+    @import url('../static/css/basic-grid.css');
+
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 </head>
+<navbar>
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand font-weight-bold" href="#">EMA MO Dashboard| {{session['ema_role']}} </a>
+      </div>
+      <div class="collapse navbar-collapse " id="myNavbar">
+        <ul class="nav navbar-nav navbar-right">
+          <li class="active"><a href="#">Dashboard</a></li>
+          <li class=""><a href="/ema_add_new_user_page">Add New User</a></li>
+          <li><a href="/ema_logout">Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</navbar>
 <body>
 
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand font-weight-bold" href="#">EMA Admin Dashboard </a>
-    </div>
-    <div class="collapse navbar-collapse " id="myNavbar">
-      <ul class="nav navbar-nav navbar-right">
-        <li class="active"><a href="/ema_dashboard">Dashboard</a></li>
-        <li class=""><a href="/ema_add_new_user_page">Add New User</a></li>
-        <li><a href="/ema_logout">Logout</a></li>
-      </ul>
-    </div>
+  <br>
+  <div id="userDataListHeader">Loading User Data...</div>
+  <table id="userDataList" border="border">
+    <tr>
+      <th>Not coded yet.....................................................</th>
+    </tr>
+  </table>
   </div>
-</nav>
-<div class="row">
 
-</div>
+  <br>
+  <div id="userTempListHeader">Loading Temperature Data...</div>
+     <table id="userTempList" border="border">
+       <tr>
+         <th>Record Number</th><th>Ph Number</th><th>Temperature</th><th>Datetime</th>
+       </tr>
+     </table>
+  </div>
+
+  <br>
+  <div id="userCCListHeader">Loading Close Contact Data...</div>
+  <table id="userCCList" border="border">
+    <tr>
+      <th>Record Number</th><th>Ph Number</th><th>Datetime</th><th>Contact Name</th><th>Contact Ph</th><th>Contact Address</th>
+    </tr>
+  </table>
+  </div>
+
+  <br>
+  <div id="userListHeader">Loading Some Data...</div>
+  <div id="">
+     <ul id="userList">
+     </ul>
+  </div>
+  </div>
 
 </body>
+  <script src="{{url_for('static', filename='js/admin_dashboard_new.js')}}"></script>
+<footer>
+    <div class="basic-grid">
+
+        footer
+
+    </div>
+</footer>
 </html>
