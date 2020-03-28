@@ -18,6 +18,8 @@ mongo = pymongo.MongoClient('mongodb+srv://srujandeshpande:mongodb@cluster0-e0fe
 db = pymongo.database.Database(mongo, 'covid_v1')
 
 
+
+
 #Create link for image
 @app.route('/cognitive_face/<path:filename>')
 def image(filename):
@@ -328,6 +330,14 @@ def cma_login():
     #return ({'success':False})
     return Response(status=401)
 
+#cma raise request
+@app.route("/api/cma_new_request", methods=['POST'])
+def cma_raise_request():
+	CMA_Request_Data = pymongo.collection.Collection(db, 'CMA_Request_Data')
+	inputData = request.json
+	objid = CMA_Request_Data.insert_one(inputData).inserted_id
+	return ({'success':True, 'userobjid':str(objid)})
+	
 
 #Checks login for QMA
 @app.route("/api/qma_login", methods=['POST'])
