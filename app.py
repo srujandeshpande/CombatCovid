@@ -218,7 +218,8 @@ def ema_mo_temp_data():
 	Temp_Data = pymongo.collection.Collection(db, 'Temperature_Data')
 	User_Data = pymongo.collection.Collection(db, 'User_Data')
 	userdata = json.loads(dumps(User_Data.find({'mo_phone_number':str(inputData['mo_phone_number'])})))
-	for i in
+	# does not work
+	for i in userdata:
 		temps = json.loads(dumps(Temp_Data.find()))
 	data1 = {}
 	for x in data:
