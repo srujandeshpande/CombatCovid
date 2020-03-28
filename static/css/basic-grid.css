@@ -1,0 +1,39 @@
+.basic-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-auto-rows: 10vh;
+ }
+
+ .card-tall-2{
+    grid-row: span 8;
+ }
+
+
+
+ /* flex styling */
+.flex{
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+ /* colors */
+
+ .yellow
+{
+    background-color: yellowgreen;
+}
+
+.red{
+    background-color: red;
+}
+
+.blue{
+    background-color: blue;
+}
+
+.green{
+    background-color: green;
+}
