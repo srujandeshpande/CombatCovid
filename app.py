@@ -248,12 +248,36 @@ def ema_app_mo_user_data():
 	return data1
 
 
-def ema_mo_user_data(phone_number):
+#EMA return Admin
+@app.route('/api/ema_admin_user_data', methods=['POST'])
+def ema_app_admin_user_data():
+	inputData = request.json
+	if inputData['admin_phone_number'] == "websiteuser":
+		inputData['admin_phone_number'] = session['phone_number']
 	User_Data = pymongo.collection.Collection(db, 'User_Data')
-	data = json.loads(dumps(User_Data.find({'mo_phone_number':phone_number})))
+	data = json.loads(dumps(User_Data.find()))
 	data1 = {}
 	for i in data:
 		data1[i['phone_number']] = i
+	return data1
+
+
+#returns temp of all people
+@app.route('/api/ema_admin_temp_data', methods=['POST'])
+def ema_admin_temp_data():
+	inputData = request.json
+	if inputData['admin_phone_number'] == "websiteuser":
+		inputData['admin_phone_number'] = session['phone_number']
+	Temperature_Data = pymongo.collection.Collection(db, 'Temperature_Data')
+	data = json.loads(dumps(Temperature_Data.find()))
+	data1 = {}
+	y = 0
+	data1['count'] = 0
+	for x in data:
+		#if x['temperature']>38:
+		data1["record"+str(y)] = x
+		y+=1
+	data1['count'] = y-1
 	return data1
 
 
