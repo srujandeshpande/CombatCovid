@@ -162,6 +162,15 @@ def ema_mo_temp_data():
 #     # waiting on avs on what data hes sending
 
 
+#EMA return single user data
+@app.route('/api/ema_single_user_data', methods=['POST'])
+def ema_single_user_data():
+	inputData = request.json
+	User_Data = pymongo.collection.Collection(db, 'User_Data')
+	data = json.loads(dumps(User_Data.find_one({'phone_number':str(inputData['phone_number'])})))
+	return data
+
+
 #EMA return MO
 @app.route('/api/ema_mo_user_data', methods=['POST'])
 def ema_app_mo_user_data():
@@ -336,8 +345,8 @@ def cma_raise_request():
 	CMA_Request_Data = pymongo.collection.Collection(db, 'CMA_Request_Data')
 	inputData = request.json
 	objid = CMA_Request_Data.insert_one(inputData).inserted_id
-	return ({'success':True, 'userobjid':str(objid)})
-	
+	return ({'success':True, 'requestobjid':str(objid)})
+
 
 #Checks login for QMA
 @app.route("/api/qma_login", methods=['POST'])
