@@ -198,6 +198,30 @@ def ema_mo_user_data():
 	return data1
 
 
+#EMA return PHC
+@app.route('/ema_phc_user_data', methods=['POST'])
+def ema_phc_user_data():
+	inputData = request.json
+	User_Data = pymongo.collection.Collection(db, 'User_Data')
+	data = json.loads(dumps(User_Data.find({'phc_phone_number':inputData['phc_phone_number']})))
+	data1 = {}
+	for i in data:
+		data1[i['phone_number']] = i
+	return data1
+
+
+#EMA return CHC
+@app.route('/ema_chc_user_data', methods=['POST'])
+def ema_chc_user_data():
+	inputData = request.json
+	User_Data = pymongo.collection.Collection(db, 'User_Data')
+	data = json.loads(dumps(User_Data.find({'chc_phone_number':inputData['chc_phone_number']})))
+	data1 = {}
+	for i in data:
+		data1[i['phone_number']] = i
+	return data1
+
+
 #Get hardcoded values
 @app.route('/api/hardcoded_data')
 def hardcoded_data():
