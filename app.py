@@ -206,7 +206,7 @@ def ema_new_user_data():
 def ema_app_mo_user_data():
 	inputData = request.json
 	User_Data = pymongo.collection.Collection(db, 'User_Data')
-	data = json.loads(dumps(User_Data.find({'mo_phone_number':inputData['mo_phone_number']})))
+	data = json.loads(dumps(User_Data.find({'mo_phone_number':str(inputData['mo_phone_number'])})))
 	data1 = {}
 	for i in data:
 		data1[i['phone_number']] = i

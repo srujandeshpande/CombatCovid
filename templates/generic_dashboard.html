@@ -21,7 +21,7 @@
         <div class = 'card card-tall-2'>
           <ul id="users_under">
           </ul>
-          {{mo_user_data}}
+          {{json.loads(dumps(User_Data.find({'mo_phone_number':session['phone_number']})))}}
 
 
 
