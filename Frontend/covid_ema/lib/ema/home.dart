@@ -2,8 +2,9 @@ import 'package:covid_ema/ema/distress_calls.dart';
 import 'package:covid_ema/ema/quarantine_checklist.dart';
 import 'package:covid_ema/ema/calender.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class Home extends StatelessWidget {
+class MOHome extends StatelessWidget {
   //const Login({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -12,7 +13,7 @@ class Home extends StatelessWidget {
       appBar:  AppBar(
       backgroundColor: Colors.lightBlue[900],
         title: Text(
-          'Home',
+          'MO Home',
            style:TextStyle(
              fontSize:30,
              letterSpacing: 2.0,
@@ -58,6 +59,14 @@ class Home extends StatelessWidget {
                           builder: (context)=>
                           new Calender(title: 'Calender'))
                         );
+                },
+            ),
+            ListTile(leading: Icon(Icons.notifications),
+                title:Text('Log out'),
+                onTap: () async {
+                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                      prefs.remove('PhoneNumber');
+                      Navigator.pushNamedAndRemoveUntil(context, '/', (Route<dynamic> route)=> false);
                 },
             ),
           ]

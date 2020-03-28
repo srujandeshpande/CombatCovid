@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
+import "package:http/http.dart" as http;
+import "dart:convert";
 class QuarantineChecklist extends StatelessWidget {
   //const Login({Key key}) : super(key: key);
   @override
@@ -36,21 +38,7 @@ class QuarantineChecklist extends StatelessWidget {
       SizedBox(height: 20,),
       MyCustomForm(),
       SizedBox(height: 40,),
-      RaisedButton(
-           shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(40),
-           side:BorderSide(color:Colors.indigoAccent)),
-           color: Colors.indigo,
-          onPressed: (){},
-          child : Text(
-            'CONFIRM',
-            style: TextStyle(
-              fontSize: 18,
-              letterSpacing: 2.0,
-            ) 
-        
-          ),
-        ),
-        SizedBox(height: 200,),
+      
         ],)
       ),
         )
@@ -70,6 +58,8 @@ class MyCustomForm extends StatefulWidget {
       // Create a global key that uniquely identifies the Form widget  
       // and allows validation of the form.  
       var _x1,_x2,_x3;
+      final pnoController = TextEditingController();
+      String output ="Waiting for submission";
       final _formKey = GlobalKey<FormState>();  
       @override  
       Widget build(BuildContext context) {  
@@ -96,6 +86,8 @@ class MyCustomForm extends StatefulWidget {
               child:Column( 
               children: <Widget>[
               TextFormField(
+                 style :TextStyle(color:Colors.white),
+                controller: pnoController,
                 decoration:  InputDecoration(  
                   fillColor: Colors.blueAccent,
                   icon:  Icon(Icons.person,color:Colors.blueAccent), 
@@ -141,7 +133,33 @@ class MyCustomForm extends StatefulWidget {
                   setState(() => _x3 = val)
                 ),
                SizedBox(height: 40,),
-              
+               Container( 
+                  child:RaisedButton(
+                  shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(40),
+                  side:BorderSide(color:Colors.cyanAccent)),
+                  color: Colors.indigo,
+                  onPressed: (){
+
+                      setState(() {
+                        output = "Loading";
+                      });
+                      logForm();
+                  },
+                  child : Text(
+                    'SUBMIT',
+                    style: TextStyle(
+                      color: Colors.white,
+                      letterSpacing: 2.0,
+                    ) 
+                
+                  ),
+                ),
+                
+        ), 
+            Text(
+                  output,
+                  style:TextStyle(color:Colors.white,)
+                ),
               ],
               )
               ) 
@@ -149,5 +167,39 @@ class MyCustomForm extends StatefulWidget {
           ),  
         );  
       
-      }  
-    }  
+   }  
+       logForm() async
+  {
+   String pno = (await SharedPreferences.getInstance()).getString('PhoneNumber'); 
+  String qcPno = pnoController.text;
+  String now = DateTime.now().toString();
+  bool check1 = _x1;
+  bool check2 = _x2;
+  bool  check3= _x3;
+  String url = "https://combat-covid.azurewebsites.net/api/add_new_checklist";
+  Map<String,String> headers = {"Content-type" : "application/json"};
+  Map js = {"phone_number":qcPno,"date_time":now,"hygienic_space":check1,"controlled_symptom":check2,"stamp_reapply":check3,"mo_phone_number":pno}; //ADD OTHER INFO
+  var body = json.encode(js);
+
+  try{
+        var response = await http.post(url,headers:headers,body: body);
+        setState(() {
+          output = "loaded";
+        });
+        int code = response.statusCode;
+        print(code);
+        print(response.body);
+        if (code<300)
+          setState(() {
+            output = "SUCCESS";
+          });
+        else
+          setState(() {
+            output = "FAILED";
+          });
+  }
+  catch(Exception){
+      output  = "NO INTERNET";
+  }
+  }
+}
