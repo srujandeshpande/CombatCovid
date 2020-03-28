@@ -215,16 +215,16 @@ def ema_mo_temp_data():
 	inputData = request.json
 	if inputData['mo_phone_number'] == "websiteuser":
 		inputData['mo_phone_number'] = session['phone_number']
-    Temp_Data = pymongo.collection.Collection(db, 'Temperature_Data')
+	Temp_Data = pymongo.collection.Collection(db, 'Temperature_Data')
 	User_Data = pymongo.collection.Collection(db, 'User_Data')
 	userdata = json.loads(dumps(User_Data.find({'mo_phone_number':str(inputData['mo_phone_number'])})))
 	for i in
-    temps = json.loads(dumps(Temp_Data.find()))
-    data1 = {}
-    for x in data:
-        #if x['temperature']>38:
-        data1[x['phone_number']] = x
-    return data1
+		temps = json.loads(dumps(Temp_Data.find()))
+	data1 = {}
+	for x in data:
+		#if x['temperature']>38:
+		data1[x['phone_number']] = x
+	return data1
 
 # #people out of area
 # @app.route('/alert_area_breach')
