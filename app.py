@@ -195,7 +195,7 @@ def hardcoded_data():
 
 
 #Checks login for EMA
-@app.route("/api/ema_login", methods=['POST'])
+@app.route("/api/ema_app_login", methods=['POST'])
 def ema_app_login():
     Everyone_Data = pymongo.collection.Collection(db, 'Everyone_Data')
     inputData = request.json
