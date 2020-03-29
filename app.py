@@ -467,6 +467,17 @@ def user_state_qma():
 		return ({'success':False, 'error':"error again in last step"})
 
 
+@app.route("/api/user_face", methods=['POST'])
+def user_face():
+	Face_Data = pymongo.collection.Collection(db, 'Face_Data')
+	inputData = request.json
+	try:
+		Face_Data.insert_one(inputData)
+		return ({'success':True})
+	except:
+		return ({'success':False, 'error':"error in last step"})
+
+
 #Adds new checklist for user
 @app.route("/api/add_new_checklist", methods=['POST'])
 def add_new_checklist():
