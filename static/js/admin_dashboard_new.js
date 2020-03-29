@@ -11,8 +11,13 @@ function showMore(phno){
   async: true,
   success: function(msg) {
       $("#singleUserData").html('<tr><th>Ph Number</th><th>Date Quarantined</th><th>First Name</th><th>Last Name</th><th>DOB</th><th>Currently Under Quarantine</th><th>Email</th><th>Mo Phno</th></tr>');
-      $("#singleUserData").append('<tr><td>'+msg['phone_number']+'</td><td>'+msg['date_time_quarantined']+'</td><td>'+msg['first_name']+'</td><td>'+msg['last_name']+'</td><td>'+msg['dob']+'</td><td>'+msg['currently_under_quarantine']+'</td><td>'+msg['email']+'</td><td>'+msg['mo_phone_number']+'</td></tr>');
+      $("#singleUserData").append('<tr><td>'+msg['phone_number']+'</td><td>'+msg['date_time_quarantined']+'</td><td>'+msg['first_name']+'</td><td>'+msg['last_name']+'</td><td>'+msg['dob']+'</td><td>'+msg['currently_under_quarantine']+'</td><td>'+msg['email']+'</td><td><a href=# class="emauserph">'+msg['mo_phone_number']+'</a></td></tr>');
     }
+  });
+  $('.emauserph').click(function(event) {
+    phno = event.target.innerHTML
+    event.preventDefault()
+    emaUserMore(phno)
   });
 }
 
@@ -43,8 +48,13 @@ function emaUserMore(phno){
   success: function(msg) {
       msg = msg['record0']
       $("#singleUserData").html('<tr><th>EMA Role</th><th>First Name</th><th>Last Name</th><th>Phno</th><th>District</th><th>State</th><th>CHC</th><th>PHC</th></tr>');
-      $("#singleUserData").append('<tr><td>'+msg['ema_role']+'</td><td>'+msg['first_name']+'</td><td>'+msg['last_name']+'</td><td>'+msg['phno']+'</td><td>'+msg['district']+'</td><td>'+msg['state']+'</td><td>'+msg['chc_phone_number']+'</td><td>'+msg['phc_phone_number']+'</td></tr>');
+      $("#singleUserData").append('<tr><td>'+msg['ema_role']+'</td><td>'+msg['first_name']+'</td><td>'+msg['last_name']+'</td><td><a href=# class="emauserph">'+msg['phone_number']+'</a></td><td>'+msg['district']+'</td><td>'+msg['state']+'</td><td><a href=# class="emauserph">'+msg['chc_phone_number']+'</a></td><td><a href=# class="emauserph">'+msg['phc_phone_number']+'</a></td></tr>');
     }
+  });
+  $('.emauserph').click(function(event) {
+    phno = event.target.innerHTML
+    event.preventDefault()
+    emaUserMore(phno)
   });
 }
 
@@ -61,13 +71,18 @@ $(function(){
     var count = msg['count']
     var r = "record"
     for (var i=0;i<count;i++){
-          $("#userDataList").append('<tr><td>'+(i+1)+'</td><td><a href=# class="userph">'+msg[r+i]['phone_number']+'</a></td><td>'+msg[r+i]['date_time_quarantined']+'</td><td>'+msg[r+i]['first_name']+'</td><td>'+msg[r+i]['last_name']+'</td><td>'+msg[r+i]['dob']+'</td><td>'+msg[r+i]['currently_under_quarantine']+'</td><td>'+msg[r+i]['email']+'</td><td>'+msg[r+i]['mo_phone_number']+'</td></tr>');
+          $("#userDataList").append('<tr><td>'+(i+1)+'</td><td><a href=# class="userph">'+msg[r+i]['phone_number']+'</a></td><td>'+msg[r+i]['date_time_quarantined']+'</td><td>'+msg[r+i]['first_name']+'</td><td>'+msg[r+i]['last_name']+'</td><td>'+msg[r+i]['dob']+'</td><td>'+msg[r+i]['currently_under_quarantine']+'</td><td>'+msg[r+i]['email']+'</td><td><a href=# class="emauserph">'+msg[r+i]['mo_phone_number']+'</a></td></tr>');
         }
         $("#userDataListHeader").html("User Data")
         $('.userph').click(function(event) {
           phno = event.target.innerHTML
           event.preventDefault()
           showMore(phno)
+        });
+        $('.emauserph').click(function(event) {
+          phno = event.target.innerHTML
+          event.preventDefault()
+          emaUserMore(phno)
         });
     }
   });
@@ -91,6 +106,11 @@ $(function(){
       event.preventDefault()
       showMore(phno)
     });
+    $('.emauserph').click(function(event) {
+      phno = event.target.innerHTML
+      event.preventDefault()
+      emaUserMore(phno)
+    });
     }
   });
 
@@ -112,6 +132,11 @@ $(function(){
       phno = event.target.innerHTML
       event.preventDefault()
       showMore(phno)
+    });
+    $('.emauserph').click(function(event) {
+      phno = event.target.innerHTML
+      event.preventDefault()
+      emaUserMore(phno)
     });
   }
   });
@@ -135,6 +160,11 @@ $(function(){
       event.preventDefault()
       showMore(phno)
     });
+    $('.emauserph').click(function(event) {
+      phno = event.target.innerHTML
+      event.preventDefault()
+      emaUserMore(phno)
+    });
   }
   });
 
@@ -149,13 +179,18 @@ $(function(){
     var count = msg['count']
     var r = "record"
     for (var i=0;i<count;i++){
-      $("#userTestList").append('<tr><td>'+(i+1)+'</td><td><a href=# class="userph">'+msg[r+i]['phone_number']+'</a></td><td>'+msg[r+i]['date_time']+'</td><td>'+msg[r+i]['test_result']+'</td><td>'+msg[r+i]['other_data']+'</td><td>'+msg[r+i]['mo_phone_number']+'</td></tr>');
+      $("#userTestList").append('<tr><td>'+(i+1)+'</td><td><a href=# class="userph">'+msg[r+i]['phone_number']+'</a></td><td>'+msg[r+i]['date_time']+'</td><td>'+msg[r+i]['test_result']+'</td><td>'+msg[r+i]['other_data']+'</td><td><a href=# class="emauserph">'+msg[r+i]['mo_phone_number']+'</a></td></tr>');
     }
     $("#userTestListHeader").html("Testing Data")
     $('.userph').click(function(event) {
       phno = event.target.innerHTML
       event.preventDefault()
       showMore(phno)
+    });
+    $('.emauserph').click(function(event) {
+      phno = event.target.innerHTML
+      event.preventDefault()
+      emaUserMore(phno)
     });
   }
   });
@@ -171,13 +206,18 @@ $(function(){
     var count = msg['count']
     var r = "record"
     for (var i=0;i<count;i++){
-      $("#userChecklistList").append('<tr><td>'+(i+1)+'</td><td><a href=# class="userph">'+msg[r+i]['phone_number']+'</a></td><td>'+msg[r+i]['date_time']+'</td><td>'+msg[r+i]['hygenic_space']+'</td><td>'+msg[r+i]['controlled_symptom']+'</td><td>'+msg[r+i]['stamp_reapply']+'</td><td>'+msg[r+i]['mo_phone_number']+'</td></tr>');
+      $("#userChecklistList").append('<tr><td>'+(i+1)+'</td><td><a href=# class="userph">'+msg[r+i]['phone_number']+'</a></td><td>'+msg[r+i]['date_time']+'</td><td>'+msg[r+i]['hygenic_space']+'</td><td>'+msg[r+i]['controlled_symptom']+'</td><td>'+msg[r+i]['stamp_reapply']+'</td><td><a href=# class="emauserph">'+msg[r+i]['mo_phone_number']+'</a></td></tr>');
     }
     $("#userChecklistListHeader").html("Checklist Data")
     $('.userph').click(function(event) {
       phno = event.target.innerHTML
       event.preventDefault()
       showMore(phno)
+    });
+    $('.emauserph').click(function(event) {
+      phno = event.target.innerHTML
+      event.preventDefault()
+      emaUserMore(phno)
     });
   }
   });
@@ -259,7 +299,7 @@ $(function(){
     var count = msg['count']
     var r = "record"
     for (var i=0;i<count;i++){
-      $("#emaPHCList").append('<tr><td>'+(i+1)+'</td><td>'+msg[r+i]['ema_role']+'</td><td>'+msg[r+i]['first_name']+'</a></td><td>'+msg[r+i]['last_name']+'</td><td><a href=# class="emauserph">'+msg[r+i]['phone_number']+'</a></td><td>'+msg[r+i]['district']+'</td><td>'+msg[r+i]['state']+'</td><td>'+msg[r+i]['chc_phone_number']+'</td></tr>');
+      $("#emaPHCList").append('<tr><td>'+(i+1)+'</td><td>'+msg[r+i]['ema_role']+'</td><td>'+msg[r+i]['first_name']+'</a></td><td>'+msg[r+i]['last_name']+'</td><td><a href=# class="emauserph">'+msg[r+i]['phone_number']+'</a></td><td>'+msg[r+i]['district']+'</td><td>'+msg[r+i]['state']+'</td><td><a href=# class="emauserph">'+msg[r+i]['chc_phone_number']+'</a></td></tr>');
     }
     $("#emaPHCListHeader").html("EMA Admins")
     $('.emauserph').click(function(event) {
@@ -281,7 +321,7 @@ $(function(){
     var count = msg['count']
     var r = "record"
     for (var i=0;i<count;i++){
-      $("#emaMOList").append('<tr><td>'+(i+1)+'</td><td>'+msg[r+i]['ema_role']+'</td><td>'+msg[r+i]['first_name']+'</a></td><td>'+msg[r+i]['last_name']+'</td><td><a href=# class="emauserph">'+msg[r+i]['phone_number']+'</a></td><td>'+msg[r+i]['district']+'</td><td>'+msg[r+i]['state']+'</td><td>'+msg[r+i]['chc_phone_number']+'</td><td>'+msg[r+i]['phc_phone_number']+'</td></tr>');
+      $("#emaMOList").append('<tr><td>'+(i+1)+'</td><td>'+msg[r+i]['ema_role']+'</td><td>'+msg[r+i]['first_name']+'</a></td><td>'+msg[r+i]['last_name']+'</td><td><a href=# class="emauserph">'+msg[r+i]['phone_number']+'</a></td><td>'+msg[r+i]['district']+'</td><td>'+msg[r+i]['state']+'</td><td><a href=# class="emauserph">'+msg[r+i]['chc_phone_number']+'</a></td><td><a href=# class="emauserph">'+msg[r+i]['phc_phone_number']+'</a></td></tr>');
     }
     $("#emaMOListHeader").html("EMA Admins")
     $('.emauserph').click(function(event) {
