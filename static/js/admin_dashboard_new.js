@@ -208,6 +208,60 @@ $(function(){
   });
 
   $.ajax({
+  url: '/api/ema_admin_lstate_data',
+  type: 'POST',
+  data: JSON.stringify(arr),
+  contentType: 'application/json; charset=utf-8',
+  dataType: 'json',
+  async: true,
+  success: function(msg) {
+    var count = msg['count']
+    var r = "record"
+    for (var i=0;i<count;i++){
+      $("#userLatestStateList").append('<tr><td>'+(i+1)+'</td><td><a href=# class="userph">'+msg[r+i]['phone-number']+'</a></td><td>'+msg[r+i]['lat']+'</td><td>'+msg[r+i]['long']+'</td><td>'+msg[r+i]['date-time']+'</td><td>'+msg[r+i]['distance-from-home']+'</td><td>'+msg[r+i]['proximity-to-home']+'</td><td>'+msg[r+i]['location_enabled']+'</td><td>'+msg[r+i]['Last-face-log']+'</td><td>'+msg[r+i]['Last-temp-log']+'</td></tr>');
+    }
+    $("#userLatestStateListHeader").html("User Latest State Data")
+    $('.userph').click(function(event) {
+      phno = event.target.innerHTML
+      event.preventDefault()
+      showMore(phno)
+    });
+    $('.emauserph').click(function(event) {
+      phno = event.target.innerHTML
+      event.preventDefault()
+      emaUserMore(phno)
+    });
+  }
+  });
+
+  $.ajax({
+  url: '/api/ema_admin_state_data',
+  type: 'POST',
+  data: JSON.stringify(arr),
+  contentType: 'application/json; charset=utf-8',
+  dataType: 'json',
+  async: true,
+  success: function(msg) {
+    var count = msg['count']
+    var r = "record"
+    for (var i=0;i<count;i++){
+      $("#userStateList").append('<tr><td>'+(i+1)+'</td><td><a href=# class="userph">'+msg[r+i]['phone-number']+'</a></td><td>'+msg[r+i]['lat']+'</td><td>'+msg[r+i]['long']+'</td><td>'+msg[r+i]['date-time']+'</td><td>'+msg[r+i]['distance-from-home']+'</td><td>'+msg[r+i]['proximity-to-home']+'</td><td>'+msg[r+i]['location_enabled']+'</td><td>'+msg[r+i]['Last-face-log']+'</td><td>'+msg[r+i]['Last-temp-log']+'</td></tr>');
+    }
+    $("#userStateListHeader").html("User State Data")
+    $('.userph').click(function(event) {
+      phno = event.target.innerHTML
+      event.preventDefault()
+      showMore(phno)
+    });
+    $('.emauserph').click(function(event) {
+      phno = event.target.innerHTML
+      event.preventDefault()
+      emaUserMore(phno)
+    });
+  }
+  });
+
+  $.ajax({
   url: '/api/ema_admin_testing_data',
   type: 'POST',
   data: JSON.stringify(arr),

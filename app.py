@@ -463,6 +463,24 @@ def ema_mo_distress_data():
 	return data1
 
 
+#returns lstate for admin
+@app.route('/api/ema_admin_lstate_data', methods=['POST'])
+def ema_admin_lstate_data():
+	inputData = request.json
+	if inputData['admin_phone_number'] == "websiteuser":
+		inputData['admin_phone_number'] = session['phone_number']
+	User_Latest_State_Data = pymongo.collection.Collection(db, 'User_Latest_State_Data')
+	data = json.loads(dumps(User_Latest_State_Data.find()))
+	data1 = {}
+	y = 0
+	data1['count'] = 0
+	for x in data:
+		data1["record"+str(y)] = x
+		y+=1
+	data1['count'] = y
+	return data1
+
+
 #EMA return CHC,PHC checklist data
 @app.route('/api/ema_cp_lstate_data', methods=['POST'])
 def ema_app_cp_lstate_data():
@@ -521,6 +539,24 @@ def ema_mo_lstate_data():
 			#if x['temperature']>38:
 			data1["record"+str(y)] = x
 			y+=1
+	data1['count'] = y
+	return data1
+
+
+#returns state for admin
+@app.route('/api/ema_admin_state_data', methods=['POST'])
+def ema_admin_state_data():
+	inputData = request.json
+	if inputData['admin_phone_number'] == "websiteuser":
+		inputData['admin_phone_number'] = session['phone_number']
+	User_State_Data = pymongo.collection.Collection(db, 'User_State_Data')
+	data = json.loads(dumps(User_State_Data.find()))
+	data1 = {}
+	y = 0
+	data1['count'] = 0
+	for x in data:
+		data1["record"+str(y)] = x
+		y+=1
 	data1['count'] = y
 	return data1
 
