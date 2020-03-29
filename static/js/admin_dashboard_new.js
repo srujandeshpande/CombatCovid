@@ -35,6 +35,7 @@ $(function(){
         $("#userDataListHeader").html("User Data")
         $('.userph').click(function(event) {
           phno = event.target.innerHTML
+          event.preventDefault()
           showMore(phno)
         });
     }
@@ -56,6 +57,7 @@ $(function(){
     $("#userTempListHeader").html("Temperature Data")
     $('.userph').click(function(event) {
       phno = event.target.innerHTML
+      event.preventDefault()
       showMore(phno)
     });
     }
@@ -77,6 +79,7 @@ $(function(){
     $("#userCCListHeader").html("Close Contact Data")
     $('.userph').click(function(event) {
       phno = event.target.innerHTML
+      event.preventDefault()
       showMore(phno)
     });
   }
@@ -98,9 +101,53 @@ $(function(){
     $("#userDistressListHeader").html("Distress Data")
     $('.userph').click(function(event) {
       phno = event.target.innerHTML
+      event.preventDefault()
       showMore(phno)
     });
   }
   });
 
+  $.ajax({
+  url: '/api/ema_admin_testing_data',
+  type: 'POST',
+  data: JSON.stringify(arr),
+  contentType: 'application/json; charset=utf-8',
+  dataType: 'json',
+  async: true,
+  success: function(msg) {
+    var count = msg['count']
+    var r = "record"
+    for (var i=0;i<count;i++){
+      $("#userTestList").append('<tr><td>'+(i+1)+'</td><td><a href=# class="userph">'+msg[r+i]['phone_number']+'</a></td><td>'+msg[r+i]['date_time']+'</td><td>'+msg[r+i]['test_result']+'</td><td>'+msg[r+i]['other_data']+'</td><td>'+msg[r+i]['mo_phone_number']+'</td></tr>');
+    }
+    $("#userTestListHeader").html("Testing Data")
+    $('.userph').click(function(event) {
+      phno = event.target.innerHTML
+      event.preventDefault()
+      showMore(phno)
+    });
+  }
+  });
+
+  $.ajax({
+  url: '/api/ema_admin_checklist_data',
+  type: 'POST',
+  data: JSON.stringify(arr),
+  contentType: 'application/json; charset=utf-8',
+  dataType: 'json',
+  async: true,
+  success: function(msg) {
+    var count = msg['count']
+    var r = "record"
+    for (var i=0;i<count;i++){
+      $("#userChecklistList").append('<tr><td>'+(i+1)+'</td><td><a href=# class="userph">'+msg[r+i]['phone_number']+'</a></td><td>'+msg[r+i]['date_time']+'</td><td>'+msg[r+i]['hygenic_space']+'</td><td>'+msg[r+i]['controlled_symptom']+'</td><td>'+msg[r+i]['stamp_reapply']+'</td><td>'+msg[r+i]['mo_phone_number']+'</td></tr>');
+    }
+    $("#userChecklistListHeader").html("Checklist Data")
+    $('.userph').click(function(event) {
+      phno = event.target.innerHTML
+      event.preventDefault()
+      showMore(phno)
+    });
+  }
+  });
 });
