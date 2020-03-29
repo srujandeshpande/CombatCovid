@@ -113,7 +113,7 @@ $(function(){
           $("#userDataList").append('<tr><td>'+(i+1)+"</td><td><a href=# class='userph'>"+msg[r+i]['phone_number']+'</a></td><td>'+msg[r+i]['date_time_quarantined']+'</td><td>'+msg[r+i]['first_name']+'</td><td>'+msg[r+i]['last_name']+'</td><td>'+msg[r+i]['dob']+'</td><td>'+msg[r+i]['currently_under_quarantine']+'</td><td>'+msg[r+i]['email']+"</td><td><a href=# class='emauserph'>"+msg[r+i]['mo_phone_number']+'</a></td></tr>');
         }
         $("#userDataListHeader").html("User Data")
-        $('.userph').click(function(event) {
+        $('.userph').unbind().click(function(event) {
           phno = event.target.innerHTML
           event.preventDefault()
           window.open('\\user\\'+phno, '_blank');
@@ -141,7 +141,7 @@ $(function(){
       $("#userTempList").append('<tr><td>'+(i+1)+'</td><td><a href=# class="userph">'+msg[r+i]['phone_number']+'</a></td><td>'+msg[r+i]['temperature']+'</td><td>'+msg[r+i]['Date-time']+'</td></tr>');
     }
     $("#userTempListHeader").html("Temperature Data")
-    $('.userph').click(function(event) {
+    $('.userph').unbind().click(function(event) {
       phno = event.target.innerHTML
       event.preventDefault()
       window.open('\\user\\'+phno, '_blank');
@@ -169,7 +169,7 @@ $(function(){
       $("#userCCList").append('<tr><td>'+(i+1)+'</td><td><a href=# class="userph">'+msg[r+i]['phone_number']+'</a></td><td>'+msg[r+i]['Date-time']+'</td><td>'+msg[r+i]['contact-pno']+'</td><td>'+msg[r+i]['contact-name']+'</td><td>'+msg[r+i]['contact-address']+'</td></tr>');
     }
     $("#userCCListHeader").html("Close Contact Data")
-    $('.userph').click(function(event) {
+    $('.userph').unbind().click(function(event) {
       phno = event.target.innerHTML
       event.preventDefault()
       window.open('\\user\\'+phno, '_blank');
@@ -197,7 +197,7 @@ $(function(){
       $("#userDistressList").append('<tr><td>'+(i+1)+'</td><td><a href=# class="userph">'+msg[r+i]['phone_number']+'</a></td><td>'+msg[r+i]['Date-time']+'</td><td>'+msg[r+i]['active']+'</td></tr>');
     }
     $("#userDistressListHeader").html("Distress Data")
-    $('.userph').click(function(event) {
+    $('.userph').unbind().click(function(event) {
       phno = event.target.innerHTML
       event.preventDefault()
       window.open('\\user\\'+phno, '_blank');
@@ -225,7 +225,7 @@ $(function(){
       $("#userLatestStateList").append('<tr><td>'+(i+1)+'</td><td><a href=# class="userph">'+msg[r+i]['phone-number']+'</a></td><td>'+msg[r+i]['lat']+'</td><td>'+msg[r+i]['long']+'</td><td>'+msg[r+i]['date-time']+'</td><td>'+msg[r+i]['distance-from-home']+'</td><td>'+msg[r+i]['proximity-to-home']+'</td><td>'+msg[r+i]['location_enabled']+'</td><td>'+msg[r+i]['Last-face-log']+'</td><td>'+msg[r+i]['Last-temp-log']+'</td></tr>');
     }
     $("#userLatestStateListHeader").html("User Latest State Data")
-    $('.userph').click(function(event) {
+    $('.userph').unbind().click(function(event) {
       phno = event.target.innerHTML
       event.preventDefault()
       window.open('\\user\\'+phno, '_blank');
@@ -253,7 +253,7 @@ $(function(){
       $("#userStateList").append('<tr><td>'+(i+1)+'</td><td><a href=# class="userph">'+msg[r+i]['phone-number']+'</a></td><td>'+msg[r+i]['lat']+'</td><td>'+msg[r+i]['long']+'</td><td>'+msg[r+i]['date-time']+'</td><td>'+msg[r+i]['distance-from-home']+'</td><td>'+msg[r+i]['proximity-to-home']+'</td><td>'+msg[r+i]['location_enabled']+'</td><td>'+msg[r+i]['Last-face-log']+'</td><td>'+msg[r+i]['Last-temp-log']+'</td></tr>');
     }
     $("#userStateListHeader").html("User State Data")
-    $('.userph').click(function(event) {
+    $('.userph').unbind().click(function(event) {
       phno = event.target.innerHTML
       event.preventDefault()
       window.open('\\user\\'+phno, '_blank');
@@ -281,7 +281,7 @@ $(function(){
       $("#userTestList").append('<tr><td>'+(i+1)+'</td><td><a href=# class="userph">'+msg[r+i]['phone_number']+'</a></td><td>'+msg[r+i]['date_time']+'</td><td>'+msg[r+i]['test_result']+'</td><td>'+msg[r+i]['other_data']+'</td><td><a href=# class="emauserph">'+msg[r+i]['mo_phone_number']+'</a></td></tr>');
     }
     $("#userTestListHeader").html("Testing Data")
-    $('.userph').click(function(event) {
+    $('.userph').unbind().click(function(event) {
       phno = event.target.innerHTML
       event.preventDefault()
       window.open('\\user\\'+phno, '_blank');
@@ -309,7 +309,7 @@ $(function(){
       $("#userChecklistList").append('<tr><td>'+(i+1)+'</td><td><a href=# class="userph">'+msg[r+i]['phone_number']+'</a></td><td>'+msg[r+i]['date_time']+'</td><td>'+msg[r+i]['hygienic_space']+'</td><td>'+msg[r+i]['controlled_symptom']+'</td><td>'+msg[r+i]['stamp_reapply']+'</td><td><a href=# class="emauserph">'+msg[r+i]['mo_phone_number']+'</a></td></tr>');
     }
     $("#userChecklistListHeader").html("Checklist Data")
-    $('.userph').click(function(event) {
+    $('.userph').unbind().click(function(event) {
       phno = event.target.innerHTML
       event.preventDefault()
       window.open('\\user\\'+phno, '_blank');
