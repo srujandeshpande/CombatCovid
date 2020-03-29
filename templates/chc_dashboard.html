@@ -1,63 +1,161 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generic combat covid dashboard</title>
+<!--style>
+    @import url('../static/css/base.css');
+    @import url('../static/css/basic-grid.css');
+
+</style-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 </head>
+<navbar>
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand font-weight-bold" href="#">EMA MO Dashboard|{{session['ema_role']}}|{{session['phone_number']}} </a>
+      </div>
+      <div class="collapse navbar-collapse " id="myNavbar">
+        <ul class="nav navbar-nav navbar-right">
+          <li class="active"><a href="#">Dashboard</a></li>
+          <li class=""><a href="/ema_add_new_user_page">Add New User</a></li>
+          <li><a href="/ema_logout">Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</navbar>
 <body>
 
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand font-weight-bold" href="#">EMA CHC Dashboard</a>
-    </div>
-    <div class="collapse navbar-collapse " id="myNavbar">
-      <ul class="nav navbar-nav navbar-right">
-        <li class="active"><a href="#">Dashboard</a></li>
-        <li class=""><a href="/ema_add_new_user_page">Add New User</a></li>
-        <li><a href="/ema_logout">Logout</a></li>
-      </ul>
-    </div>
-  </div>
-</nav>
-
-<div class="row">
-       <div class="col-sm-3 section">
-            <h2>REQUESTS</h2>
-              <div class="row">
-                //List of requests from CMA //
-              </div>
-     </div>
-     <div class="col-sm-6 section">
-       <div class="row row-no-gutters">
-               <div class="col-sm-2" >
-                 <h1>31</h1>
-                 <p>Citizens </p1>
-               </div>
-               <div class="col-sm-2" >
-                 <h1>21</h1>
-                 <p>Unregistered</p1>
-               </div>
-               <div class="col-sm-2" >
-                 <h1>11</h1>
-                  <p>Registered</p1>
-               </div>
-        </div>
-    <div class="row row-no-gutters">
-           <a href="mo_calender.html"><div class="col-sm-3 section">Calender</div></a>
-           <a href="mo_qcs.html"><div class="col-sm-3 section">Citizens under me</div></a>
-    </div>
- </div>
- <div class="col-sm-3 section">
-   <h2>ALERTS</h2>
-     <div class="row">
-       //List of alerts from QMA //
-     </div>
- </div>
+  <div>
+  <table id="singleUserData" border="border"></table>
 </div>
 
+  <br>
+  <div id="userDataListHeader">Search for Users</div>
+  <form id="userDataSearch" >
+    <input type="text" name="phone_number" placeholder="Phno"></input>
+    <input type="text" name="date_time_quarantined" placeholder="Date time Quarantined"/>
+    <input type="text" name="first_name" placeholder="First Name"/>
+    <input type="text" name="last_name" placeholder="Last Name"/>
+    <input type="text" name="dob" placeholder="DOB"/>
+    <label>Currently Under Quarantine</label>
+    <input type="checkbox" name="currently_under_quarantine" />
+    <input type="text" name="email" placeholder="Email"/>
+    <input type="text" name="mo_phone_number" placeholder="MO Phno"/>
+    <input type="submit"/>
+    <input type="reset"/>
+  </form>
+
+  <div id="userDataListHeader">Loading User Data...</div>
+  <table id="userDataList" border="border">
+    <tr>
+      <th>Record Number</th><th>Ph Number</th><th>Date Quarantined</th><th>First Name</th><th>Last Name</th><th>DOB</th><th>Currently Under Quarantine</th><th>Email</th><th>Mo Phno</th>
+    </tr>
+  </table>
+  </div>
+
+  <br>
+  <div id="userTempListHeader">Loading Temperature Data...</div>
+     <table id="userTempList" border="border">
+       <tr>
+         <th>Record Number</th><th>Ph Number</th><th>Temperature</th><th>Datetime</th>
+       </tr>
+     </table>
+  </div>
+
+  <br>
+  <div id="userCCListHeader">Loading Close Contact Data...</div>
+  <table id="userCCList" border="border">
+    <tr>
+      <th>Record Number</th><th>Ph Number</th><th>Datetime</th><th>Contact Name</th><th>Contact Ph</th><th>Contact Address</th>
+    </tr>
+  </table>
+  </div>
+
+  <br>
+  <div id="userDistressListHeader">Loading Distress Data...</div>
+  <table id="userDistressList" border="border">
+    <tr>
+      <th>Record Number</th><th>Ph Number</th><th>Datetime</th><th>Active?</th>
+    </tr>
+  </table>
+  </div>
+
+  <br>
+  <div id="userTestListHeader">Loading Testing Data...</div>
+  <table id="userTestList" border="border">
+    <tr>
+      <th>Record Number</th><th>Ph Number</th><th>Datetime</th><th>Test Result</th><th>Other Data</th><th>MO Phno</th>
+    </tr>
+  </table>
+  </div>
+
+  <br>
+  <div id="userChecklistListHeader">Loading Checklist Data...</div>
+  <table id="userChecklistList" border="border">
+    <tr>
+      <th>Record Number</th><th>Ph Number</th><th>Datetime</th><th>Hygenic Space</th><th>Controlled Symptoms</th><th>Stamp Reapply</th><th>MO Phno</th>
+    </tr>
+  </table>
+  </div>
+
+  <br>
+  <div id="userRequestListHeader">Loading CMA Checking Requests...</div>
+  <table id="userRequestList" border="border">
+    <tr>
+      <th>Record Number</th><th>Ph Number</th><th>Name</th><th>Datetime</th><th>Symptoms</th><th>Travel</th><th>Contact</th><th>DOB</th>
+    </tr>
+  </table>
+  </div>
+
+  <br>
+  <div id="emaAdminListHeader">Loading EMA Admins...</div>
+  <table id="emaAdminList" border="border">
+    <tr>
+      <th>Record Number</th><th>EMA Role</th><th>First Name</th><th>Last Name</th><th>Phno</th><th>District</th><th>State</th>
+    </tr>
+  </table>
+  </div>
+
+  <br>
+  <div id="emaCHCListHeader">Loading EMA CHCs...</div>
+  <table id="emaCHCList" border="border">
+    <tr>
+      <th>Record Number</th><th>EMA Role</th><th>First Name</th><th>Last Name</th><th>Phno</th><th>District</th><th>State</th>
+    </tr>
+  </table>
+  </div>
+
+  <br>
+  <div id="emaPHCListHeader">Loading EMA PHCs...</div>
+  <table id="emaPHCList" border="border">
+    <tr>
+      <th>Record Number</th><th>EMA Role</th><th>First Name</th><th>Last Name</th><th>Phno</th><th>District</th><th>State</th><th>CHC</th>
+    </tr>
+  </table>
+  </div>
+
+  <br>
+  <div id="emaMOListHeader">Loading EMA MOs...</div>
+  <table id="emaMOList" border="border">
+    <tr>
+      <th>Record Number</th><th>EMA Role</th><th>First Name</th><th>Last Name</th><th>Phno</th><th>District</th><th>State</th><th>CHC</th><th>PHC</th>
+    </tr>
+  </table>
+  </div>
+
 </body>
+  <script src="{{url_for('static', filename='js/admin_dashboard_new.js')}}"></script>
+<footer>
+    <div class="basic-grid">
+
+        footer
+
+    </div>
+</footer>
 </html>

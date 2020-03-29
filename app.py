@@ -7,7 +7,8 @@ from PIL import Image
 from io import StringIO
 import base64
 import requests
-#from flask_pymongo import PyMongo
+import random
+
 app = Flask(__name__)
 CORS(app)
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
@@ -16,8 +17,6 @@ app.secret_key = b'\xd2(*K\xa0\xa8\x13]g\x1e9\x88\x10\xb0\xe0\xcc'
 #Loads the Database and Collections
 mongo = pymongo.MongoClient('mongodb+srv://srujandeshpande:mongodb@cluster0-e0fen.azure.mongodb.net/test?retryWrites=true&w=majority', maxPoolSize=50, connect=True)
 db = pymongo.database.Database(mongo, 'covid_v1')
-
-
 
 
 #Create link for image
@@ -437,17 +436,23 @@ def qma_login():
 def add_new_user_qma():
 	User_Data = pymongo.collection.Collection(db, 'User_Data')
 	Everyone_Data = pymongo.collection.Collection(db, 'Everyone_Data')
+	Close_Contact = pymongo.collection.Collection(db, 'Close_Contact')
+	CMA_Request_Data = pymongo.collection.Collection(db, 'CMA_Request_Data')
 	inputData = request.json
 	try:
-		for i in json.loads(dumps(Everyone_Data.find())):
-			if i['mo_phone_number'] == inputData['phone_number']:
-				return ({'success':False, 'error':"Duplicate Phone Number"})
 		for i in json.loads(dumps(User_Data.find())):
 			if i['phone_number'] == inputData['phone_number']:
 				return ({'success':False, 'error':"Duplicate Phone Number"})
 	except:
 		pass
-	pswd = "abcd1234" #temporary for now
+	try:
+		Close_Contact.update_many({'contant-pno':inputData['phone_number']},{'QMA':True})
+		CMA_Request_Data.update_many({'phone_number':inputData['phone_number']},{'open':True,'QMA':True})
+	except:
+		pass
+	pswdstring = "abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ123456789"
+	pswd = ''.join(random.choice(pswdstring) for i in range(8))
+	#pswd = "abcd1234" #temporary for now
 	inputData['password'] = pswd
 	objid = User_Data.insert_one(inputData).inserted_id
 	return ({'success':True, 'userobjid':str(objid), 'password':pswd})
