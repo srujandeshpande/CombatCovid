@@ -466,11 +466,8 @@ def add_new_user_data():
 			break
 	if not flagv:
 		return ({'success':False, 'error':"Invalid User"})
-	try:
-		User_Base_Data.insert_one(inputData)
-		return ({'success':True})
-	except:
-		return ({'success':False, 'error':"error again in last step"})
+	User_Base_Data.insert_one(inputData)
+	return ({'success':True})
 
 
 #QMA User State data
