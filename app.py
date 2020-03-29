@@ -258,6 +258,24 @@ def ema_admin_distress_data():
 	return data1
 
 
+#returns distress of all people
+@app.route('/api/ema_admin_testing_data', methods=['POST'])
+def ema_admin_testing_data():
+	inputData = request.json
+	if inputData['admin_phone_number'] == "websiteuser":
+		inputData['admin_phone_number'] = session['phone_number']
+	Testing_Data = pymongo.collection.Collection(db, 'Testing_Data')
+	data = json.loads(dumps(Testing_Data.find()))
+	data1 = {}
+	y = 0
+	data1['count'] = 0
+	for x in data:
+		data1["record"+str(y)] = x
+		y+=1
+	data1['count'] = y
+	return data1
+
+
 #EMA return PHC
 @app.route('/ema_phc_user_data', methods=['POST'])
 def ema_phc_user_data():
