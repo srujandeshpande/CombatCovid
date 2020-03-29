@@ -170,6 +170,25 @@ def ema_single_cma_user_data():
 	return data
 
 
+#EMA return search
+@app.route('/api/ema_search_user_data', methods=['POST'])
+def ema_search_user_data():
+	inputData = request.json
+	User_Data = pymongo.collection.Collection(db, 'User_Data')
+	try:
+		data = json.loads(dumps(User_Data.find(inputData)))
+		data1 = {}
+		y = 0
+		data1['count'] = 0
+		for x in data:
+			data1["record"+str(y)] = x
+			y+=1
+		data1['count'] = y
+		return data1
+	except:
+		return ({"phone_number":"Error, Please try again"})
+
+
 #EMA return single user data
 @app.route('/api/ema_single_user_data', methods=['POST'])
 def ema_single_user_data():
