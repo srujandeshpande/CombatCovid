@@ -7,7 +7,42 @@ class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeState extends State<Home> {  
+  String temptext = 'You last logged your temperature at:';
+  String facetext = 'You last logged your face at:';
+  bool isface =  true;
+  bool istemp = true;
+  String facetime = '';
+  String temptime = '';
+  void fun() async
+  {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String pno = prefs.getString('PhoneNumber');
+    prefs.setBool('Logged-in_$pno', true);
+    facetime = prefs.getString("last-face-log");
+    temptime = prefs.getString("last-temp-log");
+
+    isface = prefs.getBool('FTIME')!=null?prefs.getBool('FTIME'):true;
+    istemp = prefs.getBool('TTIME')!=null?prefs.getBool('TTIME'):true;
+    setState(() {
+      isface = isface;
+      istemp = istemp;
+    });
+    if (isface == false)
+        facetext = "Log your face ASAP.Last logged at:";
+    if (istemp == false)
+        temptext = "Log your temperature ASAP.Last logged at:";
+    setState(() {
+      facetext = "$facetext $temptime";
+      temptext = "$temptext $facetime";
+    });
+  }
+  @override
+  void initState(){
+    fun();
+      super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,9 +81,9 @@ class _HomeState extends State<Home> {
                 },
             ),
             ListTile(leading: Icon(Icons.notifications),
-                title:Text('Notifications'),
+                title:Text('location'),
                 onTap: () {
-                      Navigator.pushNamed(context, '/notifications');
+                      Navigator.pushNamed(context, '/location');
                 },
             ), 
             ListTile(leading: Icon(Icons.notifications),
@@ -62,11 +97,12 @@ class _HomeState extends State<Home> {
           ]
         ),
       ),
+
       body: Padding(
           padding: const EdgeInsets.fromLTRB(30, 40, 40, 40),
           child: Column(children: <Widget>[
             Text(
-              'Your last face-login was done last:',
+              facetext,
               style: TextStyle(
                 color: Colors.grey,
                 letterSpacing: 2.0,
@@ -88,7 +124,7 @@ class _HomeState extends State<Home> {
             ),
 
             Text(
-              'Your last Temperatue login was done last:',
+              temptext,
               style: TextStyle(
                 color: Colors.grey,
                 letterSpacing: 2.0,
@@ -132,7 +168,7 @@ class _HomeState extends State<Home> {
             ),
           ],)  
       ),
-
+      
       floatingActionButton: FloatingActionButton(
         onPressed: (){
           Navigator.pushNamed(context, '/distress');

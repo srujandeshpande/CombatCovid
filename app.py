@@ -944,13 +944,13 @@ def add_new_user_data():
 	inputData = request.json
 	flagv = 0
 	for i in json.loads(dumps(User_Data.find())):
-		if i['phone_number'] == str(inputData['phone_number']):
+		if i['phone_number'] == str(inputData['phone-number']):
 			flagv = 1
 			break
 	if not flagv:
 		return ({'success':False, 'error':"Invalid User"})
 	User_Base_Data.insert_one(inputData)
-	User_Latest_State_Data.insert_one({'phone_number':inputData['phone_number']})
+	User_Latest_State_Data.insert_one({'phone-number':inputData['phone-number']})
 	return ({'success':True})
 
 
