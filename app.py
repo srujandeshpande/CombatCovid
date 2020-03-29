@@ -320,27 +320,19 @@ def ema_admin_request_data():
 	return data1
 
 
-#EMA return PHC
-@app.route('/ema_phc_user_data', methods=['POST'])
-def ema_phc_user_data():
+#EMA return EMA data
+@app.route('/api/ema_admin_ema_data', methods=['POST'])
+def ema_admin_ema_data():
 	inputData = request.json
-	User_Data = pymongo.collection.Collection(db, 'User_Data')
-	data = json.loads(dumps(User_Data.find({'phc_phone_number':inputData['phc_phone_number']})))
+	Everyone_Data = pymongo.collection.Collection(db, 'Everyone_Data')
+	data = json.loads(dumps(Everyone_Data.find(inputData)))
 	data1 = {}
-	for i in data:
-		data1[i['phone_number']] = i
-	return data1
-
-
-#EMA return CHC
-@app.route('/ema_chc_user_data', methods=['POST'])
-def ema_chc_user_data():
-	inputData = request.json
-	User_Data = pymongo.collection.Collection(db, 'User_Data')
-	data = json.loads(dumps(User_Data.find({'chc_phone_number':inputData['chc_phone_number']})))
-	data1 = {}
-	for i in data:
-		data1[i['phone_number']] = i
+	y = 0
+	data1['count'] = 0
+	for x in data:
+		data1["record"+str(y)] = x
+		y+=1
+	data1['count'] = y
 	return data1
 
 

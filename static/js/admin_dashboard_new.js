@@ -32,6 +32,21 @@ function cmaUserMore(phno){
   });
 }
 
+function emaUserMore(phno){
+  $.ajax({
+  url: '/api/ema_admin_ema_data',
+  type: 'POST',
+  data: JSON.stringify({"phone_number":phno}),
+  contentType: 'application/json; charset=utf-8',
+  dataType: 'json',
+  async: true,
+  success: function(msg) {
+      msg = msg['record0']
+      $("#singleUserData").html('<tr><th>EMA Role</th><th>First Name</th><th>Last Name</th><th>Phno</th><th>District</th><th>State</th><th>CHC</th><th>PHC</th></tr>');
+      $("#singleUserData").append('<tr><td>'+msg['ema_role']+'</td><td>'+msg['first_name']+'</td><td>'+msg['last_name']+'</td><td>'+msg['phno']+'</td><td>'+msg['district']+'</td><td>'+msg['state']+'</td><td>'+msg['chc_phone_number']+'</td><td>'+msg['phc_phone_number']+'</td></tr>');
+    }
+  });
+}
 
 $(function(){
 
@@ -188,4 +203,93 @@ $(function(){
     });
   }
   });
+
+  $.ajax({
+  url: '/api/ema_admin_ema_data',
+  type: 'POST',
+  data: JSON.stringify({'ema_role':'admin'}),
+  contentType: 'application/json; charset=utf-8',
+  dataType: 'json',
+  async: true,
+  success: function(msg) {
+    var count = msg['count']
+    var r = "record"
+    for (var i=0;i<count;i++){
+      $("#emaAdminList").append('<tr><td>'+(i+1)+'</td><td>'+msg[r+i]['ema_role']+'</td><td>'+msg[r+i]['first_name']+'</a></td><td>'+msg[r+i]['last_name']+'</td><td><a href=# class="emauserph">'+msg[r+i]['phone_number']+'</a></td><td>'+msg[r+i]['district']+'</td><td>'+msg[r+i]['state']+'</td></tr>');
+    }
+    $("#emaAdminListHeader").html("EMA Admins")
+    $('.emauserph').click(function(event) {
+      phno = event.target.innerHTML
+      event.preventDefault()
+      emaUserMore(phno)
+    });
+  }
+  });
+
+  $.ajax({
+  url: '/api/ema_admin_ema_data',
+  type: 'POST',
+  data: JSON.stringify({'ema_role':'chc'}),
+  contentType: 'application/json; charset=utf-8',
+  dataType: 'json',
+  async: true,
+  success: function(msg) {
+    var count = msg['count']
+    var r = "record"
+    for (var i=0;i<count;i++){
+      $("#emaCHCList").append('<tr><td>'+(i+1)+'</td><td>'+msg[r+i]['ema_role']+'</td><td>'+msg[r+i]['first_name']+'</a></td><td>'+msg[r+i]['last_name']+'</td><td><a href=# class="emauserph">'+msg[r+i]['phone_number']+'</a></td><td>'+msg[r+i]['district']+'</td><td>'+msg[r+i]['state']+'</td></tr>');
+    }
+    $("#emaCHCListHeader").html("EMA Admins")
+    $('.emauserph').click(function(event) {
+      phno = event.target.innerHTML
+      event.preventDefault()
+      emaUserMore(phno)
+    });
+  }
+  });
+
+  $.ajax({
+  url: '/api/ema_admin_ema_data',
+  type: 'POST',
+  data: JSON.stringify({'ema_role':'phc'}),
+  contentType: 'application/json; charset=utf-8',
+  dataType: 'json',
+  async: true,
+  success: function(msg) {
+    var count = msg['count']
+    var r = "record"
+    for (var i=0;i<count;i++){
+      $("#emaPHCList").append('<tr><td>'+(i+1)+'</td><td>'+msg[r+i]['ema_role']+'</td><td>'+msg[r+i]['first_name']+'</a></td><td>'+msg[r+i]['last_name']+'</td><td><a href=# class="emauserph">'+msg[r+i]['phone_number']+'</a></td><td>'+msg[r+i]['district']+'</td><td>'+msg[r+i]['state']+'</td><td>'+msg[r+i]['chc_phone_number']+'</td></tr>');
+    }
+    $("#emaPHCListHeader").html("EMA Admins")
+    $('.emauserph').click(function(event) {
+      phno = event.target.innerHTML
+      event.preventDefault()
+      emaUserMore(phno)
+    });
+  }
+  });
+
+  $.ajax({
+  url: '/api/ema_admin_ema_data',
+  type: 'POST',
+  data: JSON.stringify({'ema_role':'mo'}),
+  contentType: 'application/json; charset=utf-8',
+  dataType: 'json',
+  async: true,
+  success: function(msg) {
+    var count = msg['count']
+    var r = "record"
+    for (var i=0;i<count;i++){
+      $("#emaMOList").append('<tr><td>'+(i+1)+'</td><td>'+msg[r+i]['ema_role']+'</td><td>'+msg[r+i]['first_name']+'</a></td><td>'+msg[r+i]['last_name']+'</td><td><a href=# class="emauserph">'+msg[r+i]['phone_number']+'</a></td><td>'+msg[r+i]['district']+'</td><td>'+msg[r+i]['state']+'</td><td>'+msg[r+i]['chc_phone_number']+'</td><td>'+msg[r+i]['phc_phone_number']+'</td></tr>');
+    }
+    $("#emaMOListHeader").html("EMA Admins")
+    $('.emauserph').click(function(event) {
+      phno = event.target.innerHTML
+      event.preventDefault()
+      emaUserMore(phno)
+    });
+  }
+  });
+
 });
