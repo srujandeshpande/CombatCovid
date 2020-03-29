@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import "package:http/http.dart" as http;
 import "dart:convert";
-import 'package:shared_preferences/shared_preferences.dart';
-class QuarantineCitizen extends StatelessWidget {
+class Register extends StatelessWidget {
   //const Login({Key key}) : super(key: key);
       
   @override
@@ -10,9 +9,9 @@ class QuarantineCitizen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.black12,
       appBar: AppBar(
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: Colors.greenAccent,
         title: Text(
-          'NEW QC FORM',
+          'NEW Citizen FORM',
            style:TextStyle(
              fontSize:30,
              letterSpacing: 2.0,
@@ -28,7 +27,7 @@ class QuarantineCitizen extends StatelessWidget {
       Center(
         
           child : Text(
-              'You are going to add a new quarantined citizen to the database.Ensure that you conduct a checkup before doing the same.',
+              'You are going to register as a citizen into the database.This will help us help you in these difficult times',
                style: TextStyle(
                  color: Colors.white,
                  fontSize: 20,
@@ -63,9 +62,7 @@ class MyCustomForm extends StatefulWidget {
       final lnameController = TextEditingController();
       final dobController = TextEditingController();
       final emailController = TextEditingController();
-      /*
-      final phcController = TextEditingController();
-      final chcController = TextEditingController();  */
+       final passwordController = TextEditingController();
       @override  
       Widget build(BuildContext context) {  
         // Build a Form widget using the _formKey created above.  
@@ -77,7 +74,7 @@ class MyCustomForm extends StatefulWidget {
           child:Container(
             padding: EdgeInsets.fromLTRB(30, 30, 30, 30),
           child : Text(
-              'Please recheck details with citizen before submitting form!',
+              'Please recheck details before submitting form!',
                style: TextStyle(
                  color: Colors.grey[600],
                  letterSpacing: 1.5,
@@ -94,13 +91,13 @@ class MyCustomForm extends StatefulWidget {
                 style :TextStyle(color:Colors.white),
                 controller: fnameController,
                 decoration:  InputDecoration(  
-                  fillColor: Colors.blueAccent,
+                  fillColor: Colors.greenAccent,
                   focusColor : Colors.white,
-                  icon:  Icon(Icons.person,color:Colors.blueAccent), 
+                  icon:  Icon(Icons.person,color:Colors.greenAccent), 
                   focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.blueAccent)
+                    borderSide: BorderSide(color: Colors.greenAccent)
                   ), 
-                  hintText: 'Enter citizen\'s first name',  
+                  hintText: 'Enter first name',  
                   labelText: 'First Name', 
                   labelStyle: TextStyle(
                     letterSpacing: 2.0,
@@ -113,13 +110,13 @@ class MyCustomForm extends StatefulWidget {
                 style :TextStyle(color:Colors.white),
                 controller: lnameController,
                 decoration:  InputDecoration(  
-                  fillColor: Colors.blueAccent,
-                  icon:  Icon(Icons.person,color:Colors.blueAccent), 
+                  fillColor: Colors.greenAccent,
+                  icon:  Icon(Icons.person,color:Colors.greenAccent), 
                   focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.blueAccent),
+                  borderSide: BorderSide(color: Colors.greenAccent),
                   
                   ), 
-                  hintText: 'Enter citizen\'s last name',  
+                  hintText: 'Enter last name',  
                   labelText: 'Last Name', 
                   labelStyle: TextStyle(
                     letterSpacing: 2.0,
@@ -132,12 +129,12 @@ class MyCustomForm extends StatefulWidget {
                 style :TextStyle(color:Colors.white),
                 controller: pnoController,
                 decoration:InputDecoration( 
-                  focusColor: Colors.blueAccent,
+                  focusColor: Colors.greenAccent,
                   focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.blueAccent)
+                    borderSide: BorderSide(color: Colors.greenAccent)
                   ),
-                  icon: const Icon(Icons.phone,color:Colors.blueAccent),  
-                  hintText: 'Enter citizen\'s phone number',  
+                  icon: const Icon(Icons.phone,color:Colors.greenAccent),  
+                  hintText: 'Enter phone number',  
                   labelText: 'Phone',  
                   labelStyle: TextStyle(
                     letterSpacing: 2.0,
@@ -149,11 +146,11 @@ class MyCustomForm extends StatefulWidget {
                 style :TextStyle(color:Colors.white),
                 controller: dobController,
                 decoration: const InputDecoration(  
-                icon: const Icon(Icons.calendar_today,color:Colors.blueAccent),  
+                icon: const Icon(Icons.calendar_today,color:Colors.greenAccent),  
                 focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.blueAccent)
+                    borderSide: BorderSide(color: Colors.greenAccent)
                   ),
-                hintText: 'Enter citizens\'s date of birth',  
+                hintText: 'Enter date of birth',  
                 labelText: 'Dob', 
                 labelStyle: TextStyle(
                     letterSpacing: 2.0,
@@ -165,11 +162,11 @@ class MyCustomForm extends StatefulWidget {
                  style :TextStyle(color:Colors.white),
                  controller: emailController,
                 decoration: const InputDecoration(  
-                icon: const Icon(Icons.calendar_today,color:Colors.blueAccent),  
+                icon: const Icon(Icons.calendar_today,color:Colors.greenAccent),  
                 focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.blueAccent)
+                    borderSide: BorderSide(color: Colors.greenAccent)
                   ),
-                hintText: 'Enter citizens\'s email address',  
+                hintText: 'Enter email address',  
                 labelText: 'Email Address', 
                 labelStyle: TextStyle(
                     letterSpacing: 2.0,
@@ -177,17 +174,28 @@ class MyCustomForm extends StatefulWidget {
                   ) 
                 ),  
                ),  
-               /*
-               new Row(
-                 children:<Widget>[
-                      ListView(
-                            children: getFormWidget())]), */
+               TextFormField( 
+                 style :TextStyle(color:Colors.white),
+                 controller: passwordController,
+                decoration: const InputDecoration(  
+                icon: const Icon(Icons.calendar_today,color:Colors.greenAccent),  
+                focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.greenAccent)
+                  ),
+                hintText: 'Enter password',  
+                labelText: 'Password', 
+                labelStyle: TextStyle(
+                    letterSpacing: 2.0,
+                    color:Colors.cyanAccent,
+                  ) 
+                ),  
+               ),  
                SizedBox(height: 40,),
               Container( 
                   child:RaisedButton(
                   shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(40),
                   side:BorderSide(color:Colors.cyanAccent)),
-                  color: Colors.indigo,
+                  color: Colors.lightGreenAccent,
                   onPressed: (){
 
                       setState(() {
@@ -218,21 +226,16 @@ class MyCustomForm extends StatefulWidget {
       }  
        logForm() async
   {
-    String pno = (await SharedPreferences.getInstance()).getString('PhoneNumber'); 
   String qcPno = pnoController.text;
   String qcfname = fnameController.text;
   String qclname = lnameController.text;
   String qcDOB = dobController.text;
    String qcemail = emailController.text;
-   /*
-   String phcPno = phcController.text;
-   String chcPno = chcController.text;
-   */
+   String password= passwordController.text;
   String now = DateTime.now().toString();
-  bool underQ = true;
-  String url = "https://combat-covid.azurewebsites.net/api/add_new_user_qma";
+  String url = "https://combat-covid.azurewebsites.net/api/cma_add_new_user";
   Map<String,String> headers = {"Content-type" : "application/json"};
-  Map js = {"phone_number":qcPno,"date_time_quarantined":now,"first_name":qcfname,"last_name":qclname,"dob":qcDOB,"currently_under_quarantine":underQ,"email":qcemail,"mo_phone_number":pno}; //ADD OTHER INFO
+  Map js = {"phone_number":qcPno,"date_time_created":now,"first_name":qcfname,"last_name":qclname,"dob":qcDOB,"email":qcemail,"password":password,}; //ADD OTHER INFO
   var body = json.encode(js);
 
   try{
@@ -245,7 +248,7 @@ class MyCustomForm extends StatefulWidget {
         print(response.body);
         if (code<300)
           setState(() {
-            output = response.body;
+            output = "SUCCESS";
           });
         else
           setState(() {

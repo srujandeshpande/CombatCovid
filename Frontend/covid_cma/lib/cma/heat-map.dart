@@ -1,6 +1,5 @@
 
 import 'package:flutter/material.dart';
-
 class HeatMap extends StatelessWidget{
   @override 
   Widget build(BuildContext context){
@@ -8,7 +7,7 @@ class HeatMap extends StatelessWidget{
       appBar: AppBar(
       backgroundColor: Colors.greenAccent,
         title: Text(
-          'Heat map',
+          'Updates',
            style:TextStyle(
              fontSize:30,
              letterSpacing: 2.0,
@@ -22,7 +21,7 @@ class HeatMap extends StatelessWidget{
           child:Container(
             padding: EdgeInsets.fromLTRB(30, 30, 30, 30),
           child : Text(
-              'Check our heatmap to find out the cases around you.',
+              'We want you to be aware of the condition of the COVID-19 so we can work together to slow its spread!.',
                style: TextStyle(
                  color: Colors.grey[600],
                  letterSpacing: 1.5,
@@ -31,6 +30,7 @@ class HeatMap extends StatelessWidget{
           ) 
           )
         ),
+        /*
         Center(
           child:Container(
           color:Colors.grey[200],
@@ -47,6 +47,7 @@ class HeatMap extends StatelessWidget{
             letterSpacing: 2.0,
           ))
         ),
+        */
         SizedBox(height: 50,),
         
         Row(children: <Widget>[
@@ -143,4 +144,3 @@ class HeatMap extends StatelessWidget{
     );
   }
 }
-
