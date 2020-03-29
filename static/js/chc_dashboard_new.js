@@ -116,6 +116,7 @@ $(function(){
         $('.userph').click(function(event) {
           phno = event.target.innerHTML
           event.preventDefault()
+          window.open('\\user\\'+phno, '_blank');
           showMore(phno)
         });
         $('.emauserph').click(function(event) {
@@ -143,6 +144,7 @@ $(function(){
     $('.userph').click(function(event) {
       phno = event.target.innerHTML
       event.preventDefault()
+      window.open('\\user\\'+phno, '_blank');
       showMore(phno)
     });
     $('.emauserph').click(function(event) {
@@ -170,6 +172,7 @@ $(function(){
     $('.userph').click(function(event) {
       phno = event.target.innerHTML
       event.preventDefault()
+      window.open('\\user\\'+phno, '_blank');
       showMore(phno)
     });
     $('.emauserph').click(function(event) {
@@ -197,6 +200,7 @@ $(function(){
     $('.userph').click(function(event) {
       phno = event.target.innerHTML
       event.preventDefault()
+      window.open('\\user\\'+phno, '_blank');
       showMore(phno)
     });
     $('.emauserph').click(function(event) {
@@ -224,6 +228,7 @@ $(function(){
     $('.userph').click(function(event) {
       phno = event.target.innerHTML
       event.preventDefault()
+      window.open('\\user\\'+phno, '_blank');
       showMore(phno)
     });
     $('.emauserph').click(function(event) {
@@ -251,6 +256,7 @@ $(function(){
     $('.userph').click(function(event) {
       phno = event.target.innerHTML
       event.preventDefault()
+      window.open('\\user\\'+phno, '_blank');
       showMore(phno)
     });
     $('.emauserph').click(function(event) {
@@ -278,6 +284,7 @@ $(function(){
     $('.userph').click(function(event) {
       phno = event.target.innerHTML
       event.preventDefault()
+      window.open('\\user\\'+phno, '_blank');
       showMore(phno)
     });
     $('.emauserph').click(function(event) {
@@ -305,6 +312,7 @@ $(function(){
     $('.userph').click(function(event) {
       phno = event.target.innerHTML
       event.preventDefault()
+      window.open('\\user\\'+phno, '_blank');
       showMore(phno)
     });
     $('.emauserph').click(function(event) {
