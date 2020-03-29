@@ -16,6 +16,22 @@ function showMore(phno){
   });
 }
 
+function cmaUserMore(phno){
+  ar2 = {"phone_number":phno}
+  $.ajax({
+  url: '/api/ema_single_cma_user_data',
+  type: 'POST',
+  data: JSON.stringify(ar2),
+  contentType: 'application/json; charset=utf-8',
+  dataType: 'json',
+  async: true,
+  success: function(msg) {
+      $("#singleUserData").html('<tr><th>Ph Number</th><th>Date Created</th><th>First Name</th><th>Last Name</th><th>DOB</th><th>Email</th></tr>');
+      $("#singleUserData").append('<tr><td>'+msg['phone_number']+'</td><td>'+msg['date_time_created']+'</td><td>'+msg['first_name']+'</td><td>'+msg['last_name']+'</td><td>'+msg['dob']+'</td><td>'+msg['email']+'</td></tr>');
+    }
+  });
+}
+
 
 $(function(){
 
@@ -147,6 +163,28 @@ $(function(){
       phno = event.target.innerHTML
       event.preventDefault()
       showMore(phno)
+    });
+  }
+  });
+
+  $.ajax({
+  url: '/api/ema_admin_request_data',
+  type: 'POST',
+  data: JSON.stringify(arr),
+  contentType: 'application/json; charset=utf-8',
+  dataType: 'json',
+  async: true,
+  success: function(msg) {
+    var count = msg['count']
+    var r = "record"
+    for (var i=0;i<count;i++){
+      $("#userRequestList").append('<tr><td>'+(i+1)+'</td><td><a href=# class="cmauserph">'+msg[r+i]['phone_number']+'</a></td><td>'+msg[r+i]['name']+'</a></td><td>'+msg[r+i]['date_time']+'</td><td>'+msg[r+i]['symptom']+'</td><td>'+msg[r+i]['travel']+'</td><td>'+msg[r+i]['contact']+'</td><td>'+msg[r+i]['dob']+'</td></tr>');
+    }
+    $("#userRequestListHeader").html("CMA User Request to be Checked")
+    $('.cmauserph').click(function(event) {
+      phno = event.target.innerHTML
+      event.preventDefault()
+      cmaUserMore(phno)
     });
   }
   });
