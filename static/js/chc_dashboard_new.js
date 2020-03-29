@@ -179,9 +179,9 @@ $(function(){
     });
   }
   });
-/*
+
   $.ajax({
-  url: '/api/ema_admin_distress_data',
+  url: '/api/ema_cp_distress_data',
   type: 'POST',
   data: JSON.stringify(arr),
   contentType: 'application/json; charset=utf-8',
@@ -206,7 +206,7 @@ $(function(){
     });
   }
   });
-
+/*
   $.ajax({
   url: '/api/ema_admin_testing_data',
   type: 'POST',

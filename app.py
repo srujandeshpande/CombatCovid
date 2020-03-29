@@ -386,6 +386,42 @@ def ema_admin_distress_data():
 	return data1
 
 
+#EMA return CHC,PHC CC data
+@app.route('/api/ema_cp_distress_data', methods=['POST'])
+def ema_app_cp_distress_data():
+	inputData = request.json
+	if 'chc_phone_number' in inputData:
+		if inputData['chc_phone_number'] == "websiteuser":
+			inputData['chc_phone_number'] = session['phone_number']
+	if 'phc_phone_number' in inputData:
+		if inputData['phc_phone_number'] == "websiteuser":
+			inputData['phc_phone_number'] = session['phone_number']
+	User_Data = pymongo.collection.Collection(db, 'User_Data')
+	Everyone_Data = pymongo.collection.Collection(db, 'Everyone_Data')
+	Distress_Data = pymongo.collection.Collection(db, 'Distress_Data')
+	modata = json.loads(dumps(Everyone_Data.find(inputData)))
+	modata1 = []
+	for i in modata:
+		modata1.append(i['phone_number'])
+	udata = json.loads(dumps(User_Data.find()))
+	udata1 = []
+	for j in udata:
+		if j['mo_phone_number'] in modata1:
+			udata1.append(j['phone_number'])
+	data = json.loads(dumps(Distress_Data.find()))
+	data1 = {}
+	y = 0
+	data1['count'] = 0
+	for x in data:
+		if x['phone_number'] in udata1:
+			data1["record"+str(y)] = x
+			y+=1
+		else:
+			continue
+	data1['count'] = y
+	return data1
+
+
 #returns testing data of all people
 @app.route('/api/ema_admin_testing_data', methods=['POST'])
 def ema_admin_testing_data():
