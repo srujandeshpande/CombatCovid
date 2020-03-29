@@ -461,7 +461,7 @@ def add_new_user_data():
 	inputData = request.json
 	flagv = 0
 	for i in json.loads(dumps(User_Data.find())):
-		if i['phone_number'] == inputData['phone_number']:
+		if i['phone_number'] == str(inputData['phone_number']):
 			flagv = 1
 			break
 	if not flagv:
