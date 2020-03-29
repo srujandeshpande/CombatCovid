@@ -10,7 +10,6 @@ class ContactPerson extends StatefulWidget {
 
 class _ContactPersonState extends State<ContactPerson> {
   
-
   @override  
       Widget build(BuildContext context) {    
         return Scaffold(  

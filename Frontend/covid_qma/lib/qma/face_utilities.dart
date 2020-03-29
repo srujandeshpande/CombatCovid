@@ -5,11 +5,11 @@ import 'dart:typed_data';
 
 class FaceUtility {
 
-static const String IMG_KEY = "USER_FACE";
 
-static Future<bool> saveImageToPreferences(String value) async {
+
+static Future<bool> saveImageToPreferences(String value,String key) async {
   final SharedPreferences preferences = await SharedPreferences.getInstance();
-  return preferences.setString(IMG_KEY, value);
+  return preferences.setString(key, value);
 }
 
 static String base64String(Uint8List data)
