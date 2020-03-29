@@ -501,13 +501,14 @@ def ema_mo_distress_data():
 		inputData['mo_phone_number'] = session['phone_number']
 	User_Data = pymongo.collection.Collection(db, 'User_Data')
 	Distress_Data = pymongo.collection.Collection(db, 'Distress_Data')
-	udata = json.loads(dumps(User_Data.find()))
+	udata = json.loads(dumps(User_Data.find(inputData)))
 	udata1 = []
 	for j in udata:
 		if j['mo_phone_number'] == inputData['mo_phone_number']:
 			udata1.append(j['phone_number'])
-	data = json.loads(dumps(Distress_Data.find(inputData)))
+	data = json.loads(dumps(Distress_Data.find()))
 	data1 = {}
+	print(data)
 	y = 0
 	data1['count'] = 0
 	for x in data:
