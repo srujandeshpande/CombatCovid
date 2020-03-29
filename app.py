@@ -479,11 +479,8 @@ def add_new_user_data():
 def user_state_qma():
 	User_State_Data = pymongo.collection.Collection(db, 'User_State_Data')
 	inputData = request.json
-	try:
-		User_Base_Data.insert_one(inputData)
-		return ({'success':True})
-	except:
-		return ({'success':False, 'error':"error again in last step"})
+	User_State_Data.insert_one(inputData)
+	return ({'success':True})
 
 
 @app.route("/api/user_face", methods=['POST'])
@@ -500,10 +497,10 @@ def user_face():
 #Adds new checklist for user
 @app.route("/api/add_new_checklist", methods=['POST'])
 def add_new_checklist():
-    Checklist_Data = pymongo.collection.Collection(db, 'Checklist_Data')
-    inputData = request.json
-    objid = Checklist_Data.insert_one(inputData).inserted_id
-    return ({'success':True, 'checklistobjid':str(objid)})
+	Checklist_Data = pymongo.collection.Collection(db, 'Checklist_Data')
+	inputData = request.json
+	objid = Checklist_Data.insert_one(inputData).inserted_id
+	return ({'success':True, 'checklistobjid':str(objid)})
 
 
 #Adds new testing data for user
