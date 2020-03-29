@@ -35,6 +35,7 @@ $(function(){
         $("#userDataListHeader").html("User Data")
         $('.userph').click(function(event) {
           phno = event.target.innerHTML
+          event.preventDefault()
           showMore(phno)
         });
     }
@@ -56,6 +57,7 @@ $(function(){
     $("#userTempListHeader").html("Temperature Data")
     $('.userph').click(function(event) {
       phno = event.target.innerHTML
+      event.preventDefault()
       showMore(phno)
     });
     }
@@ -77,6 +79,7 @@ $(function(){
     $("#userCCListHeader").html("Close Contact Data")
     $('.userph').click(function(event) {
       phno = event.target.innerHTML
+      event.preventDefault()
       showMore(phno)
     });
   }
@@ -98,6 +101,7 @@ $(function(){
     $("#userDistressListHeader").html("Distress Data")
     $('.userph').click(function(event) {
       phno = event.target.innerHTML
+      event.preventDefault()
       showMore(phno)
     });
   }
@@ -119,6 +123,7 @@ $(function(){
     $("#userTestListHeader").html("Testing Data")
     $('.userph').click(function(event) {
       phno = event.target.innerHTML
+      event.preventDefault()
       showMore(phno)
     });
   }
