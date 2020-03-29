@@ -458,6 +458,7 @@ def add_new_user_qma():
 def add_new_user_data():
 	User_Base_Data = pymongo.collection.Collection(db, 'User_Base_Data')
 	User_Data = pymongo.collection.Collection(db, 'User_Data')
+	User_Latest_State_Data = pymongo.collection.Collection(db, 'User_Latest_State_Data')
 	inputData = request.json
 	flagv = 0
 	for i in json.loads(dumps(User_Data.find())):
@@ -467,6 +468,7 @@ def add_new_user_data():
 	if not flagv:
 		return ({'success':False, 'error':"Invalid User"})
 	User_Base_Data.insert_one(inputData)
+	User_Latest_State_Data.insert_one({'phone_number':inputData['phone_number']})
 	return ({'success':True})
 
 
@@ -475,8 +477,10 @@ def add_new_user_data():
 @app.route("/api/user_state_qma", methods=['POST'])
 def user_state_qma():
 	User_State_Data = pymongo.collection.Collection(db, 'User_State_Data')
+	User_Latest_State_Data = pymongo.collection.Collection(db, 'User_Latest_State_Data')
 	inputData = request.json
 	User_State_Data.insert_one(inputData)
+	User_Latest_State_Data.update_one({'phone_number':inputData['phone_number'],inputData})
 	return ({'success':True})
 
 
