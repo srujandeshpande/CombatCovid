@@ -10,11 +10,3 @@ table.dataTable thead .sorting_desc_disabled:after,
 table.dataTable thead .sorting_desc_disabled:before {
 bottom: .5em;
 }
-body{
-  font-family: sans-serif;
-  padding: 30px;
-  margin:10px;
-}
-navbar{
-font-weight: bold;
-}

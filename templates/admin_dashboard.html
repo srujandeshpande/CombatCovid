@@ -26,9 +26,7 @@ table.dataTable thead .sorting_desc_disabled:after,
 table.dataTable thead .sorting_desc_disabled:before {
 bottom: .5em;
 }
-body{
-  font-family: sans-serif;
-}
+
 .lead{
   background-color:tomato;
   color:white;
@@ -36,9 +34,7 @@ body{
 table{
   margin:10px;
 }
-navbar{
 
-}
 </style>
 </head>
 
@@ -89,10 +85,6 @@ navbar{
   </nav>
 </navbar>
 <body>
-
-  <div>
-  <table id="singleUserData" border="border"></table>
-</div>
 <br><br><br>
   <br>
   <div id="userDataSearchListHeader" class="lead">Search for Users</div>
@@ -110,6 +102,10 @@ navbar{
     <input class="btn btn-default" type="submit"/ >
     <input class="btn btn-default" type="reset"/>
   </form>
+  <div>
+  <table id="singleUserData" border="border" class="table table-striped table-bordered table-sm" cellspacing="0"
+  width="100%"></table>
+</div>
 <br><br>
   <div id="userDataListHeader" class="lead" >Loading User Data...</div>
   <table id="userDataList" border="border" class="table table-striped table-bordered table-sm" cellspacing="0"
