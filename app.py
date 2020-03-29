@@ -229,15 +229,19 @@ def ema_app_admin_user_data():
 	return data1
 
 
-#EMA return CHC
-@app.route('/api/ema_chc_user_data', methods=['POST'])
-def ema_app_chc_user_data():
+#EMA return CHC,PHC
+@app.route('/api/ema_cp_user_data', methods=['POST'])
+def ema_app_cp_user_data():
 	inputData = request.json
-	if inputData['chc_phone_number'] == "websiteuser":
-		inputData['chc_phone_number'] = session['phone_number']
+	if 'chc_phone_number' in inputData:
+		if inputData['chc_phone_number'] == "websiteuser":
+			inputData['chc_phone_number'] = session['phone_number']
+	if 'phc_phone_number' in inputData:
+		if inputData['phc_phone_number'] == "websiteuser":
+			inputData['phc_phone_number'] = session['phone_number']
 	User_Data = pymongo.collection.Collection(db, 'User_Data')
 	Everyone_Data = pymongo.collection.Collection(db, 'Everyone_Data')
-	modata = json.loads(dumps(Everyone_Data.find({'chc_phone_number':inputData['chc_phone_number']})))
+	modata = json.loads(dumps(Everyone_Data.find(inputData)))
 	modata1 = []
 	for i in modata:
 		modata1.append(i['phone_number'])

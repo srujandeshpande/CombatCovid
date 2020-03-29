@@ -100,7 +100,7 @@ function emaUserMore(phno){
 $(function(){
 
   $.ajax({
-  url: '/api/ema_chc_user_data',
+  url: '/api/ema_cp_user_data',
   type: 'POST',
   data: JSON.stringify(arr),
   contentType: 'application/json; charset=utf-8',
@@ -125,7 +125,7 @@ $(function(){
         });
     }
   });
-
+/*
   $.ajax({
   url: '/api/ema_admin_temp_data',
   type: 'POST',
@@ -369,6 +369,6 @@ $(function(){
       emaUserMore(phno)
     });
   }
-  });
+});*/
 
 });
