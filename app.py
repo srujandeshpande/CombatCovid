@@ -85,21 +85,6 @@ def ema_dashboard():
         return redirect(url_for('ema_loginscreen'))
 
 
-#EMA show generic dashboard
-@app.route('/generic_dashboard')
-def generic_dashboard():
-	try:
-		if session['ema_role']:
-			mo_user_data = ema_mo_user_data(session['phone_number'])
-			return render_template("generic_dashboard.html")
-		else:
-			flash("Please login")
-			return redirect(url_for('ema_loginscreen'))
-	except:
-		flash("Please login")
-		return redirect(url_for('ema_loginscreen'))
-
-
 #EMA add new user
 @app.route('/ema_add_new_user_page')
 def ema_add_new_user_page():
@@ -133,32 +118,6 @@ def ema_new_user_data():
 def ema_get_session_phno():
 	return str(session['phone_number'])
 
-
-# ALERTS -  temp(distress) and boundary
-
-#returns temp of all people
-@app.route('/api/ema_mo_temp_data', methods=['POST'])
-def ema_mo_temp_data():
-	inputData = request.json
-	if inputData['mo_phone_number'] == "websiteuser":
-		inputData['mo_phone_number'] = session['phone_number']
-	Temp_Data = pymongo.collection.Collection(db, 'Temperature_Data')
-	User_Data = pymongo.collection.Collection(db, 'User_Data')
-	userdata = json.loads(dumps(User_Data.find({'mo_phone_number':str(inputData['mo_phone_number'])})))
-	# does not work
-	for i in userdata:
-		temps = json.loads(dumps(Temp_Data.find()))
-	data1 = {}
-	for x in data:
-		#if x['temperature']>38:
-		data1[x['phone_number']] = x
-	return data1
-
-# #people out of area
-# @app.route('/alert_area_breach')
-# def alert_area_breach():
-#     inputData = request.json
-#     # waiting on avs on what data hes sending
 
 #EMA return single user data
 @app.route('/api/ema_single_cma_user_data', methods=['POST'])
@@ -206,8 +165,12 @@ def ema_app_mo_user_data():
 	User_Data = pymongo.collection.Collection(db, 'User_Data')
 	data = json.loads(dumps(User_Data.find({'mo_phone_number':str(inputData['mo_phone_number'])})))
 	data1 = {}
-	for i in data:
-		data1[i['phone_number']] = i
+	y = 0
+	data1['count'] = 0
+	for x in data:
+		data1["record"+str(y)] = x
+		y+=1
+	data1['count'] = y
 	return data1
 
 
@@ -314,6 +277,32 @@ def ema_app_cp_temp_data():
 	return data1
 
 
+#returns temp of mo people
+@app.route('/api/ema_mo_temp_data', methods=['POST'])
+def ema_mo_temp_data():
+	inputData = request.json
+	if inputData['mo_phone_number'] == "websiteuser":
+		inputData['mo_phone_number'] = session['phone_number']
+	User_Data = pymongo.collection.Collection(db, 'User_Data')
+	Temperature_Data = pymongo.collection.Collection(db, 'Temperature_Data')
+	udata = json.loads(dumps(User_Data.find()))
+	udata1 = []
+	for j in udata:
+		if j['mo_phone_number'] == inputData['mo_phone_number']:
+			udata1.append(j['phone_number'])
+	data = json.loads(dumps(Temperature_Data.find(inputData)))
+	data1 = {}
+	y = 0
+	data1['count'] = 0
+	for x in data:
+		if x['phone_number'] in udata1:
+			#if x['temperature']>38:
+			data1["record"+str(y)] = x
+			y+=1
+	data1['count'] = y
+	return data1
+
+
 #returns cc of all people
 @app.route('/api/ema_admin_cc_data', methods=['POST'])
 def ema_admin_cc_data():
@@ -364,6 +353,32 @@ def ema_app_cp_cc_data():
 			y+=1
 		else:
 			continue
+	data1['count'] = y
+	return data1
+
+
+#returns cc of mo people
+@app.route('/api/ema_mo_cc_data', methods=['POST'])
+def ema_mo_cc_data():
+	inputData = request.json
+	if inputData['mo_phone_number'] == "websiteuser":
+		inputData['mo_phone_number'] = session['phone_number']
+	User_Data = pymongo.collection.Collection(db, 'User_Data')
+	Close_Contact = pymongo.collection.Collection(db, 'Close_Contact')
+	udata = json.loads(dumps(User_Data.find()))
+	udata1 = []
+	for j in udata:
+		if j['mo_phone_number'] == inputData['mo_phone_number']:
+			udata1.append(j['phone_number'])
+	data = json.loads(dumps(Close_Contact.find(inputData)))
+	data1 = {}
+	y = 0
+	data1['count'] = 0
+	for x in data:
+		if x['phone_number'] in udata1:
+			#if x['temperature']>38:
+			data1["record"+str(y)] = x
+			y+=1
 	data1['count'] = y
 	return data1
 
@@ -422,6 +437,50 @@ def ema_app_cp_distress_data():
 	return data1
 
 
+#returns distress of mo people
+@app.route('/api/ema_mo_distress_data', methods=['POST'])
+def ema_mo_distress_data():
+	inputData = request.json
+	if inputData['mo_phone_number'] == "websiteuser":
+		inputData['mo_phone_number'] = session['phone_number']
+	User_Data = pymongo.collection.Collection(db, 'User_Data')
+	Distress_Data = pymongo.collection.Collection(db, 'Distress_Data')
+	udata = json.loads(dumps(User_Data.find()))
+	udata1 = []
+	for j in udata:
+		if j['mo_phone_number'] == inputData['mo_phone_number']:
+			udata1.append(j['phone_number'])
+	data = json.loads(dumps(Distress_Data.find(inputData)))
+	data1 = {}
+	y = 0
+	data1['count'] = 0
+	for x in data:
+		if x['phone_number'] in udata1:
+			#if x['temperature']>38:
+			data1["record"+str(y)] = x
+			y+=1
+	data1['count'] = y
+	return data1
+
+
+#returns lstate for admin
+@app.route('/api/ema_admin_lstate_data', methods=['POST'])
+def ema_admin_lstate_data():
+	inputData = request.json
+	if inputData['admin_phone_number'] == "websiteuser":
+		inputData['admin_phone_number'] = session['phone_number']
+	User_Latest_State_Data = pymongo.collection.Collection(db, 'User_Latest_State_Data')
+	data = json.loads(dumps(User_Latest_State_Data.find()))
+	data1 = {}
+	y = 0
+	data1['count'] = 0
+	for x in data:
+		data1["record"+str(y)] = x
+		y+=1
+	data1['count'] = y
+	return data1
+
+
 #EMA return CHC,PHC checklist data
 @app.route('/api/ema_cp_lstate_data', methods=['POST'])
 def ema_app_cp_lstate_data():
@@ -458,6 +517,50 @@ def ema_app_cp_lstate_data():
 	return data1
 
 
+#returns lstate of mo people
+@app.route('/api/ema_mo_lstate_data', methods=['POST'])
+def ema_mo_lstate_data():
+	inputData = request.json
+	if inputData['mo_phone_number'] == "websiteuser":
+		inputData['mo_phone_number'] = session['phone_number']
+	User_Data = pymongo.collection.Collection(db, 'User_Data')
+	User_Latest_State_Data = pymongo.collection.Collection(db, 'User_Latest_State_Data')
+	udata = json.loads(dumps(User_Data.find()))
+	udata1 = []
+	for j in udata:
+		if j['mo_phone_number'] == inputData['mo_phone_number']:
+			udata1.append(j['phone_number'])
+	data = json.loads(dumps(User_Latest_State_Data.find(inputData)))
+	data1 = {}
+	y = 0
+	data1['count'] = 0
+	for x in data:
+		if x['phone_number'] in udata1:
+			#if x['temperature']>38:
+			data1["record"+str(y)] = x
+			y+=1
+	data1['count'] = y
+	return data1
+
+
+#returns state for admin
+@app.route('/api/ema_admin_state_data', methods=['POST'])
+def ema_admin_state_data():
+	inputData = request.json
+	if inputData['admin_phone_number'] == "websiteuser":
+		inputData['admin_phone_number'] = session['phone_number']
+	User_State_Data = pymongo.collection.Collection(db, 'User_State_Data')
+	data = json.loads(dumps(User_State_Data.find()))
+	data1 = {}
+	y = 0
+	data1['count'] = 0
+	for x in data:
+		data1["record"+str(y)] = x
+		y+=1
+	data1['count'] = y
+	return data1
+
+
 #EMA return CHC,PHC checklist data
 @app.route('/api/ema_cp_state_data', methods=['POST'])
 def ema_app_cp_state_data():
@@ -490,6 +593,32 @@ def ema_app_cp_state_data():
 			y+=1
 		else:
 			continue
+	data1['count'] = y
+	return data1
+
+
+#returns state of mo people
+@app.route('/api/ema_mo_state_data', methods=['POST'])
+def ema_mo_state_data():
+	inputData = request.json
+	if inputData['mo_phone_number'] == "websiteuser":
+		inputData['mo_phone_number'] = session['phone_number']
+	User_Data = pymongo.collection.Collection(db, 'User_Data')
+	User_State_Data = pymongo.collection.Collection(db, 'User_State_Data')
+	udata = json.loads(dumps(User_Data.find()))
+	udata1 = []
+	for j in udata:
+		if j['mo_phone_number'] == inputData['mo_phone_number']:
+			udata1.append(j['phone_number'])
+	data = json.loads(dumps(User_State_Data.find(inputData)))
+	data1 = {}
+	y = 0
+	data1['count'] = 0
+	for x in data:
+		if x['phone_number'] in udata1:
+			#if x['temperature']>38:
+			data1["record"+str(y)] = x
+			y+=1
 	data1['count'] = y
 	return data1
 
@@ -548,6 +677,32 @@ def ema_app_cp_testing_data():
 	return data1
 
 
+#returns testing of mo people
+@app.route('/api/ema_mo_testing_data', methods=['POST'])
+def ema_mo_testing_data():
+	inputData = request.json
+	if inputData['mo_phone_number'] == "websiteuser":
+		inputData['mo_phone_number'] = session['phone_number']
+	User_Data = pymongo.collection.Collection(db, 'User_Data')
+	Testing_Data = pymongo.collection.Collection(db, 'Testing_Data')
+	udata = json.loads(dumps(User_Data.find()))
+	udata1 = []
+	for j in udata:
+		if j['mo_phone_number'] == inputData['mo_phone_number']:
+			udata1.append(j['phone_number'])
+	data = json.loads(dumps(Testing_Data.find(inputData)))
+	data1 = {}
+	y = 0
+	data1['count'] = 0
+	for x in data:
+		if x['phone_number'] in udata1:
+			#if x['temperature']>38:
+			data1["record"+str(y)] = x
+			y+=1
+	data1['count'] = y
+	return data1
+
+
 #returns checklist data of all people
 @app.route('/api/ema_admin_checklist_data', methods=['POST'])
 def ema_admin_checklist_data():
@@ -602,6 +757,32 @@ def ema_app_cp_checklist_data():
 	return data1
 
 
+#returns checklist of mo people
+@app.route('/api/ema_mo_checklist_data', methods=['POST'])
+def ema_mo_checklist_data():
+	inputData = request.json
+	if inputData['mo_phone_number'] == "websiteuser":
+		inputData['mo_phone_number'] = session['phone_number']
+	User_Data = pymongo.collection.Collection(db, 'User_Data')
+	Checklist_Data = pymongo.collection.Collection(db, 'Checklist_Data')
+	udata = json.loads(dumps(User_Data.find()))
+	udata1 = []
+	for j in udata:
+		if j['mo_phone_number'] == inputData['mo_phone_number']:
+			udata1.append(j['phone_number'])
+	data = json.loads(dumps(Checklist_Data.find(inputData)))
+	data1 = {}
+	y = 0
+	data1['count'] = 0
+	for x in data:
+		if x['phone_number'] in udata1:
+			#if x['temperature']>38:
+			data1["record"+str(y)] = x
+			y+=1
+	data1['count'] = y
+	return data1
+
+
 #returns requst check data of all people
 @app.route('/api/ema_admin_request_data', methods=['POST'])
 def ema_admin_request_data():
@@ -630,13 +811,15 @@ def ema_admin_request_data():
 @app.route('/api/ema_admin_ema_data', methods=['POST'])
 def ema_admin_ema_data():
 	inputData = request.json
+	Everyone_Data = pymongo.collection.Collection(db, 'Everyone_Data')
 	if 'chc_phone_number' in inputData:
 		if inputData['chc_phone_number'] == "websiteuser":
 			inputData['chc_phone_number'] = session['phone_number']
 	if 'phc_phone_number' in inputData:
 		if inputData['phc_phone_number'] == "websiteuser":
 			inputData['phc_phone_number'] = session['phone_number']
-	Everyone_Data = pymongo.collection.Collection(db, 'Everyone_Data')
+		if inputData['phc_phone_number'] == "websiteuserphc":
+			inputData['phc_phone_number'] = (json.loads(dumps(Everyone_Data.find_one({'phone_number':session['phone_number']}))))['phc_phone_number']
 	data = json.loads(dumps(Everyone_Data.find(inputData)))
 	data1 = {}
 	y = 0
