@@ -206,9 +206,9 @@ $(function(){
     });
   }
   });
-/*
+
   $.ajax({
-  url: '/api/ema_admin_testing_data',
+  url: '/api/ema_cp_testing_data',
   type: 'POST',
   data: JSON.stringify(arr),
   contentType: 'application/json; charset=utf-8',
@@ -235,7 +235,7 @@ $(function(){
   });
 
   $.ajax({
-  url: '/api/ema_admin_checklist_data',
+  url: '/api/ema_cp_checklist_data',
   type: 'POST',
   data: JSON.stringify(arr),
   contentType: 'application/json; charset=utf-8',
@@ -286,28 +286,6 @@ $(function(){
   $.ajax({
   url: '/api/ema_admin_ema_data',
   type: 'POST',
-  data: JSON.stringify({'ema_role':'admin'}),
-  contentType: 'application/json; charset=utf-8',
-  dataType: 'json',
-  async: true,
-  success: function(msg) {
-    var count = msg['count']
-    var r = "record"
-    for (var i=0;i<count;i++){
-      $("#emaAdminList").append('<tr><td>'+(i+1)+'</td><td>'+msg[r+i]['ema_role']+'</td><td>'+msg[r+i]['first_name']+'</a></td><td>'+msg[r+i]['last_name']+'</td><td><a href=# class="emauserph">'+msg[r+i]['phone_number']+'</a></td><td>'+msg[r+i]['district']+'</td><td>'+msg[r+i]['state']+'</td></tr>');
-    }
-    $("#emaAdminListHeader").html("EMA Admins")
-    $('.emauserph').click(function(event) {
-      phno = event.target.innerHTML
-      event.preventDefault()
-      emaUserMore(phno)
-    });
-  }
-  });
-
-  $.ajax({
-  url: '/api/ema_admin_ema_data',
-  type: 'POST',
   data: JSON.stringify({'ema_role':'chc'}),
   contentType: 'application/json; charset=utf-8',
   dataType: 'json',
@@ -330,7 +308,7 @@ $(function(){
   $.ajax({
   url: '/api/ema_admin_ema_data',
   type: 'POST',
-  data: JSON.stringify({'ema_role':'phc'}),
+  data: JSON.stringify({'ema_role':'phc', 'chc_phone_number':"websiteuser"}),
   contentType: 'application/json; charset=utf-8',
   dataType: 'json',
   async: true,
@@ -352,7 +330,7 @@ $(function(){
   $.ajax({
   url: '/api/ema_admin_ema_data',
   type: 'POST',
-  data: JSON.stringify({'ema_role':'mo'}),
+  data: JSON.stringify({'ema_role':'mo', 'chc_phone_number':'websiteuser'}),
   contentType: 'application/json; charset=utf-8',
   dataType: 'json',
   async: true,
@@ -369,6 +347,6 @@ $(function(){
       emaUserMore(phno)
     });
   }
-});*/
+});
 
 });
