@@ -92,7 +92,7 @@ class _LoginState extends State<Login> {
       String _text = text;
       var pno = int.parse(phoneNumber);
       assert(pno is int);
-      String url = "https://combat-covid-v1.herokuapp.com/api/qma_login";
+      String url = "https://combat-covid.azurewebsites.net/api/qma_login";
       Map<String,String> headers = {"Content-type" : "application/json"};
       Map js = {"phone_number":phoneNumber,"password":password };
       var body = json.encode(js);
@@ -110,8 +110,9 @@ class _LoginState extends State<Login> {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           prefs.setString('PhoneNumber', phoneNumber);
           sleep(Duration(seconds: 1));
-          var x = prefs.getString("USER_FACE");
-          Navigator.pushNamedAndRemoveUntil(context,x==null? '/register-face':'/home', (Route<dynamic> route)=> false);
+          var x = prefs.getString("USER_FACE_$phoneNumber");
+          
+         Navigator.pushNamedAndRemoveUntil(context,x==null? '/register-face':'/home-services', (Route<dynamic> route)=> false);
         }
         else if(code <=499)
           _text = response.toString();

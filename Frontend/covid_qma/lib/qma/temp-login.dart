@@ -17,7 +17,7 @@ class _TempLoginState extends State<TempLogin> {
   var _text = "NONE";
   bool isLoading;
   final temp = TextEditingController();
-  String url = "https://combat-covid-v1.herokuapp.com/api/add_new_temperature";
+  String url = "https://combat-covid.azurewebsites.net/api/add_new_temperature";
   Map<String,String> headers = {"Content-type" : "application/json"};
   DateTime date;
   String _temp;
@@ -105,7 +105,8 @@ class _TempLoginState extends State<TempLogin> {
     try{
       DateTime now = DateTime.now();
       var n = now.toString();
-      String pno = (await SharedPreferences.getInstance()).getString('PhoneNumber');
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String pno = prefs.getString('PhoneNumber');
       Map js = {"phone_number":pno,"temperature":_temp,"Date-time": n};
       var body = json.encode(js);
         var response = await http.post(url,headers:headers,body: body);
@@ -114,6 +115,7 @@ class _TempLoginState extends State<TempLogin> {
         print(response.body);
         if (code < 300)
         {
+          prefs.setString("last-temp-log", DateTime.now().toString());
           _text = "SUCCESS, logged in";
           setState(() {
             isLoading = false;
