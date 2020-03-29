@@ -1,4 +1,4 @@
-var arr = { 'admin_phone_number': "websiteuser" };
+var arr = { 'chc_phone_number': "websiteuser" };
 
 (function ($) {
     $.fn.serializeFormJSON = function () {
@@ -100,7 +100,7 @@ function emaUserMore(phno){
 $(function(){
 
   $.ajax({
-  url: '/api/ema_admin_user_data',
+  url: '/api/ema_chc_user_data',
   type: 'POST',
   data: JSON.stringify(arr),
   contentType: 'application/json; charset=utf-8',

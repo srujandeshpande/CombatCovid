@@ -229,6 +229,32 @@ def ema_app_admin_user_data():
 	return data1
 
 
+#EMA return CHC
+@app.route('/api/ema_chc_user_data', methods=['POST'])
+def ema_app_chc_user_data():
+	inputData = request.json
+	if inputData['chc_phone_number'] == "websiteuser":
+		inputData['chc_phone_number'] = session['phone_number']
+	User_Data = pymongo.collection.Collection(db, 'User_Data')
+	Everyone_Data = pymongo.collection.Collection(db, 'Everyone_Data')
+	modata = json.loads(dumps(Everyone_Data.find({'chc_phone_number':inputData['chc_phone_number']})))
+	modata1 = []
+	for i in modata:
+		modata1.append(i['phone_number'])
+	data = json.loads(dumps(User_Data.find()))
+	data1 = {}
+	y = 0
+	data1['count'] = 0
+	for x in data:
+		if x['mo_phone_number'] in modata1:
+			data1["record"+str(y)] = x
+			y+=1
+		else:
+			continue
+	data1['count'] = y
+	return data1
+
+
 #returns temp of all people
 @app.route('/api/ema_admin_temp_data', methods=['POST'])
 def ema_admin_temp_data():
@@ -485,7 +511,7 @@ def user_state_qma():
 	User_Latest_State_Data = pymongo.collection.Collection(db, 'User_Latest_State_Data')
 	inputData = request.json
 	User_State_Data.insert_one(inputData)
-	User_Latest_State_Data.update_one({'phone_number':inputData['phone_number'],inputData})
+	User_Latest_State_Data.update_one({'phone_number':inputData['phone_number']},inputData)
 	return ({'success':True})
 
 
