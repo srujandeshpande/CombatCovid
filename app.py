@@ -161,6 +161,14 @@ def ema_mo_temp_data():
 #     inputData = request.json
 #     # waiting on avs on what data hes sending
 
+#EMA return single user data
+@app.route('/api/ema_single_cma_user_data', methods=['POST'])
+def ema_single_cma_user_data():
+	inputData = request.json
+	CMA_User_Data = pymongo.collection.Collection(db, 'CMA_User_Data')
+	data = json.loads(dumps(CMA_User_Data.find_one({'phone_number':str(inputData['phone_number'])})))
+	return data
+
 
 #EMA return single user data
 @app.route('/api/ema_single_user_data', methods=['POST'])
@@ -284,6 +292,24 @@ def ema_admin_checklist_data():
 		inputData['admin_phone_number'] = session['phone_number']
 	Checklist_Data = pymongo.collection.Collection(db, 'Checklist_Data')
 	data = json.loads(dumps(Checklist_Data.find()))
+	data1 = {}
+	y = 0
+	data1['count'] = 0
+	for x in data:
+		data1["record"+str(y)] = x
+		y+=1
+	data1['count'] = y
+	return data1
+
+
+#returns requst check data of all people
+@app.route('/api/ema_admin_request_data', methods=['POST'])
+def ema_admin_request_data():
+	inputData = request.json
+	if inputData['admin_phone_number'] == "websiteuser":
+		inputData['admin_phone_number'] = session['phone_number']
+	CMA_Request_Data = pymongo.collection.Collection(db, 'CMA_Request_Data')
+	data = json.loads(dumps(CMA_Request_Data.find()))
 	data1 = {}
 	y = 0
 	data1['count'] = 0
