@@ -7,7 +7,8 @@ from PIL import Image
 from io import StringIO
 import base64
 import requests
-#from flask_pymongo import PyMongo
+import random
+
 app = Flask(__name__)
 CORS(app)
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
@@ -16,8 +17,6 @@ app.secret_key = b'\xd2(*K\xa0\xa8\x13]g\x1e9\x88\x10\xb0\xe0\xcc'
 #Loads the Database and Collections
 mongo = pymongo.MongoClient('mongodb+srv://srujandeshpande:mongodb@cluster0-e0fen.azure.mongodb.net/test?retryWrites=true&w=majority', maxPoolSize=50, connect=True)
 db = pymongo.database.Database(mongo, 'covid_v1')
-
-
 
 
 #Create link for image
@@ -230,6 +229,32 @@ def ema_app_admin_user_data():
 	return data1
 
 
+#EMA return CHC
+@app.route('/api/ema_chc_user_data', methods=['POST'])
+def ema_app_chc_user_data():
+	inputData = request.json
+	if inputData['chc_phone_number'] == "websiteuser":
+		inputData['chc_phone_number'] = session['phone_number']
+	User_Data = pymongo.collection.Collection(db, 'User_Data')
+	Everyone_Data = pymongo.collection.Collection(db, 'Everyone_Data')
+	modata = json.loads(dumps(Everyone_Data.find({'chc_phone_number':inputData['chc_phone_number']})))
+	modata1 = []
+	for i in modata:
+		modata1.append(i['phone_number'])
+	data = json.loads(dumps(User_Data.find()))
+	data1 = {}
+	y = 0
+	data1['count'] = 0
+	for x in data:
+		if x['mo_phone_number'] in modata1:
+			data1["record"+str(y)] = x
+			y+=1
+		else:
+			continue
+	data1['count'] = y
+	return data1
+
+
 #returns temp of all people
 @app.route('/api/ema_admin_temp_data', methods=['POST'])
 def ema_admin_temp_data():
@@ -437,17 +462,23 @@ def qma_login():
 def add_new_user_qma():
 	User_Data = pymongo.collection.Collection(db, 'User_Data')
 	Everyone_Data = pymongo.collection.Collection(db, 'Everyone_Data')
+	Close_Contact = pymongo.collection.Collection(db, 'Close_Contact')
+	CMA_Request_Data = pymongo.collection.Collection(db, 'CMA_Request_Data')
 	inputData = request.json
 	try:
-		for i in json.loads(dumps(Everyone_Data.find())):
-			if i['mo_phone_number'] == inputData['phone_number']:
-				return ({'success':False, 'error':"Duplicate Phone Number"})
 		for i in json.loads(dumps(User_Data.find())):
 			if i['phone_number'] == inputData['phone_number']:
 				return ({'success':False, 'error':"Duplicate Phone Number"})
 	except:
 		pass
-	pswd = "abcd1234" #temporary for now
+	try:
+		Close_Contact.update_many({'contant-pno':inputData['phone_number']},{'QMA':True})
+		CMA_Request_Data.update_many({'phone_number':inputData['phone_number']},{'open':True,'QMA':True})
+	except:
+		pass
+	pswdstring = "abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ123456789"
+	pswd = ''.join(random.choice(pswdstring) for i in range(8))
+	#pswd = "abcd1234" #temporary for now
 	inputData['password'] = pswd
 	objid = User_Data.insert_one(inputData).inserted_id
 	return ({'success':True, 'userobjid':str(objid), 'password':pswd})
@@ -480,7 +511,7 @@ def user_state_qma():
 	User_Latest_State_Data = pymongo.collection.Collection(db, 'User_Latest_State_Data')
 	inputData = request.json
 	User_State_Data.insert_one(inputData)
-	User_Latest_State_Data.update_one({'phone_number':inputData['phone_number'],inputData})
+	User_Latest_State_Data.update_one({'phone_number':inputData['phone_number']},inputData)
 	return ({'success':True})
 
 
