@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generic combat covid dashboard</title>
-<style>
+<!--style>
     @import url('../static/css/base.css');
     @import url('../static/css/basic-grid.css');
 
-</style>
+</style-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -37,6 +37,19 @@
 
   <br>
   <div id="userDataListHeader">Loading User Data...</div>
+  <form id="userDataSearch" >
+    <input type="text" name="phone_number" placeholder="Phno"></input>
+    <input type="text" name="date_time_quarantined" placeholder="Date time Quarantined"/>
+    <input type="text" name="first_name" placeholder="First Name"/>
+    <input type="text" name="last_name" placeholder="Last Name"/>
+    <input type="text" name="dob" placeholder="DOB"/>
+    <label>Currently Under Quarantine</label>
+    <input type="checkbox" name="currently_under_quarantine" />
+    <input type="text" name="email" placeholder="Email"/>
+    <input type="text" name="mo_phone_number" placeholder="MO Phno"/>
+    <input type="submit"/>
+    <input type="reset"/>
+  </form>
   <table id="userDataList" border="border">
     <tr>
       <th>Record Number</th><th>Ph Number</th><th>Date Quarantined</th><th>First Name</th><th>Last Name</th><th>DOB</th><th>Currently Under Quarantine</th><th>Email</th><th>Mo Phno</th>
