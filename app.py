@@ -1176,7 +1176,7 @@ def add_new_user_data():
 	if not flagv:
 		return ({'success':False, 'error':"Invalid User"})
 	User_Base_Data.insert_one(inputData)
-	User_Alert_Data.insert_one({'phone_number':inputData['phone_number'],'app':""})
+	User_Alert_Data.update_one({'phone_number':inputData['phone_number'],'app':""})
 	return ({'success':True})
 
 
@@ -1252,9 +1252,14 @@ def add_close_contact():
 @app.route("/api/add_new_distress_call", methods=['POST'])
 def add_new_distress_call():
 	Distress_Data = pymongo.collection.Collection(db, 'Distress_Data')
+	User_Alert_Data = pymongo.collection.Collection(db, 'User_Alert_Data')
+	alertData = json.loads(dumps(User_Alert_Data.find({'phone_number':inputData['phone_number']})))
+	if (str(alertData) = ""):
+		User_Alert_Data.insert_one({'phone_number':inputData['phone_number']})
 	inputData = request.json
 	inputData['open'] = True
 	Distress_Data.insert_one(inputData)
+	User_Alert_Data.insert_one({'phone_number':inputData['phone_number']},{'distress':inputData['Date-time']})
 	return ({'success':True})
 
 
