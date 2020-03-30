@@ -132,7 +132,7 @@ $(function(){
             async: true,
             success: function(msg) {
               alert("Alert Successfully Closed")
-              reload()
+              location.reload(true)
               }
             });
           }
