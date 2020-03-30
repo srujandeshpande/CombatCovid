@@ -106,8 +106,8 @@ $(function(){
   dataType: 'json',
   async: true,
   success: function(msg) {
-    var count = msg['count']
-    var r = "record"
+    var count = msg['count'];
+    var r = "record";
     for (var i=0;i<count;i++){
           $("#alertList").append('<tr><td>'+(i+1)+"</td><td><a href=# class='userph'>"+msg[r+i]['phone_number']+'</a></td><td>'+msg[r+i]['app']+'</td><td>'+msg[r+i]['face']+'</td><td>'+msg[r+i]['temperature']+'</td><td>'+msg[r+i]['location']+'</td><td>'+msg[r+i]['boundary']+'</td><td>'+msg[r+i]['distress']+"</td><td><button class='markCompleted' data-phno="+msg[r+i]['phone_number']+">Mark Completed</button></td></tr>");
         }
@@ -131,8 +131,8 @@ $(function(){
             dataType: 'json',
             async: true,
             success: function(msg) {
-              alert("Alert Successfully Closed")
-              location.reload(true)
+              alert("Alert Successfully Closed");
+              location.reload(true);
               }
             });
           }
