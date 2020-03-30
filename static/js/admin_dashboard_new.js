@@ -253,7 +253,7 @@ $(function(){
     var count = msg['count']
     var r = "record"
     for (var i=0;i<count;i++){
-      $("#userStateList").append('<tr><td>'+(i+1)+'</td><td><a href=# class="userph">'+msg[r+i]['phone-number']+'</a></td><td>'+msg[r+i]['lat']+'</td><td>'+msg[r+i]['long']+'</td><td>'+msg[r+i]['date-time']+'</td><td>'+msg[r+i]['distance-from-home']+'</td><td>'+msg[r+i]['proximity-to-home']+'</td><td>'+msg[r+i]['location_enabled']+'</td><td>'+msg[r+i]['Last-face-log']+'</td><td>'+msg[r+i]['Last-temp-log']+'</td><td>'+msg[r+i]['face-exceeded']+'</td><td>'+msg[r+i]['temp-exceeded']+'</td></tr>');
+      $("#userStateList").append('<tr><td>'+(i+1)+'</td><td><a href=# class="userph">'+msg[r+i]['phone-number']+'</a></td><td>'+msg[r+i]['lat']+'</td><td>'+msg[r+i]['long']+'</td><td>'+msg[r+i]['date-time']+'</td><td>'+msg[r+i]['distance-from-home']+'</td><td>'+msg[r+i]['proximity-to-home']+'</td><td>'+msg[r+i]['location_enabled']+'</td><td>'+msg[r+i]['Last-face-log']+'</td><td>'+msg[r+i]['Last-temp-log']+'</td><td>'+msg[r+i]['face_exceeded']+'</td><td>'+msg[r+i]['temp_exceeded']+'</td></tr>');
     }
     $("#userStateListHeader").html("User State Data")
     $('.userph').unbind().click(function(event) {
