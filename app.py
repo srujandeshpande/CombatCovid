@@ -1089,18 +1089,6 @@ def cma_add_new_user():
     return ({'success':True, 'CMAuserobjid':str(objid)})
 
 
-#Checks Location for CMA
-@app.route("/api/cma_add_location", methods=['POST'])
-def cma_add_location():
-	CMA_User_Data = pymongo.collection.Collection(db, 'CMA_User_Data')
-	CMA_Location_Data = pymongo.collection.Collection(db, 'CMA_Location_Data')
-	inputData = request.json
-	for i in json.loads(dumps(CMA_User_Data.find())):
-		if i['phone_number'] == inputData['phone_number']:
-			CMA_Location_Data.insert_one(inputData)
-			return ({'success':True})
-	#return ({'success':False})
-	return Response(status=401)
 
 
 #Checks login for CMA
@@ -1297,3 +1285,17 @@ def add_new_phc():
             objid = PHC_Data.insert_one(inputData).inserted_id
             return ({'success':True, 'phcobjid':str(objid)})
     return ({'success':False, 'error':"CHC Not Found"})
+
+#Checks Location for CMA
+@app.route("/api/cma_add_location", methods=['POST'])
+def cma_add_location():
+	CMA_User_Data = pymongo.collection.Collection(db, 'CMA_User_Data')
+	CMA_Location_Data = pymongo.collection.Collection(db, 'CMA_Location_Data')
+	inputData = request.json
+	for i in json.loads(dumps(CMA_User_Data.find())):
+		if i['phone_number'] == inputData['phone_number']:
+			CMA_Location_Data.insert_one(inputData)
+			return ({'success':True})
+	#return ({'success':False})
+	return Response(status=401)
+
