@@ -283,7 +283,7 @@ def ema_alert_data():
 		data1 = {}
 		y = 0
 		data1['count'] = 0
-		for x in data:
+		for x in alertData:
 			if x['phone_number'] in udata1:
 				data1["record"+str(y)] = x
 				y+=1
@@ -603,12 +603,10 @@ def ema_mo_distress_data():
 			udata1.append(j['phone_number'])
 	data = json.loads(dumps(Distress_Data.find()))
 	data1 = {}
-	print(data)
 	y = 0
 	data1['count'] = 0
 	for x in data:
 		if x['phone_number'] in udata1:
-			#if x['temperature']>38:
 			data1["record"+str(y)] = x
 			y+=1
 	data1['count'] = y

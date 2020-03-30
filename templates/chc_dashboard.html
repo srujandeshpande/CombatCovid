@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generic combat covid dashboard</title>
+    <title>CHC Dashboard</title>
 <!--style>
     @import url('../static/css/base.css');
     @import url('../static/css/basic-grid.css');
@@ -85,6 +85,16 @@
     <div class="tablec">
     <table id="singleUserData" class="table table-striped table-bordered table-sm" cellspacing="0"
     width="100%" border="border"></table>
+  </div>
+
+  <div id="alertListHeader" class="lead alead" >Loading Alerts...</div>
+  <div class="tablec">
+    <table id="alertList" border="border" class="table table-striped table-bordered table-sm" cellspacing="0"
+    width="100%">
+      <tr>
+        <th>Alert No.</th><th>Ph Number</th><th>No QMA</th><th>No Face</th><th>No Temp</th><th>No Location</th><th>Outside Boundary</th><th>In Distress</th><th>Completed</th>
+      </tr>
+    </table>
   </div>
 
   <div id="userDataListHeader" class="lead" >Loading User Data...</div>

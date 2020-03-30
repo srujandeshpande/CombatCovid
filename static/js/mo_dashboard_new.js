@@ -112,6 +112,49 @@ function emaUserMore(phno){
 $(function(){
 
   $.ajax({
+  url: '/api/ema_alert_data',
+  type: 'POST',
+  data: JSON.stringify(arr),
+  contentType: 'application/json; charset=utf-8',
+  dataType: 'json',
+  async: true,
+  success: function(msg) {
+    var count = msg['count'];
+    if (count!=0) alert("You have "+count+" new Alerts!");
+    var r = "record";
+    for (var i=0;i<count;i++){
+          $("#alertList").append('<tr><td>'+(i+1)+"</td><td><a href=# class='userph'>"+msg[r+i]['phone_number']+'</a></td><td>'+msg[r+i]['app']+'</td><td>'+msg[r+i]['face']+'</td><td>'+msg[r+i]['temperature']+'</td><td>'+msg[r+i]['location']+'</td><td>'+msg[r+i]['boundary']+'</td><td>'+msg[r+i]['distress']+"</td><td><button class='markCompleted' data-phno="+msg[r+i]['phone_number']+">Mark Completed</button></td></tr>");
+        }
+        $("#alertListHeader").html("Your Alerts")
+        $('.userph').unbind().click(function(event) {
+          phno = event.target.innerHTML
+          event.preventDefault()
+          window.open('\\user\\'+phno, '_blank');
+          showMore(phno)
+        });
+        $('.markCompleted').unbind().click(function(event) {
+          phno = $(this).data('phno')
+          event.preventDefault()
+          cnf = confirm("Are you sure you want to mark all alerts related to "+phno+" as closed?")
+          if (cnf){
+            $.ajax({
+            url: '/api/ema_mark_alert_completed',
+            type: 'POST',
+            data: JSON.stringify({'phone_number':phno}),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            async: true,
+            success: function(msg) {
+              alert("Alert Successfully Closed");
+              location.reload(true);
+              }
+            });
+          }
+        });
+    }
+  });
+
+  $.ajax({
   url: '/api/ema_mo_user_data',
   type: 'POST',
   data: JSON.stringify(arr),

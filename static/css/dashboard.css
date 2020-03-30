@@ -6,6 +6,10 @@ html,body{
   background-color:tomato;
   color:white;
 }
+.alead{
+  background-color:red;
+  color:white;
+}
 .tablec{
   max-height:40%;
   overflow-y:auto;
