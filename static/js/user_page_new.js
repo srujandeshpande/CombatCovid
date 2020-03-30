@@ -215,12 +215,3 @@ $(function(){
   });
 });
 });
-//frontend oriented
-
-$(document).ready(function () {
-$('.table').css({
-"scrollY": "50vh",
-"scrollCollapse": true,
-});
-$('.dataTables_length').addClass('bs-select');
-});
