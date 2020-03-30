@@ -10,11 +10,15 @@ table.dataTable thead .sorting_desc_disabled:after,
 table.dataTable thead .sorting_desc_disabled:before {
 bottom: .5em;
 }
-
+html,body{
+  height:100%;
+  width:100%;
+}
 .lead{
   background-color:tomato;
   color:white;
 }
-table{
-  margin:10px;
+.tablec{
+  max-height:40%;
+  overflow-y:auto;
 }
