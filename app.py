@@ -198,6 +198,15 @@ def ema_app_mo_user_data():
 	return data1
 
 
+#EMA delete alert
+@app.route('/api/ema_mark_alert_completed', methods=['POST'])
+def ema_mark_alert_completed():
+	User_Alert_Data = pymongo.collection.Collection(db, 'User_Alert_Data')
+	inputData = request.json
+	User_Alert_Data.delete_one(inputData)
+	return ({'success':True})
+
+
 #EMA return Admin Alerts
 @app.route('/api/ema_alert_data', methods=['POST'])
 def ema_alert_data():
@@ -1167,7 +1176,7 @@ def add_new_user_data():
 	if not flagv:
 		return ({'success':False, 'error':"Invalid User"})
 	User_Base_Data.insert_one(inputData)
-	User_Latest_State_Data.insert_one({'phone-number':inputData['phone-number']})
+	User_Alert_Data.insert_one({'phone_number':inputData['phone_number'],'app':""})
 	return ({'success':True})
 
 
