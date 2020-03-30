@@ -1142,7 +1142,7 @@ def add_new_user_qma():
 		CMA_Request_Data.update_many({'phone_number':inputData['phone_number']},{'open':True,'QMA':True})
 	except:
 		pass
-	User_Alert_Data.insert_one({'phone-number':inputData['phone-number'],'app':inputData['date_time_quarantined']})
+	User_Alert_Data.insert_one({'phone_number':inputData['phone_number'],'app':inputData['date_time_quarantined']})
 	pswdstring = "abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ123456789"
 	pswd = ''.join(random.choice(pswdstring) for i in range(8))
 	#pswd = "abcd1234" #temporary for now
