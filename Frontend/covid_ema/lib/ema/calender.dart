@@ -51,14 +51,29 @@ class _MyHomePageState extends State<Calender> {
             width: 5.0,
           ),
         ),
+       
         new Event(
           date: new DateTime(2020, 3, 30),
           title: 'Event 2',
           icon: _eventIcon,
         ),
+      ],
+      new DateTime(2020, 4, 1): [
         new Event(
-          date: new DateTime(2020, 3, 31),
-          title: 'Event 3',
+          date: new DateTime(2020, 4, 1),
+          title: 'Event 1',
+          icon: _eventIcon,
+          dot: Container(
+            margin: EdgeInsets.symmetric(horizontal: 1.0),
+            color: Colors.red,
+            height: 5.0,
+            width: 5.0,
+          ),
+        ),
+       
+        new Event(
+          date: new DateTime(2020, 3, 30),
+          title: 'Event 2',
           icon: _eventIcon,
         ),
       ],
@@ -71,24 +86,20 @@ class _MyHomePageState extends State<Calender> {
   void initState() {
     /// Add more events to _markedDateMap EventList
     _markedDateMap.add(
-        new DateTime(2019, 2, 25),
+        new DateTime(2020, 4, 25),
         new Event(
-          date: new DateTime(2019, 2, 25),
+          date: new DateTime(2020, 4, 25),
           title: 'Event 5',
           icon: _eventIcon,
         ));
 
-    _markedDateMap.addAll(new DateTime(2019, 2, 11), [
+    _markedDateMap.addAll(new DateTime(2020, 4, 11), [
       new Event(
-        date: new DateTime(2019, 2, 11),
+        date: new DateTime(2020, 4, 11),
         title: 'Event 1',
         icon: _eventIcon,
       ),
-      new Event(
-        date: new DateTime(2019, 2, 11),
-        title: 'Event 23',
-        icon: _eventIcon,
-      ),
+      
     ]);
     super.initState();
   }
