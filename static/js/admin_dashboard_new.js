@@ -106,8 +106,9 @@ $(function(){
   dataType: 'json',
   async: true,
   success: function(msg) {
-    var count = msg['count']
-    var r = "record"
+    var count = msg['count'];
+    if (count!=0) alert("You have "+count+" new Alerts!");
+    var r = "record";
     for (var i=0;i<count;i++){
           $("#alertList").append('<tr><td>'+(i+1)+"</td><td><a href=# class='userph'>"+msg[r+i]['phone_number']+'</a></td><td>'+msg[r+i]['app']+'</td><td>'+msg[r+i]['face']+'</td><td>'+msg[r+i]['temperature']+'</td><td>'+msg[r+i]['location']+'</td><td>'+msg[r+i]['boundary']+'</td><td>'+msg[r+i]['distress']+"</td><td><button class='markCompleted' data-phno="+msg[r+i]['phone_number']+">Mark Completed</button></td></tr>");
         }
@@ -121,7 +122,7 @@ $(function(){
         $('.markCompleted').unbind().click(function(event) {
           phno = $(this).data('phno')
           event.preventDefault()
-          cnf = confirm("Are you sure you want to mark all alerts related to "+phno+" as completed?")
+          cnf = confirm("Are you sure you want to mark all alerts related to "+phno+" as closed?")
           if (cnf){
             $.ajax({
             url: '/api/ema_mark_alert_completed',
@@ -131,8 +132,8 @@ $(function(){
             dataType: 'json',
             async: true,
             success: function(msg) {
-              alert("Alert Successfully Closed")
-              reload()
+              alert("Alert Successfully Closed");
+              location.reload(true);
               }
             });
           }

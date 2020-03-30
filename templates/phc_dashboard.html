@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generic combat covid dashboard</title>
+    <title>PHC Dashboard</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -79,6 +79,16 @@
     <div class="tablec">
     <table id="singleUserData" class="table table-striped table-bordered table-sm" cellspacing="0"
     width="100%" border="border"></table>
+  </div>
+
+  <div id="alertListHeader" class="lead alead" >Loading Alerts...</div>
+  <div class="tablec">
+    <table id="alertList" border="border" class="table table-striped table-bordered table-sm" cellspacing="0"
+    width="100%">
+      <tr>
+        <th>Alert No.</th><th>Ph Number</th><th>No QMA</th><th>No Face</th><th>No Temp</th><th>No Location</th><th>Outside Boundary</th><th>In Distress</th><th>Completed</th>
+      </tr>
+    </table>
   </div>
 
   <div id="userDataListHeader"  class="lead" >Loading User Data...</div>

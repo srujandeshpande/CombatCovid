@@ -283,7 +283,7 @@ def ema_alert_data():
 		data1 = {}
 		y = 0
 		data1['count'] = 0
-		for x in data:
+		for x in alertData:
 			if x['phone_number'] in udata1:
 				data1["record"+str(y)] = x
 				y+=1
@@ -603,12 +603,10 @@ def ema_mo_distress_data():
 			udata1.append(j['phone_number'])
 	data = json.loads(dumps(Distress_Data.find()))
 	data1 = {}
-	print(data)
 	y = 0
 	data1['count'] = 0
 	for x in data:
 		if x['phone_number'] in udata1:
-			#if x['temperature']>38:
 			data1["record"+str(y)] = x
 			y+=1
 	data1['count'] = y
@@ -1189,22 +1187,22 @@ def user_state_qma():
 	User_Latest_State_Data = pymongo.collection.Collection(db, 'User_Latest_State_Data')
 	User_Alert_Data = pymongo.collection.Collection(db, 'User_Alert_Data')
 	inputData = request.json
-	alertData = json.loads(dumps(User_Alert_Data.find({'phone_number':inputData['phone_number']})))
-	if(str(alertData) == ""):
-		User_Alert_Data.insert_one({'phone-number':inputData['phone-number']})
+	alertData = json.loads(dumps(User_Alert_Data.find({'phone_number':inputData['phone-number']})))
+	if(alertData == []):
+		User_Alert_Data.insert_one({'phone_number':inputData['phone-number']})
 
 	if(inputData['proximity-to-home'] == False):
-		User_Alert_Data.update_one({'phone_number':inputData['phone_number']},{"$set":{'boundary':inputData['date-time']}})
+		User_Alert_Data.update_one({'phone_number':inputData['phone-number']},{"$set":{'boundary':inputData['date-time']}})
 	if(inputData['location_enabled'] == "false"):
-		User_Alert_Data.update_one({'phone_number':inputData['phone_number']},{"$set":{'location':inputData['date-time']}})
+		User_Alert_Data.update_one({'phone_number':inputData['phone-number']},{"$set":{'location':inputData['date-time']}})
 	if(inputData['face_exceeded'] == 'true'):
-		User_Alert_Data.update_one({'phone_number':inputData['phone_number']},{"$set":{'face':inputData['date-time']}})
+		User_Alert_Data.update_one({'phone_number':inputData['phone-number']},{"$set":{'face':inputData['date-time']}})
 	if(inputData['temp_exceeded'] == 'true'):
-		User_Alert_Data.update_one({'phone_number':inputData['phone_number']},{"$set":{'temperature':inputData['date-time']}})
+		User_Alert_Data.update_one({'phone_number':inputData['phone-number']},{"$set":{'temperature':inputData['date-time']}})
 
 	User_State_Data.insert_one(inputData)
 	try:
-		User_Latest_State_Data.update_one({'phone_number':inputData['phone_number']},{"$set":inputData})
+		User_Latest_State_Data.update_one({'phone_number':inputData['phone-number']},{"$set":inputData})
 	except:
 		pass
 	return ({'success':True})
