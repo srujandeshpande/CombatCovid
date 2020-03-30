@@ -4,11 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QI Data</title>
-<!--style>
-    @import url('../static/css/base.css');
-    @import url('../static/css/basic-grid.css');
-
-</style-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -16,45 +11,7 @@
     <link rel="stylesheet" href="https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.css" type="text/css" />
     <script src="https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.js"></script>
     <script src="https://atlas.microsoft.com/sdk/javascript/service/2/atlas-service.min.js"></script>
-
-  <style>
-    table.dataTable thead .sorting:after,
-    table.dataTable thead .sorting:before,
-    table.dataTable thead .sorting_asc:after,
-    table.dataTable thead .sorting_asc:before,
-    table.dataTable thead .sorting_asc_disabled:after,
-    table.dataTable thead .sorting_asc_disabled:before,
-    table.dataTable thead .sorting_desc:after,
-    table.dataTable thead .sorting_desc:before,
-    table.dataTable thead .sorting_desc_disabled:after,
-    table.dataTable thead .sorting_desc_disabled:before {
-    bottom: .5em;
-    }
-    .lead{
-      background-color:tomato;
-      color:white;
-    }
-    table{
-      margin:10px;
-    }
-    html,
-        body {
-            width: 100%;
-            height: 100%;
-        }
-    #myMap {
-            flex: 1;
-            height: 100%;
-        }
-        .row {
-          display: flex; /* equal height of the children */
-        }
-
-        .col {
-          flex: 1; /* additionally, equal width */
-          padding: 1em;
-        }
-  </style>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/dashboard.css')}}">
 </head>
 
 <navbar class="navbar-fixed-top">
@@ -78,7 +35,7 @@
           <li><a href="#userChecklistListHeader">Checklist Data</a></li>
         </ul>
       </li>
-  
+
           <li class=""><a href="/ema_add_new_user_page">Add New User</a></li>
           <li><a href="/ema_logout">Logout</a></li>
         </ul>
@@ -88,8 +45,9 @@
 </navbar>
 
 <body>
-<br><br><br>
-
+<br>
+<br>
+<br>
 <div class="row">
   <div class="col"><div id="myMap"></div></div>
   <div class="col">
@@ -105,73 +63,87 @@
 </div>
 </div>
 </div>
+
   <div id="userTempListHeader" class="lead">Loading Temperature Data...</div>
+  <div class="tablec">
      <table id="userTempList" border="border" class="table table-striped table-bordered table-sm" cellspacing="0"
      width="100%">
        <tr>
          <th>Record Number</th><th>Ph Number</th><th>Temperature</th><th>Datetime</th>
        </tr>
      </table>
+   </div>
 
   <br>
   <div id="userCCListHeader" class="lead">Loading Close Contact Data...</div>
+  <div class="tablec">
   <table id="userCCList" border="border" class="table table-striped table-bordered table-sm" cellspacing="0"
   width="100%">
     <tr>
       <th>Record Number</th><th>Ph Number</th><th>Datetime</th><th>Contact Name</th><th>Contact Ph</th><th>Contact Address</th>
     </tr>
   </table>
+</div>
 
   <br>
   <div id="userDistressListHeader" class="lead">Loading Distress Data...</div>
+  <div class="tablec">
   <table id="userDistressList" border="border" class="table table-striped table-bordered table-sm" cellspacing="0"
   width="100%">
     <tr>
       <th>Record Number</th><th>Ph Number</th><th>Datetime</th><th>Active?</th>
     </tr>
   </table>
+</div>
 
   <br>
   <div id="userLatestStateListHeader" class="lead">Loading Latest User State Data...</div>
+  <div class="tablec">
   <table id="userLatestStateList" border="border" class="table table-striped table-bordered table-sm" cellspacing="0"
   width="100%">
     <tr>
       <th>Record Number</th><th>Ph Number</th><th>Lat</th><th>Long</th><th>Date Time</th><th>Distance from Home</th><th>Within Range</th><th>Loc Enabled</th><th>Last Face Log</th><th>Last Temp Log</th>
     </tr>
   </table>
+</div>
 
   <br>
   <div id="userStateListHeader" class="lead">Loading User State Data...</div>
+  <div class="tablec">
   <table id="userStateList" border="border" class="table table-striped table-bordered table-sm" cellspacing="0"
   width="100%">
     <tr>
       <th>Record Number</th><th>Ph Number</th><th>Lat</th><th>Long</th><th>Date Time</th><th>Distance from Home</th><th>Within Range</th><th>Loc Enabled</th><th>Last Face Log</th><th>Last Temp Log</th>
     </tr>
   </table>
+</div>
 
   <br>
   <div id="userTestListHeader" class="lead">Loading Testing Data...</div>
+  <div class="tablec">
   <table id="userTestList" border="border" class="table table-striped table-bordered table-sm" cellspacing="0"
   width="100%">
     <tr>
       <th>Record Number</th><th>Ph Number</th><th>Datetime</th><th>Test Result</th><th>Other Data</th><th>MO Phno</th>
     </tr>
   </table>
+</div>
 
   <br>
   <div id="userChecklistListHeader" class="lead">Loading Checklist Data...</div>
+  <div class="tablec">
   <table id="userChecklistList" border="border" class="table table-striped table-bordered table-sm" cellspacing="0"
   width="100%">
     <tr>
       <th>Record Number</th><th>Ph Number</th><th>Datetime</th><th>Hygenic Space</th><th>Controlled Symptoms</th><th>Stamp Reapply</th><th>MO Phno</th>
     </tr>
   </table>
+</div>
 
 </body>
   <script src="{{url_for('static', filename='js/user_page_new.js')}}"></script>
 <footer>
     <div class="basic-grid">
-
     </div>
 </footer>
 </html>
