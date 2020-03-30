@@ -1129,6 +1129,7 @@ def add_new_user_qma():
 	Everyone_Data = pymongo.collection.Collection(db, 'Everyone_Data')
 	Close_Contact = pymongo.collection.Collection(db, 'Close_Contact')
 	CMA_Request_Data = pymongo.collection.Collection(db, 'CMA_Request_Data')
+	User_Alert_Data = pymongo.collection.Collection(db, 'User_Alert_Data')
 	inputData = request.json
 	try:
 		for i in json.loads(dumps(User_Data.find())):
@@ -1141,6 +1142,7 @@ def add_new_user_qma():
 		CMA_Request_Data.update_many({'phone_number':inputData['phone_number']},{'open':True,'QMA':True})
 	except:
 		pass
+	User_Alert_Data.insert_one({'phone-number':inputData['phone-number'],'app':inputData['date_time_quarantined']})
 	pswdstring = "abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ123456789"
 	pswd = ''.join(random.choice(pswdstring) for i in range(8))
 	#pswd = "abcd1234" #temporary for now
@@ -1164,7 +1166,6 @@ def add_new_user_data():
 			break
 	if not flagv:
 		return ({'success':False, 'error':"Invalid User"})
-	User_Alert_Data.insert_one({'phone-number':inputData['phone-number'],'app':inputData['date_time_quarantined']})
 	User_Base_Data.insert_one(inputData)
 	User_Latest_State_Data.insert_one({'phone-number':inputData['phone-number']})
 	return ({'success':True})
@@ -1298,4 +1299,3 @@ def cma_add_location():
 			return ({'success':True})
 	#return ({'success':False})
 	return Response(status=401)
-
