@@ -62,7 +62,8 @@
   </nav>
 </navbar>
 <body>
-<br><br><br>
+  <br>
+  <br>
   <br>
   <div id="userDataSearchListHeader" class="lead tablec">Search for Users</div>
   <form id="userDataSearch" class="form-inline">
@@ -79,11 +80,12 @@
     <input class="btn btn-default" type="submit"/ >
     <input class="btn btn-default" type="reset"/>
   </form>
-  <div>
+
+  <div class="tablec">
   <table id="singleUserData" border="border" class="table table-striped table-bordered table-sm" cellspacing="0"
   width="100%"></table>
 </div>
-<br><br>
+
   <div id="userDataListHeader" class="lead" >Loading User Data...</div>
   <div class="tablec">
   <table id="userDataList" border="border" class="table table-striped table-bordered table-sm" cellspacing="0"
@@ -230,7 +232,7 @@
   <script src="{{url_for('static', filename='js/admin_dashboard_new.js')}}"></script>
 <footer>
     <div class="basic-grid">
-
+      
     </div>
 </footer>
 </html>
