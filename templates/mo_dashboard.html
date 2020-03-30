@@ -57,10 +57,10 @@
   </nav>
 </navbar>
 <body>
-
-
   <br>
-  <div id="userDataListHeader" class="lead">Search for Users</div>
+  <br>
+  <br>
+  <div id="userDataSearchListHeader" class="lead">Search for Users</div>
   <form id="userDataSearch" >
     <input type="text" name="phone_number" placeholder="Phno"></input>
     <input type="text" name="date_time_quarantined" placeholder="Date time Quarantined"/>
@@ -81,6 +81,7 @@
 </div>
 
   <div id="userDataListHeader" class="lead">Loading User Data...</div>
+  <div class="tablec">
   <table id="userDataList" border="border"  class="table table-striped table-bordered table-sm" cellspacing="0"
   width="100%" >
     <tr>
@@ -91,6 +92,7 @@
 
   <br>
   <div id="userTempListHeader" class="lead">Loading Temperature Data...</div>
+  <div class="tablec">
      <table id="userTempList" border="border"  class="table table-striped table-bordered table-sm" cellspacing="0"
      width="100%" >
        <tr>
@@ -101,6 +103,7 @@
 
   <br>
   <div id="userCCListHeader" class="lead">Loading Close Contact Data...</div>
+  <div class="tablec">
   <table id="userCCList" border="border"  class="table table-striped table-bordered table-sm" cellspacing="0"
   width="100%" >
     <tr>
@@ -111,6 +114,7 @@
 
   <br>
   <div id="userDistressListHeader" class="lead">Loading Distress Data...</div>
+  <div class="tablec">
   <table id="userDistressList" border="border"  class="table table-striped table-bordered table-sm" cellspacing="0"
   width="100%" >
     <tr>
@@ -121,6 +125,7 @@
 
   <br>
   <div id="userLatestStateListHeader" class="lead">Loading Latest User State Data...</div>
+  <div class="tablec">
   <table id="userLatestStateList" border="border"  class="table table-striped table-bordered table-sm" cellspacing="0"
   width="100%" >
     <tr>
@@ -131,6 +136,7 @@
 
   <br>
   <div id="userStateListHeader" class="lead">Loading User State Data...</div>
+  <div class="tablec">
   <table id="userStateList" border="border"  class="table table-striped table-bordered table-sm" cellspacing="0"
   width="100%" >
     <tr>
@@ -141,6 +147,7 @@
 
   <br>
   <div id="userTestListHeader" class="lead">Loading Testing Data...</div>
+  <div class="tablec">
   <table id="userTestList" border="border"  class="table table-striped table-bordered table-sm" cellspacing="0"
   width="100%" >
     <tr>
@@ -151,6 +158,7 @@
 
   <br>
   <div id="userChecklistListHeader" class="lead">Loading Checklist Data...</div>
+  <div class="tablec">
   <table id="userChecklistList" border="border"  class="table table-striped table-bordered table-sm" cellspacing="0"
   width="100%" >
     <tr>
@@ -161,6 +169,7 @@
 
   <br>
   <div id="userRequestListHeader" class="lead">Loading CMA Checking Requests...</div>
+  <div class="tablec">
   <table id="userRequestList" border="border"  class="table table-striped table-bordered table-sm" cellspacing="0"
   width="100%" >
     <tr>
@@ -171,6 +180,7 @@
 
   <br>
   <div id="emaMOListHeader" class="lead">Loading EMA MOs...</div>
+  <div class="tablec">
   <table id="emaMOList" border="border"  class="table table-striped table-bordered table-sm" cellspacing="0"
   width="100%" >
     <tr>
@@ -183,9 +193,6 @@
   <script src="{{url_for('static', filename='js/mo_dashboard_new.js')}}"></script>
 <footer>
     <div class="basic-grid">
-
-        footer
-
     </div>
 </footer>
 </html>
