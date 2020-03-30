@@ -192,7 +192,11 @@ $(function(){
   success: function(msg) {
     var count = msg['count']
     var r = "record"
+    var open = ""
     for (var i=0;i<count;i++){
+      if(msg[r+i]['phone_number'] == false){
+
+      }
       $("#userDistressList").append('<tr><td>'+(i+1)+'</td><td><a href=# class="userph">'+msg[r+i]['phone_number']+'</a></td><td>'+msg[r+i]['Date-time']+'</td><td>'+msg[r+i]['active']+'</td></tr>');
     }
     $("#userDistressListHeader").html("Distress Data")
@@ -221,7 +225,7 @@ $(function(){
     var count = msg['count']
     var r = "record"
     for (var i=0;i<count;i++){
-      $("#userLatestStateList").append('<tr><td>'+(i+1)+'</td><td><a href=# class="userph">'+msg[r+i]['phone-number']+'</a></td><td>'+msg[r+i]['lat']+'</td><td>'+msg[r+i]['long']+'</td><td>'+msg[r+i]['date-time']+'</td><td>'+msg[r+i]['distance-from-home']+'</td><td>'+msg[r+i]['proximity-to-home']+'</td><td>'+msg[r+i]['location_enabled']+'</td><td>'+msg[r+i]['Last-face-log']+'</td><td>'+msg[r+i]['Last-temp-log']+'</td></tr>');
+      $("#userLatestStateList").append('<tr><td>'+(i+1)+'</td><td><a href=# class="userph">'+msg[r+i]['phone-number']+'</a></td><td>'+msg[r+i]['lat']+'</td><td>'+msg[r+i]['long']+'</td><td>'+msg[r+i]['date-time']+'</td><td>'+msg[r+i]['distance-from-home']+'</td><td>'+msg[r+i]['proximity-to-home']+'</td><td>'+msg[r+i]['location_enabled']+'</td><td>'+msg[r+i]['Last-face-log']+'</td><td>'+msg[r+i]['Last-temp-log']+'</td><td>'+msg[r+i]['face-exceeded']+'</td><td>'+msg[r+i]['temp-exceeded']+'</td></tr>');
     }
     $("#userLatestStateListHeader").html("User Latest State Data")
     $('.userph').unbind().click(function(event) {
@@ -249,7 +253,7 @@ $(function(){
     var count = msg['count']
     var r = "record"
     for (var i=0;i<count;i++){
-      $("#userStateList").append('<tr><td>'+(i+1)+'</td><td><a href=# class="userph">'+msg[r+i]['phone-number']+'</a></td><td>'+msg[r+i]['lat']+'</td><td>'+msg[r+i]['long']+'</td><td>'+msg[r+i]['date-time']+'</td><td>'+msg[r+i]['distance-from-home']+'</td><td>'+msg[r+i]['proximity-to-home']+'</td><td>'+msg[r+i]['location_enabled']+'</td><td>'+msg[r+i]['Last-face-log']+'</td><td>'+msg[r+i]['Last-temp-log']+'</td></tr>');
+      $("#userStateList").append('<tr><td>'+(i+1)+'</td><td><a href=# class="userph">'+msg[r+i]['phone-number']+'</a></td><td>'+msg[r+i]['lat']+'</td><td>'+msg[r+i]['long']+'</td><td>'+msg[r+i]['date-time']+'</td><td>'+msg[r+i]['distance-from-home']+'</td><td>'+msg[r+i]['proximity-to-home']+'</td><td>'+msg[r+i]['location_enabled']+'</td><td>'+msg[r+i]['Last-face-log']+'</td><td>'+msg[r+i]['Last-temp-log']+'</td><td>'+msg[r+i]['face-exceeded']+'</td><td>'+msg[r+i]['temp-exceeded']+'</td></tr>');
     }
     $("#userStateListHeader").html("User State Data")
     $('.userph').unbind().click(function(event) {
@@ -432,13 +436,4 @@ $(function(){
   }
   });
 
-});
-//frontend oriented
-
-$(document).ready(function () {
-$('.table').DataTable({
-"scrollY": "50vh",
-"scrollCollapse": true,
-});
-$('.dataTables_length').addClass('bs-select');
 });
