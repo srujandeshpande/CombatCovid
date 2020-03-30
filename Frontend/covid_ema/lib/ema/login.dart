@@ -92,7 +92,7 @@ class _LoginState extends State<Login> {
       String _text = text;
       var pno = int.parse(phoneNumber);
       assert(pno is int);
-      String url = "https://combat-covid.azurewebsites.net/api/ema_login";
+      String url = "https://combat-covid.azurewebsites.net/api/ema_app_login";
       Map<String,String> headers = {"Content-type" : "application/json"};
       Map js = {"phone_number":phoneNumber,"password":password };
       var body = json.encode(js);
