@@ -99,6 +99,34 @@ function emaUserMore(phno){
 $(function(){
 
   $.ajax({
+  url: '/api/ema_alert_data',
+  type: 'POST',
+  data: JSON.stringify(arr),
+  contentType: 'application/json; charset=utf-8',
+  dataType: 'json',
+  async: true,
+  success: function(msg) {
+    var count = msg['count']
+    var r = "record"
+    for (var i=0;i<count;i++){
+          $("#alertList").append('<tr><td>'+(i+1)+"</td><td><a href=# class='userph'>"+msg[r+i]['phone_number']+'</a></td><td>'+msg[r+i]['app']+'</td><td>'+msg[r+i]['face']+'</td><td>'+msg[r+i]['temperature']+'</td><td>'+msg[r+i]['location']+'</td><td>'+msg[r+i]['boundary']+'</td><td>'+msg[r+i]['distress']+'</td><td>Completede??</td></tr>');
+        }
+        $("#alertListHeader").html("Your Alerts")
+        $('.userph').unbind().click(function(event) {
+          phno = event.target.innerHTML
+          event.preventDefault()
+          window.open('\\user\\'+phno, '_blank');
+          showMore(phno)
+        });
+        $('.emauserph').click(function(event) {
+          phno = event.target.innerHTML
+          event.preventDefault()
+          emaUserMore(phno)
+        });
+    }
+  });
+
+  $.ajax({
   url: '/api/ema_admin_user_data',
   type: 'POST',
   data: JSON.stringify(arr),
@@ -253,7 +281,7 @@ $(function(){
     var count = msg['count']
     var r = "record"
     for (var i=0;i<count;i++){
-      $("#userStateList").append('<tr><td>'+(i+1)+'</td><td><a href=# class="userph">'+msg[r+i]['phone-number']+'</a></td><td>'+msg[r+i]['lat']+'</td><td>'+msg[r+i]['long']+'</td><td>'+msg[r+i]['date-time']+'</td><td>'+msg[r+i]['distance-from-home']+'</td><td>'+msg[r+i]['proximity-to-home']+'</td><td>'+msg[r+i]['location_enabled']+'</td><td>'+msg[r+i]['Last-face-log']+'</td><td>'+msg[r+i]['Last-temp-log']+'</td><td>'+msg[r+i]['face-exceeded']+'</td><td>'+msg[r+i]['temp-exceeded']+'</td></tr>');
+      $("#userStateList").append('<tr><td>'+(i+1)+'</td><td><a href=# class="userph">'+msg[r+i]['phone-number']+'</a></td><td>'+msg[r+i]['lat']+'</td><td>'+msg[r+i]['long']+'</td><td>'+msg[r+i]['date-time']+'</td><td>'+msg[r+i]['distance-from-home']+'</td><td>'+msg[r+i]['proximity-to-home']+'</td><td>'+msg[r+i]['location_enabled']+'</td><td>'+msg[r+i]['Last-face-log']+'</td><td>'+msg[r+i]['Last-temp-log']+'</td><td>'+msg[r+i]['face_exceeded']+'</td><td>'+msg[r+i]['temp_exceeded']+'</td></tr>');
     }
     $("#userStateListHeader").html("User State Data")
     $('.userph').unbind().click(function(event) {
