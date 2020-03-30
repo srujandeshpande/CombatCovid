@@ -7,11 +7,10 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{{url_for('static', filename='css/admin_dashboard.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/user_page_dashboard.css')}}">
     <link rel="stylesheet" href="https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.css" type="text/css" />
     <script src="https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.js"></script>
     <script src="https://atlas.microsoft.com/sdk/javascript/service/2/atlas-service.min.js"></script>
-    <link rel="stylesheet" href="{{url_for('static', filename='css/dashboard.css')}}">
 </head>
 
 <navbar class="navbar-fixed-top">
@@ -54,16 +53,13 @@
   <div>
     <div id="userDataListHeader" class="lead" >Loading User Data...</div>
     <table id="userDataList" border="border" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
-
     </table>
     <div id="userBaseDataListHeader" class="lead" >Loading User Base Data...</div>
     <table id="userBaseDataList" border="border" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
-
     </table>
 </div>
 </div>
 </div>
-
   <div id="userTempListHeader" class="lead">Loading Temperature Data...</div>
   <div class="tablec">
      <table id="userTempList" border="border" class="table table-striped table-bordered table-sm" cellspacing="0"
