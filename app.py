@@ -203,6 +203,7 @@ def ema_app_mo_user_data():
 def ema_mark_alert_completed():
 	User_Alert_Data = pymongo.collection.Collection(db, 'User_Alert_Data')
 	inputData = request.json
+	inputData['phone_number'] = str(inputData['phone_number'])
 	User_Alert_Data.delete_one(inputData)
 	return ({'success':True})
 
@@ -1193,17 +1194,17 @@ def user_state_qma():
 		User_Alert_Data.insert_one({'phone-number':inputData['phone-number']})
 
 	if(inputData['proximity-to-home'] == False):
-		User_Alert_Data.update_one({'phone_number':inputData['phone_number']},{'boundary':inputData['date-time']})
+		User_Alert_Data.update_one({'phone_number':inputData['phone_number']},{"$set":{'boundary':inputData['date-time']}})
 	if(inputData['location_enabled'] == "false"):
-		User_Alert_Data.update_one({'phone_number':inputData['phone_number']},{'location':inputData['date-time']})
+		User_Alert_Data.update_one({'phone_number':inputData['phone_number']},{"$set":{'location':inputData['date-time']}})
 	if(inputData['face_exceeded'] == 'true'):
-		User_Alert_Data.update_one({'phone_number':inputData['phone_number']},{'face':inputData['date-time']})
+		User_Alert_Data.update_one({'phone_number':inputData['phone_number']},{"$set":{'face':inputData['date-time']}})
 	if(inputData['temp_exceeded'] == 'true'):
-		User_Alert_Data.update_one({'phone_number':inputData['phone_number']},{'temperature':inputData['date-time']})
+		User_Alert_Data.update_one({'phone_number':inputData['phone_number']},{"$set":{'temperature':inputData['date-time']}})
 
 	User_State_Data.insert_one(inputData)
 	try:
-		User_Latest_State_Data.update_one({'phone_number':inputData['phone_number']},inputData)
+		User_Latest_State_Data.update_one({'phone_number':inputData['phone_number']},{"$set":inputData})
 	except:
 		pass
 	return ({'success':True})
@@ -1253,13 +1254,13 @@ def add_close_contact():
 def add_new_distress_call():
 	Distress_Data = pymongo.collection.Collection(db, 'Distress_Data')
 	User_Alert_Data = pymongo.collection.Collection(db, 'User_Alert_Data')
-	alertData = json.loads(dumps(User_Alert_Data.find({'phone_number':inputData['phone_number']})))
-	if (str(alertData) == ""):
-		User_Alert_Data.insert_one({'phone_number':inputData['phone_number']})
 	inputData = request.json
+	alertData = json.loads(dumps(User_Alert_Data.find({'phone_number':inputData['phone_number']})))
+	if (alertData == []):
+		User_Alert_Data.insert_one({'phone_number':inputData['phone_number']})
 	inputData['open'] = True
 	Distress_Data.insert_one(inputData)
-	User_Alert_Data.insert_one({'phone_number':inputData['phone_number']},{'distress':inputData['Date-time']})
+	User_Alert_Data.update_one({'phone_number':inputData['phone_number']},{"$set":{'distress':inputData['Date-time']}})
 	return ({'success':True})
 
 
