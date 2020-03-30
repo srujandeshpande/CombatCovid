@@ -1167,7 +1167,7 @@ def add_new_user_data():
 	if not flagv:
 		return ({'success':False, 'error':"Invalid User"})
 	User_Base_Data.insert_one(inputData)
-	User_Latest_State_Data.insert_one({'phone-number':inputData['phone-number']})
+	User_Alert_Data.insert_one({'phone_number':inputData['phone_number'],'app':""})
 	return ({'success':True})
 
 
