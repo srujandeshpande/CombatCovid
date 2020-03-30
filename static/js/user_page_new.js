@@ -1,6 +1,7 @@
 var map, datasource, client, popup, searchInput, resultsPanel, searchInputLength, centerMapOnResults;
 var xcoords = 0;
 var ycoords = 0;
+var zoombtn = 0;
   function GetMap() {
     map = new atlas.Map('myMap', {
       center: [xcoords,ycoords],
@@ -12,9 +13,12 @@ var ycoords = 0;
       }
     });
     map.events.add('ready', function () {
+      if (zoombtn == 0){
       map.controls.add(new atlas.control.ZoomControl(), {
         position: 'top-right'
       });
+      zoombtn = 1
+    }
       var marker = new atlas.HtmlMarker({
         color: 'Red',
         text: '',

@@ -88,6 +88,13 @@ img{
 	<div class="row">
     <div class="col-md-4 login-sec">
       		    <h2 class="text-center">Login Now</h2>
+              {% with messages = get_flashed_messages() %}
+               {% if messages %}
+                  {% for message in messages %}
+                     {{ message }}
+                  {% endfor %}
+               {% endif %}
+              {% endwith %}
       	<form class="login-form" action="/ema_login" method="POST">
               <div class="form-group">
                 <label for="exampleInputEmail1" class="text-uppercase">Phone Number</label>
