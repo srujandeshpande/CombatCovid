@@ -1254,7 +1254,7 @@ def add_new_distress_call():
 	Distress_Data = pymongo.collection.Collection(db, 'Distress_Data')
 	User_Alert_Data = pymongo.collection.Collection(db, 'User_Alert_Data')
 	alertData = json.loads(dumps(User_Alert_Data.find({'phone_number':inputData['phone_number']})))
-	if (str(alertData) = ""):
+	if (str(alertData) == ""):
 		User_Alert_Data.insert_one({'phone_number':inputData['phone_number']})
 	inputData = request.json
 	inputData['open'] = True
