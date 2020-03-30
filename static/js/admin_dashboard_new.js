@@ -84,7 +84,7 @@ function emaUserMore(phno){
   $.ajax({
   url: '/api/ema_admin_ema_data',
   type: 'POST',
-  data: JSON.stringify({"phone_number":phno}),
+  data: JSON.stringify({"phone_number":phno.toString()}),
   contentType: 'application/json; charset=utf-8',
   dataType: 'json',
   async: true,
