@@ -198,6 +198,91 @@ def ema_app_mo_user_data():
 	return data1
 
 
+#EMA return Admin Alerts
+@app.route('/api/ema_alert_data', methods=['POST'])
+def ema_alert_data():
+	User_Data = pymongo.collection.Collection(db, 'User_Data')
+	User_Alert_Data = pymongo.collection.Collection(db, 'User_Alert_Data')
+	Everyone_Data = pymongo.collection.Collection(db, 'Everyone_Data')
+
+	alertData = json.loads(dumps(User_Alert_Data.find()))
+	udata = json.loads(dumps(User_Data.find()))
+	inputData = request.json
+
+	if 'admin_phone_number' in inputData:
+		data1 = {}
+		y = 0
+		data1['count'] = 0
+		for x in alertData:
+			data1["record"+str(y)] = x
+			y+=1
+		data1['count'] = y
+		return data1
+	elif 'chc_phone_number' in inputData:
+		if inputData['chc_phone_number'] == "websiteuser":
+			inputData['chc_phone_number'] = session['phone_number']
+		modata = json.loads(dumps(Everyone_Data.find(inputData)))
+		modata1 = []
+		for i in modata:
+			modata1.append(i['phone_number'])
+		udata1 = []
+		for j in udata:
+			if j['mo_phone_number'] in modata1:
+				udata1.append(j['phone_number'])
+		data1 = {}
+		y = 0
+		data1['count'] = 0
+		for x in alertData:
+			if x['phone_number'] in udata1:
+				data1["record"+str(y)] = x
+				y+=1
+			else:
+				continue
+		data1['count'] = y
+		return data1
+	elif 'phc_phone_number' in inputData:
+		if inputData['phc_phone_number'] == "websiteuser":
+			inputData['phc_phone_number'] = session['phone_number']
+		modata = json.loads(dumps(Everyone_Data.find(inputData)))
+		modata1 = []
+		for i in modata:
+			modata1.append(i['phone_number'])
+		udata1 = []
+		for j in udata:
+			if j['mo_phone_number'] in modata1:
+				udata1.append(j['phone_number'])
+		data1 = {}
+		y = 0
+		data1['count'] = 0
+		for x in alertData:
+			if x['phone_number'] in udata1:
+				data1["record"+str(y)] = x
+				y+=1
+			else:
+				continue
+		data1['count'] = y
+		return data1
+	elif 'mo_phone_number' in inputData:
+		if inputData['mo_phone_number'] == "websiteuser":
+			inputData['mo_phone_number'] = session['phone_number']
+		modata = json.loads(dumps(Everyone_Data.find(inputData)))
+		udata1 = []
+		for j in udata:
+			if j['mo_phone_number'] == inputData['mo_phone_number']:
+				udata1.append(j['phone_number'])
+		data1 = {}
+		y = 0
+		data1['count'] = 0
+		for x in data:
+			if x['phone_number'] in udata1:
+				data1["record"+str(y)] = x
+				y+=1
+		data1['count'] = y
+		return data1
+
+	return {'success':False}
+
+
 #EMA return Admin
 @app.route('/api/ema_admin_user_data', methods=['POST'])
 def ema_app_admin_user_data():
@@ -1082,6 +1167,7 @@ def add_new_user_data():
 	User_Base_Data = pymongo.collection.Collection(db, 'User_Base_Data')
 	User_Data = pymongo.collection.Collection(db, 'User_Data')
 	User_Latest_State_Data = pymongo.collection.Collection(db, 'User_Latest_State_Data')
+	User_Alert_Data = pymongo.collection.Collection(db, 'User_Alert_Data')
 	inputData = request.json
 	flagv = 0
 	for i in json.loads(dumps(User_Data.find())):
@@ -1090,6 +1176,7 @@ def add_new_user_data():
 			break
 	if not flagv:
 		return ({'success':False, 'error':"Invalid User"})
+	User_Alert_Data.insert_one({'phone-number':inputData['phone-number'],'app':inputData['date_time_quarantined']})
 	User_Base_Data.insert_one(inputData)
 	User_Latest_State_Data.insert_one({'phone-number':inputData['phone-number']})
 	return ({'success':True})
@@ -1101,9 +1188,26 @@ def add_new_user_data():
 def user_state_qma():
 	User_State_Data = pymongo.collection.Collection(db, 'User_State_Data')
 	User_Latest_State_Data = pymongo.collection.Collection(db, 'User_Latest_State_Data')
+	User_Alert_Data = pymongo.collection.Collection(db, 'User_Alert_Data')
 	inputData = request.json
+	alertData = json.loads(dumps(User_Alert_Data.find({'phone_number':inputData['phone_number']})))
+	if(str(alertData) == ""):
+		User_Alert_Data.insert_one({'phone-number':inputData['phone-number']})
+
+	if(inputData['proximity-to-home'] == False):
+		User_Alert_Data.update_one({'phone_number':inputData['phone_number']},{'boundary':inputData['date-time']})
+	if(inputData['location_enabled'] == "false"):
+		User_Alert_Data.update_one({'phone_number':inputData['phone_number']},{'location':inputData['date-time']})
+	if(inputData['face_exceeded'] == 'true'):
+		User_Alert_Data.update_one({'phone_number':inputData['phone_number']},{'face':inputData['date-time']})
+	if(inputData['temp_exceeded'] == 'true'):
+		User_Alert_Data.update_one({'phone_number':inputData['phone_number']},{'temperature':inputData['date-time']})
+
 	User_State_Data.insert_one(inputData)
-	User_Latest_State_Data.update_one({'phone_number':inputData['phone_number']},inputData)
+	try:
+		User_Latest_State_Data.update_one({'phone_number':inputData['phone_number']},inputData)
+	except:
+		pass
 	return ({'success':True})
 
 
@@ -1193,11 +1297,3 @@ def add_new_phc():
             objid = PHC_Data.insert_one(inputData).inserted_id
             return ({'success':True, 'phcobjid':str(objid)})
     return ({'success':False, 'error':"CHC Not Found"})
-
-
-
-@app.route('/abc')
-def hello_world():
-    col = pymongo.collection.Collection(db, 'Face_Data')
-    col_results = json.loads(dumps(col.find()))
-    return(str(col_results))
