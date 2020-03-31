@@ -3,7 +3,7 @@ Combat Covid, A complete Quarantine, Effort and Citizen management system
 The Combat Covid Application - **https://combat-covid.azurewebsites.net/**     
 Runs on Dart, Python, HTML, CSS and JavaScript  
 
-## Meet the team:
+## Meet the team: Peace _ Penguins (Theme :Social Impact)
 Avinash - https://github.com/avinash-vk  
 Sanskriti - https://github.com/sanskritip  
 Venkat - https://github.com/Venkatavaradan-R  
