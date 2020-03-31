@@ -1166,6 +1166,9 @@ def add_new_user_data():
 	User_Data = pymongo.collection.Collection(db, 'User_Data')
 	User_Latest_State_Data = pymongo.collection.Collection(db, 'User_Latest_State_Data')
 	User_Alert_Data = pymongo.collection.Collection(db, 'User_Alert_Data')
+	alertData = json.loads(dumps(User_Alert_Data.find({'phone_number':inputData['phone_number']})))
+	if (alertData == []):
+		User_Alert_Data.insert_one({'phone_number':inputData['phone_number']})
 	inputData = request.json
 	flagv = 0
 	for i in json.loads(dumps(User_Data.find())):
@@ -1175,7 +1178,7 @@ def add_new_user_data():
 	if not flagv:
 		return ({'success':False, 'error':"Invalid User"})
 	User_Base_Data.insert_one(inputData)
-	User_Alert_Data.update_one({'phone_number':inputData['phone_number'],'app':""})
+	User_Alert_Data.update_one({'phone_number':inputData['phone_number']},{"$set":{'app':""}})
 	return ({'success':True})
 
 
