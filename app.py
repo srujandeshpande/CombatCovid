@@ -8,6 +8,9 @@ from io import StringIO
 import base64
 import requests
 import random
+import sklearn
+import pandas
+from sklearn.neighbors import NearestNeighbors
 
 app = Flask(__name__)
 CORS(app)
@@ -1189,7 +1192,18 @@ def user_state_qma():
 	User_State_Data = pymongo.collection.Collection(db, 'User_State_Data')
 	User_Latest_State_Data = pymongo.collection.Collection(db, 'User_Latest_State_Data')
 	User_Alert_Data = pymongo.collection.Collection(db, 'User_Alert_Data')
+	all_data = pymongo.collection.Collection(db,'Location_Data')
 	inputData = request.json
+
+	try:
+		adata = json.loads(dumps(all_data.find()[0]))
+		box = list(adata['location'].rstrip(']').lstrip('[').split(','))
+		if inputData['lat']!='x' or inputData['long']!='x':
+			sets = [[float(inputData['lat']),float(inputData['long'])]]
+			res = all_data.replaceOne({'phone-number':inputData['phone-number']},{'location':str(box+sets)})
+	except:
+
+		pass
 	alertData = json.loads(dumps(User_Alert_Data.find({'phone_number':inputData['phone-number']})))
 	if(alertData == []):
 		User_Alert_Data.insert_one({'phone_number':inputData['phone-number']})
@@ -1308,10 +1322,66 @@ def add_new_phc():
 def cma_add_location():
 	CMA_User_Data = pymongo.collection.Collection(db, 'CMA_User_Data')
 	CMA_Location_Data = pymongo.collection.Collection(db, 'CMA_Location_Data')
+	all_data = pymongo.collection.Collection(db,'Location_Data')
 	inputData = request.json
+	try:
+		adata = json.loads(dumps(all_data.find()[0]))
+		box = list(adata['location'].rstrip(']').lstrip('[').split(','))
+		if inputData['lat']!='x' or inputData['long']!='x':
+			sets = [[float(inputData['lat']),float(inputData['long'])]]
+			res = all_data.replaceOne({'phone-number':inputData['phone-number']},{'location':str(box+sets)})
+	except:
+		pass
 	for i in json.loads(dumps(CMA_User_Data.find())):
 		if i['phone_number'] == inputData['phone_number']:
 			CMA_Location_Data.insert_one(inputData)
 			return ({'success':True})
 	#return ({'success':False})
 	return Response(status=401)
+
+
+@app.route('/riskscore',methods=['POST'])
+def get_risk_score():
+	try:
+		data1 = request.json
+		curr_data = pymongo.collection.Collection(db,'Location_Data')
+		data = json.loads(dumps(curr_data.find_one({'phone_number':str(data1['phone_number'])})))
+		sets = list(data['location'].rstrip(']').lstrip('[').split(','))
+		score =  {'score':str(NearestNeighbours(sets))}
+		return score
+	except:
+		return Response(status=401)
+
+
+@app.route('/add_positive_loc',methods = ['POST'])
+def add_positive_case():
+	try:
+		data1 = request.json
+		all_data = pymongo.collection.Collection(db,'positive_coords')
+		adata = json.loads(dumps(all_data.find()[0]))
+		box = list(adata['location'].rstrip(']').lstrip('[').split(','))
+		curr_data = pymongo.collection.Collection(db,'Location_Data')
+		data = json.loads(dumps(curr_data.find_one({'phone_number':str(data1['phone_number'])})))
+		sets = list(data['location'].rstrip(']').lstrip('[').split(','))
+		res = all_data.replaceOne({'location':str(box)},{'location':str(box+sets)})
+		return {'result':res}
+	except:
+		return Response(status=401)
+
+def NearestNeighbours(sets):
+	try:
+		all_data = pymongo.collection.Collection(db,'positive_coords')
+		adata = json.loads(dumps(all_data.find()[0]))
+		data = list(data['location'].rstrip(']').lstrip('[').split(','))
+		df = pd.DataFrame(data,columns = ['Latitude','Longitude'])
+		test_set = [[df.loc[i, 'Longitude'], df.loc[i, 'Latitude']] for i in df.index]
+		neigh = NearestNeighbors(radius=0.0005)
+		test = sets
+		neigh.fit(test)
+		sum = 0
+		for i in test:
+		    sum += len(neigh.radius_neighbors([i])[1][0])
+		score = sum/len(test_set)
+		return(score)
+	except:
+		return Response(status=401)
