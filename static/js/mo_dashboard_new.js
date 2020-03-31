@@ -120,6 +120,7 @@ $(function(){
   async: true,
   success: function(msg) {
     var count = msg['count'];
+    $('#alertcount').html(count);
     if (count!=0) alert("You have "+count+" new Alerts!");
     var r = "record";
     for (var i=0;i<count;i++){
@@ -162,8 +163,9 @@ $(function(){
   dataType: 'json',
   async: true,
   success: function(msg) {
-    var count = msg['count']
-    var r = "record"
+    var count = msg['count'];
+    $('#qicount').html(count);
+    var r = "record";
     for (var i=0;i<count;i++){
           $("#userDataList").append('<tr><td>'+(i+1)+"</td><td><a href=# class='userph'>"+msg[r+i]['phone_number']+'</a></td><td>'+msg[r+i]['date_time_quarantined']+'</td><td>'+msg[r+i]['first_name']+'</td><td>'+msg[r+i]['last_name']+'</td><td>'+msg[r+i]['dob']+'</td><td>'+msg[r+i]['currently_under_quarantine']+'</td><td>'+msg[r+i]['email']+"</td><td><a href=# class='emauserph'>"+msg[r+i]['mo_phone_number']+'</a></td></tr>');
         }

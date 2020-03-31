@@ -14,3 +14,9 @@ html,body{
   max-height:40%;
   overflow-y:auto;
 }
+.nlead{
+  background-color:#cc33ff;
+}
+th,td{
+  text-align: center;
+}
