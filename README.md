@@ -22,4 +22,21 @@ The mobile application also allows for easy alert addressing and checklist addit
 3. **Citizen Management Application (CMA)**  
 The CMA is a mobile applccation to be downloaded by regular citizens. Using this application, they can recieve easy alerts from government officials regarding
 safety precautions and notifications. Users are also shown a map of prior cases and regions of high people concentration to avoid.
-If a citizen is feeling symptoms or has come in contact with a positive tested patient, they can request a checkup directly from the application.
+If a citizen is feeling symptoms or has come in contact with a positive tested patient, they can request a checkup directly from the application.  
+
+## How to use:
+* The QMA, EMA and CMA android applications can be downloaded from the APK folder  
+* The EMA online dashboard can be viewed at https://combat-covid.azurewebsites.net/ 
+
+## The filesystem:
+* The folder *Frontend* contains all the code related to the mobile applications. They are written using Flutter.  
+* The folders *templates* and *static* contain all code related to the EMA online dashboard.  The use HTML, CSS and JavaScript.  
+* The file *app.py* controls the backend. It is written in Python and uses Flask.  
+* The database for the project is MongoDB and is stored on Azure using MongoDB Atlas.  
+
+## Azure:
+Microsoft Azure was an integral part of this project. The various Azure services used are:  
+* Azure App Services for hosting
+* Azure Cognitive Services for face verification
+* Azure Maps for map integration
+* MongoDB Atlas hosted on Azure for database
