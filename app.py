@@ -1166,13 +1166,13 @@ def add_new_user_data():
 	User_Data = pymongo.collection.Collection(db, 'User_Data')
 	User_Latest_State_Data = pymongo.collection.Collection(db, 'User_Latest_State_Data')
 	User_Alert_Data = pymongo.collection.Collection(db, 'User_Alert_Data')
+	inputData = request.json
 	alertData = json.loads(dumps(User_Alert_Data.find({'phone_number':inputData['phone_number']})))
 	if (alertData == []):
 		User_Alert_Data.insert_one({'phone_number':inputData['phone_number']})
-	inputData = request.json
 	flagv = 0
 	for i in json.loads(dumps(User_Data.find())):
-		if i['phone_number'] == str(inputData['phone-number']):
+		if i['phone_number'] == str(inputData['phone_number']):
 			flagv = 1
 			break
 	if not flagv:
