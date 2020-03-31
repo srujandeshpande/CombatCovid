@@ -61,6 +61,16 @@
   <br>
   <br>
   <br>
+  <div id="numbersHeader" class="lead nlead" >Your Data</div>
+  <div class="tablec">
+    <table class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+      <tr>
+        <th>Quarantined Individuals</th><th>Open Alerts</th>
+      </tr>
+      <tr>
+        <td><h2 id="qicount"></h2></td><td><h2 id="alertcount"></h2></td>
+    </table>
+  </div>
 
   <div id="userDataSearchListHeader" class="lead tablec">Search for Users</div>
   <form id="userDataSearch" class="form-inline">
@@ -73,7 +83,6 @@
     <input type="text" name="mo_phone_number" placeholder="MO Phno"/>
     <span>Currently Under Quarantine</span>
     <input type="checkbox" name="currently_under_quarantine" />
-    <br><br>
     <input class="btn btn-default" type="submit"/ >
     <input class="btn btn-default" type="reset"/>
   </form>
