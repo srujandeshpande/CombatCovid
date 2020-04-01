@@ -1180,7 +1180,11 @@ def add_new_user_data():
 			break
 	if not flagv:
 		return ({'success':False, 'error':"Invalid User"})
-	User_Base_Data.insert_one(inputData)
+	baseData = json.loads(dumps(User_Base_Data.find({'phone_number':inputData['phone_number']})))
+	if (baseData == []):
+		User_Base_Data.insert_one(inputData)
+	else:
+		User_Base_Data.update_one({'phone_number':inputData['phone_number']},{"$set":inputData})
 	User_Alert_Data.update_one({'phone_number':inputData['phone_number']},{"$set":{'app':""}})
 	return ({'success':True})
 
