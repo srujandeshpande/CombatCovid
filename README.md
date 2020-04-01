@@ -25,16 +25,16 @@ safety precautions and notifications. Users are also shown a map of prior cases 
 If a citizen is feeling symptoms or has come in contact with a positive tested patient, they can request a checkup directly from the application.  
 
 ## Demo Links:  
-Effort Management Dashboard: http://combat-covid.azurewebsites.net/  
-Demo of Apps Working Together: https://www.youtube.com/watch?v=3LwioGyqC5U  
-Quarantine Management Application Demo: https://www.youtube.com/watch?v=jrIny_79h9M&t=1s  
-Effort Management Dashboard Demo: https://www.youtube.com/watch?v=icGMVfdH27M&t=1s  
-Effort Management Mobile Application Demo: https://www.youtube.com/watch?v=fr9Ywrnntr8  
-Citizen Management Application Demo: https://www.youtube.com/watch?v=5Tqprt7-Mis&t=3s  
-Link to Android Applications: https://drive.google.com/drive/folders/1QmAJedbKEPpvfUOPeQEBHeCsbjSZhVjU  
+* Effort Management Dashboard: http://combat-covid.azurewebsites.net/  
+* Demo of Apps Working Together: https://www.youtube.com/watch?v=3LwioGyqC5U  
+* Quarantine Management Application Demo: https://www.youtube.com/watch?v=jrIny_79h9M&t=1s  
+* Effort Management Dashboard Demo: https://www.youtube.com/watch?v=icGMVfdH27M&t=1s  
+* Effort Management Mobile Application Demo: https://www.youtube.com/watch?v=fr9Ywrnntr8  
+* Citizen Management Application Demo: https://www.youtube.com/watch?v=5Tqprt7-Mis&t=3s  
+* Link to Android Applications: https://drive.google.com/drive/folders/1QmAJedbKEPpvfUOPeQEBHeCsbjSZhVjU  
 
 ## How to use:
-* The QMA, EMA and CMA android applications can be downloaded from the APK folder  
+* The QMA, EMA and CMA Android applications can be downloaded from the above link  
 * The EMA online dashboard can be viewed at https://combat-covid.azurewebsites.net/ 
 
 ## The filesystem:
