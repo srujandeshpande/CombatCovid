@@ -2,6 +2,7 @@
 Combat Covid, A complete Quarantine, Effort and Citizen management system  
 The Combat Covid Application - **https://combat-covid.azurewebsites.net/**     
 Runs on Dart, Python, HTML, CSS and JavaScript  
+Tech Stack used: Flutter, MongoDB, Flask
 
 ## Meet the team: Peace_Penguins (Theme: Social Impact)
 Avinash - https://github.com/avinash-vk  
