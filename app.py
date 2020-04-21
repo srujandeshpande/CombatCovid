@@ -3,7 +3,6 @@ from bson.json_util import dumps
 import json
 from flask import Flask, request, render_template, session, redirect, url_for, flash, Response, abort, render_template_string, send_from_directory
 from flask_cors import CORS
-from PIL import Image
 from io import StringIO
 import base64
 import requests
@@ -31,24 +30,6 @@ def build_test():
 @app.route('/user/<phone_number>')
 def user_page(phone_number):
 	return render_template('user_page.html')
-
-#Create link for image
-@app.route('/cognitive_face/<path:filename>')
-def image(filename):
-	try:
-		w = int(request.args['w'])
-		h = int(request.args['h'])
-	except (KeyError, ValueError):
-		return send_from_directory('.', filename)
-	try:
-		im = Image.open(filename)
-		im.thumbnail((w, h), Image.ANTIALIAS)
-		io = StringIO.StringIO()
-		im.save(io, format='JPEG')
-		return Response(io.getvalue(), mimetype='image/jpeg')
-	except IOError:
-		abort(404)
-	return send_from_directory('.', filename)
 
 
 #EMA login page
