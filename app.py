@@ -22,6 +22,11 @@ mongo = pymongo.MongoClient('mongodb+srv://srujandeshpande:mongodb@cluster0-e0fe
 db = pymongo.database.Database(mongo, 'covid_v1')
 
 
+app.route('/tests/build_test')
+def build_test():
+	return "Passed"
+
+
 #Create Userpage
 @app.route('/user/<phone_number>')
 def user_page(phone_number):
