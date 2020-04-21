@@ -22,7 +22,7 @@ mongo = pymongo.MongoClient('mongodb+srv://srujandeshpande:mongodb@cluster0-e0fe
 db = pymongo.database.Database(mongo, 'covid_v1')
 
 
-app.route('/tests/build_test')
+@app.route('/tests/build_test')
 def build_test():
 	return "Passed"
 
