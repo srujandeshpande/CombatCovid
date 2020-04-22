@@ -1,0 +1,22 @@
+html,body{
+  height:100%;
+  width:100%;
+}
+.lead{
+  background-color:tomato;
+  color:white;
+}
+.alead{
+  background-color:red;
+  color:white;
+}
+.tablec{
+  max-height:40%;
+  overflow-y:auto;
+}
+.nlead{
+  background-color:#cc33ff;
+}
+th,td{
+  text-align: center;
+}

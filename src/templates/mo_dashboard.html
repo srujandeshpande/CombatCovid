@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MO Dashboard</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="{{url_for('static', filename='css/dashboard.css')}}">
+</head>
+<navbar class="navbar-fixed-top">
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand font-weight-bold" href="#">EMA MO Dashboard|{{session['ema_role']}}|{{session['phone_number']}} </a>
+      </div>
+      <div class="collapse navbar-collapse " id="myNavbar">
+        <ul class="nav navbar-nav navbar-right">
+          <li class="active"><a href="#">Dashboard</a></li>
+          <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Quarantine Citizen
+        <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href="#userDataListHeader">Basic Info</a></li>
+          <li><a href="#userTempListHeader">Temperature</a></li>
+          <li><a href="#userCCListHeader">Close Contact</a></li>
+          <li><a href="#userDistressListHeader">Distress Data</a></li>
+          <li><a href="#userLatestStateListHeader">Latest State</a></li>
+          <li><a href="#userStateListHeader">State</a></li>
+          <li><a href="#userTestListHeader">Test Data</a></li>
+          <li><a href="#userChecklistListHeader">Checklist Data</a></li>
+        </ul>
+      </li>
+      <li class="dropdown">
+    <a class="dropdown-toggle" data-toggle="dropdown" href="#">General Citizen
+    <span class="caret"></span></a>
+    <ul class="dropdown-menu">
+
+      <li><a href="#userRequestListHeader">Request Data</a></li>
+    </ul>
+  </li>
+  <li class="dropdown">
+<a class="dropdown-toggle" data-toggle="dropdown" href="#">Staff
+<span class="caret"></span></a>
+<ul class="dropdown-menu">
+    <li><a href="#emaCHCListHeader">EMA CHCs</a></li>
+    <li><a href="#emaPHCListHeader">EMA PHCs</a></li>
+  <li><a href="#emaMOListHeader">EMA MOs</a></li>
+</ul>
+</li>
+          <li class=""><a href="/ema_add_new_user_page">Add New User</a></li>
+          <li><a href="/ema_logout">Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</navbar>
+<body>
+  <br>
+  <br>
+  <br>
+
+  <div id="numbersHeader" class="lead nlead" >Your Data</div>
+  <div class="tablec">
+    <table class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+      <tr>
+        <th>Quarantined Individuals</th><th>Open Alerts</th>
+      </tr>
+      <tr>
+        <td><h2 id="qicount"></h2></td><td><h2 id="alertcount"></h2></td>
+    </table>
+  </div>
+
+  <div id="userDataSearchListHeader" class="lead">Search for Users</div>
+  <form id="userDataSearch" >
+    <input type="text" name="phone_number" placeholder="Phno"></input>
+    <input type="text" name="date_time_quarantined" placeholder="Date time Quarantined"/>
+    <input type="text" name="first_name" placeholder="First Name"/>
+    <input type="text" name="last_name" placeholder="Last Name"/>
+    <input type="text" name="dob" placeholder="DOB"/>
+    <input type="text" name="email" placeholder="Email"/>
+    <input type="text" name="mo_phone_number" placeholder="MO Phno"/>
+    <span>Currently Under Quarantine</span>
+    <input type="checkbox" name="currently_under_quarantine" />
+    <br><br>
+    <input class="btn btn-default" type="submit"/ >
+    <input class="btn btn-default" type="reset"/>
+  </form>
+  <div>
+  <table id="singleUserData" border="border"  class="table table-striped table-bordered table-sm" cellspacing="0"
+  width="100%" ></table>
+</div>
+
+<div id="alertListHeader" class="lead alead" >Loading Alerts...</div>
+<div class="tablec">
+  <table id="alertList" border="border" class="table table-striped table-bordered table-sm" cellspacing="0"
+  width="100%">
+    <tr>
+      <th>Alert No.</th><th>Ph Number</th><th>No QMA</th><th>No Face</th><th>No Temp</th><th>No Location</th><th>Outside Boundary</th><th>In Distress</th><th>Completed</th>
+    </tr>
+  </table>
+</div>
+
+  <div id="userDataListHeader" class="lead">Loading User Data...</div>
+  <div class="tablec">
+  <table id="userDataList" border="border"  class="table table-striped table-bordered table-sm" cellspacing="0"
+  width="100%" >
+    <tr>
+      <th>Record Number</th><th>Ph Number</th><th>Date Quarantined</th><th>First Name</th><th>Last Name</th><th>DOB</th><th>Currently Under Quarantine</th><th>Email</th><th>Mo Phno</th>
+    </tr>
+  </table>
+  </div>
+
+  <br>
+  <div id="userTempListHeader" class="lead">Loading Temperature Data...</div>
+  <div class="tablec">
+     <table id="userTempList" border="border"  class="table table-striped table-bordered table-sm" cellspacing="0"
+     width="100%" >
+       <tr>
+         <th>Record Number</th><th>Ph Number</th><th>Temperature</th><th>Datetime</th>
+       </tr>
+     </table>
+  </div>
+
+  <br>
+  <div id="userCCListHeader" class="lead">Loading Close Contact Data...</div>
+  <div class="tablec">
+  <table id="userCCList" border="border"  class="table table-striped table-bordered table-sm" cellspacing="0"
+  width="100%" >
+    <tr>
+      <th>Record Number</th><th>Ph Number</th><th>Datetime</th><th>Contact Ph</th><th>Contact Name</th><th>Contact Address</th>
+    </tr>
+  </table>
+  </div>
+
+  <br>
+  <div id="userDistressListHeader" class="lead">Loading Distress Data...</div>
+  <div class="tablec">
+  <table id="userDistressList" border="border"  class="table table-striped table-bordered table-sm" cellspacing="0"
+  width="100%" >
+    <tr>
+      <th>Record Number</th><th>Ph Number</th><th>Datetime</th><th>Active?</th>
+    </tr>
+  </table>
+  </div>
+
+  <br>
+  <div id="userLatestStateListHeader" class="lead">Loading Latest User State Data...</div>
+  <div class="tablec">
+  <table id="userLatestStateList" border="border"  class="table table-striped table-bordered table-sm" cellspacing="0"
+  width="100%" >
+    <tr>
+      <th>Record Number</th><th>Ph Number</th><th>Lat</th><th>Long</th><th>Date Time</th><th>Distance from Home</th><th>Within Range</th><th>Loc Enabled</th><th>Last Face Log</th><th>Last Temp Log</th>
+    </tr>
+  </table>
+  </div>
+
+  <br>
+  <div id="userStateListHeader" class="lead">Loading User State Data...</div>
+  <div class="tablec">
+  <table id="userStateList" border="border"  class="table table-striped table-bordered table-sm" cellspacing="0"
+  width="100%" >
+    <tr>
+      <th>Record Number</th><th>Ph Number</th><th>Lat</th><th>Long</th><th>Date Time</th><th>Distance from Home</th><th>Within Range</th><th>Loc Enabled</th><th>Last Face Log</th><th>Last Temp Log</th>
+    </tr>
+  </table>
+  </div>
+
+  <br>
+  <div id="userTestListHeader" class="lead">Loading Testing Data...</div>
+  <div class="tablec">
+  <table id="userTestList" border="border"  class="table table-striped table-bordered table-sm" cellspacing="0"
+  width="100%" >
+    <tr>
+      <th>Record Number</th><th>Ph Number</th><th>Datetime</th><th>Test Result</th><th>Other Data</th><th>MO Phno</th>
+    </tr>
+  </table>
+  </div>
+
+  <br>
+  <div id="userChecklistListHeader" class="lead">Loading Checklist Data...</div>
+  <div class="tablec">
+  <table id="userChecklistList" border="border"  class="table table-striped table-bordered table-sm" cellspacing="0"
+  width="100%" >
+    <tr>
+      <th>Record Number</th><th>Ph Number</th><th>Datetime</th><th>Hygenic Space</th><th>Controlled Symptoms</th><th>Stamp Reapply</th><th>MO Phno</th>
+    </tr>
+  </table>
+  </div>
+
+  <br>
+  <div id="userRequestListHeader" class="lead">Loading CMA Checking Requests...</div>
+  <div class="tablec">
+  <table id="userRequestList" border="border"  class="table table-striped table-bordered table-sm" cellspacing="0"
+  width="100%" >
+    <tr>
+      <th>Record Number</th><th>Ph Number</th><th>Name</th><th>Datetime</th><th>Symptoms</th><th>Travel</th><th>Contact</th><th>DOB</th>
+    </tr>
+  </table>
+  </div>
+
+  <br>
+  <div id="emaMOListHeader" class="lead">Loading EMA MOs...</div>
+  <div class="tablec">
+  <table id="emaMOList" border="border"  class="table table-striped table-bordered table-sm" cellspacing="0"
+  width="100%" >
+    <tr>
+      <th>Record Number</th><th>EMA Role</th><th>First Name</th><th>Last Name</th><th>Phno</th><th>District</th><th>State</th><th>CHC</th><th>PHC</th>
+    </tr>
+  </table>
+  </div>
+
+</body>
+  <script src="{{url_for('static', filename='js/mo_dashboard_new.js')}}"></script>
+<footer>
+    <div class="basic-grid">
+    </div>
+</footer>
+</html>

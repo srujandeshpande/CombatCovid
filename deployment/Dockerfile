@@ -7,10 +7,12 @@ ENV HOME=/opt/repo
 RUN apt-get update && apt-get install -y supervisor uwsgi python python-pip procps vim && \
     /usr/bin/pip install uwsgi==2.0.17 flask==1.0.2
 
+
 # Source code file
 COPY ./src ${HOME}/src
+RUN pip install -r ${HOME}/src/requirements.txt
 
-# Copy the configuration file from the current directory and paste 
+# Copy the configuration file from the current directory and paste
 # it inside the container to use it as Nginx's default config.
 COPY ./deployment/nginx.conf /etc/nginx/nginx.conf
 
