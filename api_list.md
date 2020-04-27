@@ -10,9 +10,6 @@ Srujan - https://github.com/srujandeshpande
 
 ## How to talk to the backend:
 
-
-
-
 The API Calls are listed as follows  [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/2ab0b8dff3424f432704)
 
 ### /cognitive_face/<path:filename>   
