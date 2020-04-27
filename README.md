@@ -1,6 +1,6 @@
 # combat_covid
 Combat Covid, A complete Quarantine, Effort and Citizen management system  
-The Combat Covid Application - **https://combat-covid.azurewebsites.net/**     
+The Combat Covid Application - **http://combatcovid.herokuapp.com/**     
 Runs on Dart, Python, HTML, CSS and JavaScript  
 Tech Stack used: Flutter, MongoDB, Flask
 
@@ -26,7 +26,7 @@ safety precautions and notifications. Users are also shown a map of prior cases 
 If a citizen is feeling symptoms or has come in contact with a positive tested patient, they can request a checkup directly from the application.  
 
 ## Demo Links:  
-* Effort Management Dashboard: http://combat-covid.azurewebsites.net/  
+* Effort Management Dashboard: http://combatcovid.herokuapp.com/  
 * Demo of Apps Working Together: https://www.youtube.com/watch?v=3LwioGyqC5U  
 * Quarantine Management Application Demo: https://www.youtube.com/watch?v=jrIny_79h9M&t=1s  
 * Effort Management Dashboard Demo: https://www.youtube.com/watch?v=icGMVfdH27M&t=1s  
@@ -36,7 +36,7 @@ If a citizen is feeling symptoms or has come in contact with a positive tested p
 
 ## How to use:
 * The QMA, EMA and CMA Android applications can be downloaded from the above link  
-* The EMA online dashboard can be viewed at https://combat-covid.azurewebsites.net/ 
+* The EMA online dashboard can be viewed at http://combatcovid.herokuapp.com/ 
 
 ## The filesystem:
 * The folder *Frontend* contains all the code related to the mobile applications. They are written using Flutter.  
