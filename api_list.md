@@ -1,5 +1,5 @@
 # combat_covid
-The Combat Covid Application - https://combat-covid.azurewebsites.net/   
+The Combat Covid Application - http://combatcovid.herokuapp.com/   
 Runs on Dart, Python, HTML, CSS and JavaScript  
 ## Meet the team:
 Avinash - https://github.com/avinash-vk  
