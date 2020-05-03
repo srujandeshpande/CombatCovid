@@ -50,3 +50,5 @@ Microsoft Azure was an integral part of this project. The various Azure services
 * Azure Cognitive Services for face verification
 * Azure Maps for map integration
 * MongoDB Atlas hosted on Azure for database
+
+##### This was created for the Mishmash 2020 and Goverment of Jharkhand Covid-19 Hackathon
